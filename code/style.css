@@ -1,19 +1,30 @@
-* {
+body{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    border: 1px solid black;
-}
-
-body {
-    display: grid;
-    grid-template-rows: 1fr auto;
-    align-content: center;
-    min-height: 100vh;
-}
-
-logo {
+    height: 100vh;
     display: flex;
-    align-content: center;
-    margin: auto;
+    justify-content: center;
+    background-color: rgb(183, 255, 255);
+}
+
+header img{
+    width: 150px;
+}
+
+header{
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: left;
+}
+
+asive{
+    display: grid;
+    justify-items: center;
+    margin-top: 200px;
+}
+
+ul li{
+  margin: 10px;
+  margin: 5px 0 10px;
 }
