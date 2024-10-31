@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-content: center;
+    min-height: 100vh;
+}
+
+logo {
+    display: flex;
+    align-content: center;
+    margin: auto;
+}
