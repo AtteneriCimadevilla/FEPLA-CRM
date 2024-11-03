@@ -1,30 +1,88 @@
-body{
+* {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    background-color: rgb(183, 255, 255);
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-header img{
-    width: 150px;
-}
-
-header{
-    padding: 0;
-    margin: 0;
-    position: relative;
-    top: left;
-}
-
-asive{
+body {
     display: grid;
-    justify-items: center;
-    margin-top: 200px;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    background-color: #8282e5;
 }
 
-ul li{
-  margin: 10px;
-  margin: 5px 0 10px;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo, .user-icon {
+    width: 90px; /* Ajusta el tamaño del logo */
+    height: 90px; /* Ajusta el tamaño del icono de usuario */
+    object-fit: cover; /* Asegura que la imagen se recorte adecuadamente */
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.search-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 90%; /* Usa un ancho relativo */
+    max-width: 400px; /* Limita el ancho máximo */
+}
+
+.search-icon,
+.dropdown-icon {
+    margin: 0 5px;
+    font-size: 18px; /* Aumento de tamaño de los iconos */
+}
+
+input[type="text"] {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.action-btn {
+    width: 35px; /* Tamaño aumentado de los botones de acción */
+    height: 35px;
+    border: none;
+    background-color: #eee;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+        align-items: flex-start;
+    }
+
+    .search-field {
+        width: 100%; /* Ancho completo en pantallas pequeñas */
+    }
+    
+    .action-btn {
+        width: 30px; /* Ajusta el tamaño de los botones en pantallas pequeñas */
+        height: 30px;
+    }
+
+    .search-icon,
+    .dropdown-icon {
+        font-size: 16px; /* Ajusta el tamaño de los iconos */
+    }
 }
