@@ -1,3 +1,11 @@
+<?php
+    require 'conexion.php';
+
+    // <!-- // Consulta SQL para obtener los datos de la tabla "alumnos" -->
+    $sql = "SELECT dni_nie, nombre, apellido1 FROM alumnos";
+    $result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +21,34 @@
         <img src="logo.png" alt="logo">
         <div class="busqueda">filtros de búsqueda</div>
     </header>
-    <table>
+     <!-- Generar HTML para mostrar los datos en una tabla -->
+    <?php
+     if ($result->num_rows > 0) {
+    echo "<table border='1'>
+        <tr>
+            <th>DNI</th>
+            <th>Nombre</th>
+            <th>1er apellido</th>
+        </tr>";
+    
+        while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+        echo "<tr>
+            <td>" . $row["dni_nie"] . "</td>
+            <td>" . $row["nombre"] . "</td>
+            <td>" . $row["apellido1"] . "</td>
+        </tr>";
+        }
+        echo "
+    </table>";
+    } else {
+    echo "No se encontraron resultados.";
+    }
+    
+    // Cerrar la conexión -->
+    $conn->close();
+?>
+
+    <!-- <table>
         <tr>
             <th>DNI</th>
             <th>Nombre</th>
@@ -38,7 +73,7 @@
             <td>prueba</td>
             <td>prueba</td>
         </tr>
-    </table>
+    </table> -->
 </body>
 
 </html>
