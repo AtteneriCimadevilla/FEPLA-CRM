@@ -3,13 +3,14 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    font-size: small;
 }
 
 body {
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
-    background-color: #ffc1ec;
+    background-color: #8282e5;
 }
 
 header {
@@ -25,16 +26,13 @@ table {
 }
 
 table, tr, th, td {
-    border: 2px solid #d61edd;
+    background-color: #dfd9f8;
+    border: 1px solid #ff66c4;
     border-collapse: separate;
+    margin: 10px;
 }
 
-aside {
-    background-color: azure;
-    display: grid;
-    justify-content: center;
-    padding: ;
-}
+
 
 .logo,
 .user-icon {
