@@ -25,13 +25,14 @@ $result = $mysqli->query($query);
             <div class="busqueda">Filtros de búsqueda</div>
         </header>
 
-        <h1 class="page-title text-center mb-4">Gestión de Alumnos</h1>
+        <h1 class="page-title text-center mb-4">Empresas</h1>
 
         <!-- Tabla responsive de alumnos -->
         <div class="table-responsive">
             <table class="table table-hover table-alumnos">
                 <thead class="thead-dark">
                     <tr>
+                        <th>CIF</th>
                         <th>Nombre Comercial</th>
                         <th>Nombre Empresa</th>
                         <th>Telefono</th>
