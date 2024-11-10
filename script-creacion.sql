@@ -12,8 +12,8 @@ CREATE TABLE empresas (
 	telefono_contacto varchar(50),
 	email_contacto varchar(255),
 	direccion varchar(255),
-	interesado bit(1),
-	cantidad_alumnos TINYINT,
+	interesado tinyint(1),
+	cantidad_alumnos TINYINT UNSIGNED,
 	notas text
 );
 
@@ -52,11 +52,17 @@ CREATE TABLE alumnos (
 
 
 /*Empresas*/
-INSERT INTO empresas (nombre_comercial) VALUES
-('GTT'),
-('NTT Data'),
-('Accenture'),
-('EUIPO');
+INSERT INTO empresas (cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas) VALUES
+('A1234567A', 'Innova Tech', 'Innova Solutions S.L.', '965123456', 'María López', '617234567', 'maria.lopez@innovatech.com', 'Calle Innovación 5, Alicante', 1, 3, 'Interesado en programadores web.'),
+('B2345678B', 'Green Solutions', 'Green Energy S.A.', '966234567', 'Carlos Martín', '618345678', 'carlos.martin@greensolutions.com', 'Av. Ecología 10, Alicante', 0, 2, 'Posible interés en alumnos de marketing digital.'),
+('C3456789C', 'GlobalSoft', 'Global Software Corp.', '964345678', 'Laura García', '619456789', 'laura.garcia@globalsoft.com', 'Calle Tecnología 20, Alicante', 1, 4, 'Solicita alumnos para prácticas en desarrollo de aplicaciones.'),
+('D4567890D', 'TechWave', 'Tech Wave S.L.', '963456789', 'Juan Fernández', '620567890', 'juan.fernandez@techwave.com', 'Av. Del Progreso 15, Alicante', 1, 1, 'Interés en perfiles de diseño UX/UI.'),
+('E5678901E', 'DataWorks', 'DataWorks Ltd.', '962567890', 'Elena Morales', '621678901', 'elena.morales@dataworks.com', 'Calle Análisis 12, Alicante', 0, 2, 'Poco interés en prácticas, pero abierto a colaboración.'),
+('F6789012F', 'SmartMedia', 'Smart Media Group', '961678901', 'Pablo Sánchez', '622789012', 'pablo.sanchez@smartmedia.com', 'Calle Multimedia 8, Alicante', 1, 5, 'Muy interesados en alumnos para prácticas de edición multimedia.'),
+('G7890123G', 'EcoEnergy', 'EcoEnergy España S.A.', '960789012', 'Sara Ruiz', '623890123', 'sara.ruiz@ecoenergy.com', 'Av. Sustentable 22, Alicante', 1, 2, 'Buscan perfiles de ingenieros ambientales.'),
+('H8901234H', 'AlphaNet', 'AlphaNet Corp.', '965890123', 'David Ortiz', '624901234', 'david.ortiz@alphanet.com', 'Calle Red 30, Alicante', 0, 3, 'Interés en perfiles de soporte técnico.'),
+('I9012345I', 'Cloudify', 'Cloudify Solutions', '963012345', 'Nuria Torres', '625012345', 'nuria.torres@cloudify.com', 'Calle Nube 18, Alicante', 1, 2, 'Desean alumnos para desarrollo en la nube.'),
+('J0123456J', 'BlueOcean', 'Blue Ocean Consulting', '964123456', 'Pedro Giménez', '626123456', 'pedro.gimenez@blueocean.com', 'Av. Del Mar 45, Alicante', 0, 1, 'Poco interés en prácticas, pero dispuestos a colaborar en el futuro.');
 
 /*Usuarios*/
 INSERT INTO usuarios (tipo)
