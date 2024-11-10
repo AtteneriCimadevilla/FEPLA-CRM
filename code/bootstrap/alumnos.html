@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Alumnos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="alumno.css">
+</head>
+
+<body>
+
+    <div class="container container-alumnos">
+        <h1 class="page-title">Gestión de Alumnos</h1>
+
+        <!-- Botón para agregar nuevo alumno -->
+        <div class="text-right mb-3">
+            <button class="btn btn-primary">Agregar Alumno</button>
+        </div>
+
+        <!-- Tabla de alumnos -->
+        <table class="table table-hover table-alumnos">
+            <thead>
+                <tr>
+                    <th>DNI/NIE</th>
+                    <th>Nombre</th>
+                    <th>Apellido 1</th>
+                    <th>Apellido 2</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>Vehículo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1234A</td>
+                    <td>Juan</td>
+                    <td>Vega</td>
+                    <td>Saenz</td>
+                    <td>2000-08-08</td>
+                    <td>618253876</td>
+                    <td>juanvegasaenz@gmail.com</td>
+                    <td>C/Mercurio</td>
+                    <td>Sí</td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm">Editar</button>
+                        <button class="btn btn-danger btn-sm">Eliminar</button>
+                    </td>
+                </tr>
+                <!-- Más filas de ejemplo de alumnos -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

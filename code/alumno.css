@@ -1,0 +1,104 @@
+/* alumno.css */
+
+body {
+    background-color: #8282e5;
+}
+
+/* Ajuste general para el contenedor */
+.container-alumnos {
+    padding: 15px;
+}
+
+/* Estilo para el encabezado */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #8282e5;
+}
+
+header img {
+    height: 50px;
+}
+
+header .busqueda {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Estilo del título de la página */
+.page-title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilo de la tabla */
+.table-alumnos {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-alumnos th,
+.table-alumnos td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.table-alumnos thead th {
+    background-color: #343a40;
+    color: #fff;
+    font-weight: bold;
+}
+
+.table-alumnos tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+.table-alumnos tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table-alumnos tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Ajustes de fuentes y espaciado en pantallas pequeñas */
+@media (max-width: 768px) {
+    header img {
+        height: 40px;
+    }
+
+    header .busqueda {
+        font-size: 14px;
+    }
+
+    .page-title {
+        font-size: 1.6em;
+    }
+
+    .table-alumnos th,
+    .table-alumnos td {
+        padding: 6px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.4em;
+    }
+
+    .table-alumnos th,
+    .table-alumnos td {
+        padding: 5px;
+        font-size: 0.8em;
+    }
+}
