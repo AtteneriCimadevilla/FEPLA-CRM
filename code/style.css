@@ -1,88 +1,102 @@
+/* styles.css */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 body {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    min-height: 100vh;
-    background-color: #8282e5;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-.logo, .user-icon {
-    width: 90px; /* Ajusta el tamaño del logo */
-    height: 90px; /* Ajusta el tamaño del icono de usuario */
-    object-fit: cover; /* Asegura que la imagen se recorte adecuadamente */
-}
-
-.search-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
-}
-
-.search-field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #fff;
-    width: 90%; /* Usa un ancho relativo */
-    max-width: 400px; /* Limita el ancho máximo */
-}
-
-.search-icon,
-.dropdown-icon {
-    margin: 0 5px;
-    font-size: 18px; /* Aumento de tamaño de los iconos */
-}
-
-input[type="text"] {
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    padding: 5px;
+    background-color: #f8f9fa;
+    color: #333;
     font-size: 16px;
 }
 
-.action-btn {
-    width: 35px; /* Tamaño aumentado de los botones de acción */
-    height: 35px;
-    border: none;
-    background-color: #eee;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: white;
 }
 
-/* Media Queries para Responsividad */
+.home-link {
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.logo {
+    height: 40px;
+}
+
+.profile-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.main {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+}
+
+.btn-add {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+}
+
 @media (max-width: 600px) {
-    header {
-        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+    .header {
+        flex-direction: column;
         align-items: flex-start;
+        padding: 10px;
     }
 
-    .search-field {
-        width: 100%; /* Ancho completo en pantallas pequeñas */
-    }
-    
-    .action-btn {
-        width: 30px; /* Ajusta el tamaño de los botones en pantallas pequeñas */
-        height: 30px;
-    }
-
-    .search-icon,
-    .dropdown-icon {
-        font-size: 16px; /* Ajusta el tamaño de los iconos */
+    .main {
+        width: 90%;
     }
 }

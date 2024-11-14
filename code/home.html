@@ -3,35 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM</title>
+    <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <header>
-        <img src="logo.png" alt="logo" class="logo">
-        <img src="user.png" alt="user icon" class="user-icon">
+    <header class="header">
+        <a href="home.html" class="home-link">Inicio</a>
+        <img src="logo.png" alt="Logo" class="logo">
+        <img src="profile.png" alt="Perfil" class="profile-icon">
     </header>
 
-    <main>
-        <div class="search-container">
-            <div class="search-field">
-                <span class="icon search-icon">🔍</span>
-                <input type="text" placeholder="empresa">
-                <span class="icon dropdown-icon" title="Más información">⬇️</span>
-                <button class="action-btn" title="Añadir Empresa">+</button>
-                <button class="action-btn" title="Ver todas">👀</button>
+    <main class="main">
+        <section class="search-section">
+            <div class="input-group">
+                <input type="text" placeholder="Buscar empresa...">
+                <button class="btn-add">Agregar Empresa</button>
             </div>
-            
-            <div class="search-field">
-                <span class="icon search-icon">🔍</span>
-                <input type="text" placeholder="alumno">
-                <span class="icon dropdown-icon" title="Más información">⬇️</span>
-                <button class="action-btn" title="Añadir Alumno">+</button>
-                <button class="action-btn" title="Ver todos">👀</button>
-            </div>
-        </div>
-    </main>
 
-    <footer></footer>
+            <div class="input-group">
+                <input type="text" placeholder="Buscar alumno...">
+                <button class="btn-add">Agregar Alumno</button>
+            </div>
+        </section>
+    </main>
 </body>
+
 </html>
