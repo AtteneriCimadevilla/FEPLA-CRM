@@ -22,7 +22,10 @@ $result = $mysqli->query($query);
     <div class="container container-alumnos my-4">
         <header class="d-flex justify-content-between align-items-center mb-3">
             <img src="logo.png" alt="logo" style="height: 50px;">
-            <div class="busqueda">Filtros de búsqueda</div>
+            <div class="busqueda">
+                <input type="text" id="searchFilter" placeholder="🔍">
+                <button id="searchButton">Filtrar</button>
+            </div>
         </header>
 
         <h1 class="page-title text-center mb-4">Empresas</h1>
@@ -54,18 +57,21 @@ $result = $mysqli->query($query);
                                 <td><?php echo htmlspecialchars($alumno['email_contacto']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['interesado']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['cantidad_alumnos']); ?></td>
-                                </tr>
+                            </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr><td colspan="10" class="text-center">No hay alumnos registrados.</td></tr>
+                        <tr>
+                            <td colspan="10" class="text-center">No hay alumnos registrados.</td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
-    
+
     <?php $mysqli->close(); ?>
 
+    <script type="module" src="empresas.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
