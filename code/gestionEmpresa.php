@@ -1,12 +1,12 @@
 <?php
-require 'conexion.php'; // Conexión a la base de datos
-
-// Inicializar variables
+require 'conexion.php';
+// Variables para manejar errores y mensajes de éxito
 $errores = [];
 $exito = "";
 
-// Procesar formulario al enviar
+// Verificar si el formulario se ha enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Recoger los datos del formulario
     $cif = trim($_POST['cif']);
     $nombre_comercial = trim($_POST['nombre_comercial']);
     $nombre_empresa = trim($_POST['nombre_empresa']);
@@ -19,7 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cantidad_alumnos = trim($_POST['cantidad_alumnos']);
     $notas = trim($_POST['notas']);
 
-    // Validaciones básicas 
+    // Validaciones básicas
+    if (empty($cif) || strlen($cif) != 9) {
+        $errores[] = "El CIF debe tener 9 caracteres.";
+    }
     if (empty($nombre_comercial)) {
         $errores[] = "El nombre comercial es obligatorio.";
     }
@@ -57,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container mt-5">
         <h1 class="text-center">Crear Empresa</h1>
 
+        <!-- Mostrar errores -->
         <?php if (!empty($errores)): ?>
             <div class="alert alert-danger">
                 <?php foreach ($errores as $error): ?>
@@ -65,16 +69,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         <?php endif; ?>
 
+        <!-- Mostrar mensaje de éxito -->
         <?php if (!empty($exito)): ?>
             <div class="alert alert-success">
                 <p><?php echo htmlspecialchars($exito); ?></p>
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="crear_empresa.php">
+        <form method="POST" action="">
             <div class="mb-3">
                 <label for="cif" class="form-label">CIF</label>
-                <input type="text" class="form-control" id="cif" name="cif" maxlength="9" required>
+                <input type="text" class="form-control" id="cif" name="cif" maxlength="9">
             </div>
             <div class="mb-3">
                 <label for="nombre_comercial" class="form-label">Nombre Comercial</label>
