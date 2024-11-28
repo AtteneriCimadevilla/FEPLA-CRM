@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+.logo {
+    max-width: 150px;
+    height: auto;
+}
+
+.container {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 2em;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 1em;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary, .btn-success {
+    width: 100%;
+}
+
+#registerForm, #loginForm {
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .col-md-6 {
+        margin-bottom: 2em;
+    }
+}
