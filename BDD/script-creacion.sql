@@ -24,6 +24,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE profesores(
 	dni_nie char(9) PRIMARY KEY,
+	contrasenya blob,
 	nombre varchar(100) not null,
 	apellido1 varchar(100) not null,
 	apellido2 varchar(100),
@@ -72,11 +73,11 @@ VALUES
 ('user');
 
 /*Profesores*/
-INSERT INTO profesores (dni_nie, nombre, apellido1, apellido2, telefono, email)
+INSERT INTO profesores (dni_nie, contrasenya, nombre, apellido1, apellido2, telefono, email)
 VALUES 
-('45678Y', 'David', 'Schmidt', 'Fisher', '618223876', 'davidschmidt@gmail.com'),
-('56789Z', 'Zoe', 'Ramirez', 'Gea', '678516294', 'zoeramirez@gmail.com'),
-('67891Q', 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com');
+('45678Y', aes_encrypt('1234', 'llave'), 'David', 'Schmidt', 'Fisher', '618223876', 'davidschmidt@gmail.com'),
+('56789Z', aes_encrypt('1234', 'llave'), 'Zoe', 'Ramirez', 'Gea', '678516294', 'zoeramirez@gmail.com'),
+('67891Q', aes_encrypt('1234', 'llave'), 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com');
 
 /*Alumnos*/
 INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso)
