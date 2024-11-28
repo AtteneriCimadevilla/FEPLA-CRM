@@ -2,9 +2,22 @@
 require 'conexion.php';
 
 // Consulta SQL para obtener los datos de la tabla "empresas" con los apellidos combinados
-$query = "SELECT cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, email_contacto, interesado, cantidad_alumnos
+$query = "SELECT id, cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, email_contacto, interesado, cantidad_alumnos
           FROM empresas ";
 $result = $mysqli->query($query);
+
+// Handle delete request
+if (isset($_POST['delete']) && isset($_POST['id'])) {
+    $id_to_delete = $_POST['id'];
+    $delete_query = "DELETE FROM empresas WHERE id = ?";
+    $stmt = $mysqli->prepare($delete_query);
+    $stmt->bind_param("s", $id_to_delete);
+    $stmt->execute();
+    $stmt->close();
+    // Redirect to refresh the page after deletion
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +43,11 @@ $result = $mysqli->query($query);
 
         <h1 class="page-title text-center mb-4">Empresas</h1>
 
+        <!-- Add Company Button -->
+        <div class="mb-3">
+            <a href="gestionEmpresa.php" class="btn btn-primary">Añadir Empresa</a>
+        </div>
+
         <!-- Tabla responsive de alumnos -->
         <div class="table-responsive">
             <table class="table table-hover table-alumnos">
@@ -43,25 +61,33 @@ $result = $mysqli->query($query);
                         <th>Email Contacto</th>
                         <th>Interesado</th>
                         <th>Cantidad Alumnos</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if ($result->num_rows > 0): ?>
-                        <?php while ($alumno = $result->fetch_assoc()): ?>
+                        <?php while ($empresa = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($alumno['cif']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['nombre_comercial']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['nombre_empresa']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['telefono_empresa']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['nombre_contacto']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['email_contacto']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['interesado']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['cantidad_alumnos']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['cif']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['nombre_comercial']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['nombre_empresa']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['telefono_empresa']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['nombre_contacto']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['email_contacto']); ?></td>
+                                <td><?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></td>
+                                <td><?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></td>
+                                <td>
+                                    <a href="gestionEmpresa.php?id=<?php echo urlencode($empresa['id']); ?>" class="btn btn-sm btn-primary">Editar</a>
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="cif" value="<?php echo htmlspecialchars($empresa['cif']); ?>">
+                                        <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar esta empresa?');">Eliminar</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="10" class="text-center">No hay alumnos registrados.</td>
+                            <td colspan="9" class="text-center">No hay empresas registradas.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
