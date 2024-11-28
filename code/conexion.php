@@ -11,5 +11,5 @@ if ($mysqli->connect_error) {
             . $mysqli->connect_error);
 }
 
-echo "Conexión exitosa. Información del servidor: " . $mysqli->server_info;
+$mysqli->set_charset('utf8mb4');
 ?>
