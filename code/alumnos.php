@@ -87,9 +87,9 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <td><?php echo htmlspecialchars($alumno['curso']); ?></td>
                                 <td>
                                     <a href="gestionAlumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
-                                    <form method="POST" style="display: inline;">
+                                    <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este alumno?');">
                                         <input type="hidden" name="dni_nie" value="<?php echo htmlspecialchars($alumno['dni_nie']); ?>">
-                                        <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar este alumno?');">Eliminar</button>
+                                        <button type="submit" name="delete" class="btn btn-sm btn-danger">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>

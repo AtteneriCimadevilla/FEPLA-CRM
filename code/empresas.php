@@ -9,7 +9,7 @@ if (isset($_SESSION['empresa_actualizada']) && $_SESSION['empresa_actualizada'])
 }
 
 // Consulta SQL para obtener los datos de la tabla "empresas"
-$query = "SELECT id, cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, email_contacto, interesado, cantidad_alumnos
+$query = "SELECT id, cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas
           FROM empresas";
 $result = $mysqli->query($query);
 
@@ -35,11 +35,11 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FEPLA CRM Empresas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="alumno.css"> <!-- CSS personalizado -->
+    <link rel="stylesheet" href="empresa.css"> <!-- CSS personalizado -->
 </head>
 
 <body>
-    <div class="container container-alumnos my-4">
+    <div class="container container-empresas my-4">
         <header class="d-flex justify-content-between align-items-center mb-3">
             <img src="logo.png" alt="logo" style="height: 50px;">
             <div class="busqueda">
@@ -57,17 +57,20 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
 
         <!-- Tabla responsive de empresas -->
         <div class="table-responsive">
-            <table class="table table-hover table-alumnos">
+            <table class="table table-hover table-empresas">
                 <thead class="thead-dark">
                     <tr>
                         <th>CIF</th>
                         <th>Nombre Comercial</th>
                         <th>Nombre Empresa</th>
-                        <th>Telefono</th>
+                        <th>Teléfono Empresa</th>
                         <th>Nombre Contacto</th>
+                        <th>Teléfono Contacto</th>
                         <th>Email Contacto</th>
+                        <th>Dirección</th>
                         <th>Interesado</th>
                         <th>Cantidad Alumnos</th>
+                        <th>Notas</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -80,21 +83,24 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                                 <td><?php echo htmlspecialchars($empresa['nombre_empresa']); ?></td>
                                 <td><?php echo htmlspecialchars($empresa['telefono_empresa']); ?></td>
                                 <td><?php echo htmlspecialchars($empresa['nombre_contacto']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['telefono_contacto']); ?></td>
                                 <td><?php echo htmlspecialchars($empresa['email_contacto']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['direccion']); ?></td>
                                 <td><?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></td>
                                 <td><?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['notas']); ?></td>
                                 <td>
                                     <a href="gestionEmpresa.php?id=<?php echo urlencode($empresa['id']); ?>" class="btn btn-sm btn-primary">Editar</a>
-                                    <form method="POST" style="display: inline;">
+                                    <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta empresa?');">
                                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($empresa['id']); ?>">
-                                        <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar esta empresa?');">Eliminar</button>
+                                        <button type="submit" name="delete" class="btn btn-sm btn-danger">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="9" class="text-center">No hay empresas registradas.</td>
+                            <td colspan="12" class="text-center">No hay empresas registradas.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -103,11 +109,6 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
     </div>
 
     <?php $mysqli->close(); ?>
-
-    <script type="module" src="empresas.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <?php if ($mostrar_popup): ?>
         <div id="popup" class="modal fade" tabindex="-1" role="dialog">
@@ -149,6 +150,10 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         </script>
     <?php endif; ?>
 
+    <script type="module" src="empresas.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
