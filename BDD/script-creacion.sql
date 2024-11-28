@@ -75,9 +75,9 @@ VALUES
 /*Profesores*/
 INSERT INTO profesores (dni_nie, contrasenya, nombre, apellido1, apellido2, telefono, email)
 VALUES 
-('45678Y', aes_encrypt('1234', 'llave'), 'David', 'Schmidt', 'Fisher', '618223876', 'davidschmidt@gmail.com'),
-('56789Z', aes_encrypt('1234', 'llave'), 'Zoe', 'Ramirez', 'Gea', '678516294', 'zoeramirez@gmail.com'),
-('67891Q', aes_encrypt('1234', 'llave'), 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com');
+('45678Y', '1234', 'David', 'Schmidt', 'Fisher', '618223876', 'davidschmidt@gmail.com'),
+('56789Z', '1234', 'Zoe', 'Ramirez', 'Gea', '678516294', 'zoeramirez@gmail.com'),
+('67891Q', '1234', 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com');
 
 /*Alumnos*/
 INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso)
