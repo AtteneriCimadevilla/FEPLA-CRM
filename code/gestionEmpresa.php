@@ -1,48 +1,22 @@
 <?php
 require 'conexion.php';
-// Variables para manejar errores y mensajes de éxito
-$errores = [];
-$exito = "";
 
-// Verificar si el formulario se ha enviado
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recoger los datos del formulario
-    $cif = trim($_POST['cif']);
-    $nombre_comercial = trim($_POST['nombre_comercial']);
-    $nombre_empresa = trim($_POST['nombre_empresa']);
-    $telefono_empresa = trim($_POST['telefono_empresa']);
-    $nombre_contacto = trim($_POST['nombre_contacto']);
-    $telefono_contacto = trim($_POST['telefono_contacto']);
-    $email_contacto = trim($_POST['email_contacto']);
-    $direccion = trim($_POST['direccion']);
-    $interesado = isset($_POST['interesado']) ? 1 : 0;
-    $cantidad_alumnos = trim($_POST['cantidad_alumnos']);
-    $notas = trim($_POST['notas']);
+// Consulta SQL para obtener los datos de la tabla "empresas" con los apellidos combinados
+$query = "SELECT cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, email_contacto, interesado, cantidad_alumnos
+          FROM empresas ";
+$result = $mysqli->query($query);
 
-    // Validaciones básicas
-    if (empty($cif) || strlen($cif) != 9) {
-        $errores[] = "El CIF debe tener 9 caracteres.";
-    }
-    if (empty($nombre_comercial)) {
-        $errores[] = "El nombre comercial es obligatorio.";
-    }
-    if (!empty($email_contacto) && !filter_var($email_contacto, FILTER_VALIDATE_EMAIL)) {
-        $errores[] = "El email de contacto no es válido.";
-    }
-
-    // Si no hay errores, insertar en la base de datos
-    if (empty($errores)) {
-        $stmt = $mysqli->prepare("INSERT INTO empresas (cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssiss", $cif, $nombre_comercial, $nombre_empresa, $telefono_empresa, $nombre_contacto, $telefono_contacto, $email_contacto, $direccion, $interesado, $cantidad_alumnos, $notas);
-
-        if ($stmt->execute()) {
-            $exito = "Empresa creada con éxito.";
-        } else {
-            $errores[] = "Error al insertar en la base de datos: " . $stmt->error;
-        }
-
-        $stmt->close();
-    }
+// Handle delete request
+if (isset($_POST['delete']) && isset($_POST['cif'])) {
+    $cif_to_delete = $_POST['cif'];
+    $delete_query = "DELETE FROM empresas WHERE cif = ?";
+    $stmt = $mysqli->prepare($delete_query);
+    $stmt->bind_param("s", $cif_to_delete);
+    $stmt->execute();
+    $stmt->close();
+    // Redirect to refresh the page after deletion
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
 }
 ?>
 
@@ -52,78 +26,81 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Empresa</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>FEPLA CRM Alumnos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="alumno.css"> <!-- CSS personalizado -->
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">Crear Empresa</h1>
+    <div class="container container-alumnos my-4">
+        <header class="d-flex justify-content-between align-items-center mb-3">
+            <img src="logo.png" alt="logo" style="height: 50px;">
+            <div class="busqueda">
+                <input type="text" id="searchFilter" placeholder="🔍">
+                <button id="searchButton">Filtrar</button>
+            </div>
+        </header>
 
-        <!-- Mostrar errores -->
-        <?php if (!empty($errores)): ?>
-            <div class="alert alert-danger">
-                <?php foreach ($errores as $error): ?>
-                    <p><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+        <h1 class="page-title text-center mb-4">Empresas</h1>
 
-        <!-- Mostrar mensaje de éxito -->
-        <?php if (!empty($exito)): ?>
-            <div class="alert alert-success">
-                <p><?php echo htmlspecialchars($exito); ?></p>
-            </div>
-        <?php endif; ?>
+        <!-- Add Company Button -->
+        <div class="mb-3">
+            <a href="gestionEmpresa.php" class="btn btn-primary">Añadir Empresa</a>
+        </div>
 
-        <form method="POST" action="">
-            <div class="mb-3">
-                <label for="cif" class="form-label">CIF</label>
-                <input type="text" class="form-control" id="cif" name="cif" maxlength="9">
-            </div>
-            <div class="mb-3">
-                <label for="nombre_comercial" class="form-label">Nombre Comercial</label>
-                <input type="text" class="form-control" id="nombre_comercial" name="nombre_comercial" required>
-            </div>
-            <div class="mb-3">
-                <label for="nombre_empresa" class="form-label">Nombre Empresa</label>
-                <input type="text" class="form-control" id="nombre_empresa" name="nombre_empresa">
-            </div>
-            <div class="mb-3">
-                <label for="telefono_empresa" class="form-label">Teléfono Empresa</label>
-                <input type="text" class="form-control" id="telefono_empresa" name="telefono_empresa">
-            </div>
-            <div class="mb-3">
-                <label for="nombre_contacto" class="form-label">Nombre Contacto</label>
-                <input type="text" class="form-control" id="nombre_contacto" name="nombre_contacto">
-            </div>
-            <div class="mb-3">
-                <label for="telefono_contacto" class="form-label">Teléfono Contacto</label>
-                <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto">
-            </div>
-            <div class="mb-3">
-                <label for="email_contacto" class="form-label">Email Contacto</label>
-                <input type="email" class="form-control" id="email_contacto" name="email_contacto">
-            </div>
-            <div class="mb-3">
-                <label for="direccion" class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="direccion" name="direccion">
-            </div>
-            <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="interesado" name="interesado">
-                <label for="interesado" class="form-check-label">¿Está interesado?</label>
-            </div>
-            <div class="mb-3">
-                <label for="cantidad_alumnos" class="form-label">Cantidad de Alumnos</label>
-                <input type="number" class="form-control" id="cantidad_alumnos" name="cantidad_alumnos" min="0">
-            </div>
-            <div class="mb-3">
-                <label for="notas" class="form-label">Notas</label>
-                <textarea class="form-control" id="notas" name="notas"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Crear Empresa</button>
-        </form>
+        <!-- Tabla responsive de alumnos -->
+        <div class="table-responsive">
+            <table class="table table-hover table-alumnos">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>CIF</th>
+                        <th>Nombre Comercial</th>
+                        <th>Nombre Empresa</th>
+                        <th>Telefono</th>
+                        <th>Nombre Contacto</th>
+                        <th>Email Contacto</th>
+                        <th>Interesado</th>
+                        <th>Cantidad Alumnos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($result->num_rows > 0): ?>
+                        <?php while ($empresa = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($empresa['cif']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['nombre_comercial']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['nombre_empresa']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['telefono_empresa']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['nombre_contacto']); ?></td>
+                                <td><?php echo htmlspecialchars($empresa['email_contacto']); ?></td>
+                                <td><?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></td>
+                                <td><?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></td>
+                                <td>
+                                    <a href="gestionEmpresa.php?cif=<?php echo urlencode($empresa['cif']); ?>" class="btn btn-sm btn-primary">Editar</a>
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="cif" value="<?php echo htmlspecialchars($empresa['cif']); ?>">
+                                        <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar esta empresa?');">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="9" class="text-center">No hay empresas registradas.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <?php $mysqli->close(); ?>
+
+    <script type="module" src="empresas.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
