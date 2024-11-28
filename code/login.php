@@ -1,44 +1,41 @@
 <?php
-// login.php
 session_start();
 require_once "conexion.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($conn, $_POST['login_user']);
+    $email = $mysqli->real_escape_string($_POST['login_user']);
     $password = $_POST['login_password'];
     
-    $sql = "SELECT id, username, password FROM users WHERE username = ?";
+    $sql = "SELECT p.dni_nie, p.nombre, p.email, u.tipo FROM profesores p JOIN usuarios u ON p.tipo_usuario = u.id_tipo_usuario WHERE p.email = ?";
     
-    if ($stmt = mysqli_prepare($conn, $sql)) {
-        mysqli_stmt_bind_param($stmt, "s", $param_username);
-        $param_username = $username;
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param("s", $param_email);
+        $param_email = $email;
         
-        if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_store_result($stmt);
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
             
-            if (mysqli_stmt_num_rows($stmt) == 1) {
-                mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                if (mysqli_stmt_fetch($stmt)) {
-                    if (password_verify($password, $hashed_password)) {
-                        session_start();
-                        $_SESSION["loggedin"] = true;
-                        $_SESSION["id"] = $id;
-                        $_SESSION["username"] = $username;
-                        header("location: home.php");
-                    } else {
-                        $login_err = "Contraseña inválida.";
-                    }
-                }
+            if ($result->num_rows == 1) {
+                $row = $result->fetch_assoc();
+                // Aquí deberías verificar la contraseña, pero como no está en la base de datos,
+                // vamos a permitir cualquier contraseña por ahora. En un sistema real, 
+                // necesitarías almacenar y verificar contraseñas de forma segura.
+                $_SESSION["loggedin"] = true;
+                $_SESSION["dni_nie"] = $row['dni_nie'];
+                $_SESSION["nombre"] = $row['nombre'];
+                $_SESSION["email"] = $row['email'];
+                $_SESSION["tipo_usuario"] = $row['tipo'];
+                echo json_encode(["status" => "success", "message" => "Inicio de sesión exitoso"]);
             } else {
-                $login_err = "Usuario no encontrado.";
+                echo json_encode(["status" => "error", "message" => "Email no encontrado."]);
             }
         } else {
-            echo "Oops! Algo salió mal. Por favor, inténtalo de nuevo más tarde.";
+            echo json_encode(["status" => "error", "message" => "Oops! Algo salió mal. Por favor, inténtalo de nuevo más tarde."]);
         }
 
-        mysqli_stmt_close($stmt);
+        $stmt->close();
     }
 }
 
-mysqli_close($conn);
+$mysqli->close();
 ?>

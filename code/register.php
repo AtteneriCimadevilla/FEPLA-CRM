@@ -1,44 +1,49 @@
 <?php
-// login.php
-session_start();
 require_once "conexion.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($conn, $_POST['login_user']);
-    $password = $_POST['login_password'];
+    $dni_nie = $mysqli->real_escape_string($_POST['register_dni']);
+    $nombre = $mysqli->real_escape_string($_POST['register_nombre']);
+    $apellido1 = $mysqli->real_escape_string($_POST['register_apellido1']);
+    $apellido2 = $mysqli->real_escape_string($_POST['register_apellido2']);
+    $email = $mysqli->real_escape_string($_POST['register_email']);
+    $telefono = $mysqli->real_escape_string($_POST['register_telefono']);
     
-    $sql = "SELECT id, username, password FROM users WHERE username = ?";
+    // Verificar si el email ya existe
+    $check_email = "SELECT * FROM profesores WHERE email = ?";
+    if ($stmt = $mysqli->prepare($check_email)) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            echo json_encode(["status" => "error", "message" => "Este email ya está registrado."]);
+            exit();
+        }
+        $stmt->close();
+    }
+
+    // Asumimos que todos los nuevos registros son de tipo 'user'
+    $sql_tipo_usuario = "SELECT id_tipo_usuario FROM usuarios WHERE tipo = 'user'";
+    $result = $mysqli->query($sql_tipo_usuario);
+    $row = $result->fetch_assoc();
+    $tipo_usuario = $row['id_tipo_usuario'];
+
+    $sql = "INSERT INTO profesores (dni_nie, nombre, apellido1, apellido2, telefono, email, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)";
     
-    if ($stmt = mysqli_prepare($conn, $sql)) {
-        mysqli_stmt_bind_param($stmt, "s", $param_username);
-        $param_username = $username;
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param("ssssssi", $dni_nie, $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario);
         
-        if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_store_result($stmt);
-            
-            if (mysqli_stmt_num_rows($stmt) == 1) {
-                mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                if (mysqli_stmt_fetch($stmt)) {
-                    if (password_verify($password, $hashed_password)) {
-                        session_start();
-                        $_SESSION["loggedin"] = true;
-                        $_SESSION["id"] = $id;
-                        $_SESSION["username"] = $username;
-                        header("location: home.php");
-                    } else {
-                        $login_err = "Contraseña inválida.";
-                    }
-                }
-            } else {
-                $login_err = "Usuario no encontrado.";
-            }
+        if ($stmt->execute()) {
+            echo json_encode(["status" => "success", "message" => "Registro exitoso. Ahora puedes iniciar sesión."]);
         } else {
-            echo "Oops! Algo salió mal. Por favor, inténtalo de nuevo más tarde.";
+            echo json_encode(["status" => "error", "message" => "Error en el registro: " . $mysqli->error]);
         }
 
-        mysqli_stmt_close($stmt);
+        $stmt->close();
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error en la preparación de la consulta: " . $mysqli->error]);
     }
 }
 
-mysqli_close($conn);
+$mysqli->close();
 ?>
