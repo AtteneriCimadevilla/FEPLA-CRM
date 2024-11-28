@@ -1,32 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CRM - Inicio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header class="header">
-        <a href="home.html" class="home-link">Inicio</a>
         <img src="logo.png" alt="Logo" class="logo">
+        <nav class="navbar">
+            <a href="home.html" class="nav-link">Inicio</a>
+            <a href="listado_empresas.html" class="nav-link">Empresas</a>
+            <a href="listado_alumnos.html" class="nav-link">Alumnos</a>
+        </nav>
         <img src="profile.png" alt="Perfil" class="profile-icon">
     </header>
 
     <main class="main">
-        <section class="search-section">
-            <div class="input-group">
-                <input type="text" placeholder="Buscar empresa...">
-                <button class="btn-add">Agregar Empresa</button>
+        <section class="overview">
+            <h1>Resumen General</h1>
+            <div class="stats">
+                <div class="stat-card">
+                    <h2>35</h2>
+                    <p>Empresas</p>
+                </div>
+                <div class="stat-card">
+                    <h2>78</h2>
+                    <p>Alumnos</p>
+                </div>
+                <div class="stat-card">
+                    <h2>12</h2>
+                    <p>Últimos Cambios</p>
+                </div>
             </div>
+        </section>
 
-            <div class="input-group">
-                <input type="text" placeholder="Buscar alumno...">
-                <button class="btn-add">Agregar Alumno</button>
+        <section class="quick-actions">
+            <h2>Acceso Rápido</h2>
+            <div class="action-buttons">
+                <button onclick="location.href='agregar_empresa.html'" class="btn-action">Agregar Empresa</button>
+                <button onclick="location.href='agregar_alumno.html'" class="btn-action">Agregar Alumno</button>
             </div>
+        </section>
+
+        <section class="recent-activities">
+            <h2>Actividades Recientes</h2>
+            <ul class="activity-list">
+                <li>Empresa "Tech Solutions" añadida</li>
+                <li>Alumno "Ana López" actualizado</li>
+                <li>Empresa "Innovatech" eliminada</li>
+                <li>Alumno "Carlos García" añadido</li>
+            </ul>
         </section>
     </main>
 </body>
-
 </html>
