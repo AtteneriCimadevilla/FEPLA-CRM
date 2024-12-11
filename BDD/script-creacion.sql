@@ -18,8 +18,7 @@ CREATE TABLE empresas (
 );
 
 CREATE TABLE usuarios (
-    id_tipo_usuario TINYINT AUTO_INCREMENT PRIMARY KEY,
-    tipo ENUM('root', 'admin', 'user')
+    tipo ENUM('root', 'admin', 'user') PRIMARY KEY
 );
 
 CREATE TABLE profesores(
@@ -30,8 +29,8 @@ CREATE TABLE profesores(
 	apellido2 varchar(100),
 	telefono varchar(50),
 	email varchar(255),
-	tipo_usuario TINYINT,
-	FOREIGN KEY (tipo_usuario) REFERENCES usuarios(id_tipo_usuario)
+	tipo_usuario ENUM('root', 'admin', 'user') DEFAULT 'user',
+	FOREIGN KEY (tipo_usuario) REFERENCES usuarios(tipo)
 );
 
 CREATE TABLE alumnos (
@@ -75,9 +74,9 @@ VALUES
 /*Profesores*/
 INSERT INTO profesores (dni_nie, contrasenya, nombre, apellido1, apellido2, telefono, email)
 VALUES 
-('45678Y', '1234', 'David', 'Schmidt', 'Fisher', '618223876', 'davidschmidt@gmail.com'),
-('56789Z', '1234', 'Zoe', 'Ramirez', 'Gea', '678516294', 'zoeramirez@gmail.com'),
-('67891Q', '1234', 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com');
+('45678Y', '1234', 'David', 'Schmidt', 'Fisher', '618223876', 'davidschmidt@gmail.com', 'user'),
+('56789Z', '1234', 'Zoe', 'Ramirez', 'Gea', '678516294', 'zoeramirez@gmail.com', 'user'),
+('67891Q', '1234', 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com', 'user');
 
 /*Alumnos*/
 INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso)
