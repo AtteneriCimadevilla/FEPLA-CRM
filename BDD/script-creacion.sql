@@ -23,7 +23,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE profesores(
 	dni_nie char(9) PRIMARY KEY,
-	contrasenya blob,
+	contrasenya varchar(255),
 	nombre varchar(100) not null,
 	apellido1 varchar(100) not null,
 	apellido2 varchar(100),

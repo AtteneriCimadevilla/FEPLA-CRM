@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = 'localhost:3306';
 $user = 'root';
 $password = '1234';
 $database = 'fepla_crm';
