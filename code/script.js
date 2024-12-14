@@ -24,7 +24,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "login.php",
+            url: "conexion.php",
             data: $(this).serialize(),
             dataType: 'json',
             success: function(response) {

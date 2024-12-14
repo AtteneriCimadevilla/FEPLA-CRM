@@ -6,8 +6,7 @@
     <title>CRM-FEPLA</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="estilos.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="script.js" defer></script>
+
 </head>
 <body>
     <header>
@@ -53,12 +52,16 @@
                             <input type="text" class="form-control" id="register_apellido2" name="register_apellido2">
                         </div>
                         <div class="mb-3">
+                            <label for="register_telefono" class="form-label">Teléfono:</label>
+                            <input type="tel" class="form-control" id="register_telefono" name="register_telefono">
+                        </div>
+                        <div class="mb-3">
                             <label for="register_email" class="form-label">Email:</label>
                             <input type="email" class="form-control" id="register_email" name="register_email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="register_telefono" class="form-label">Teléfono:</label>
-                            <input type="tel" class="form-control" id="register_telefono" name="register_telefono">
+                            <label for="register_password" class="form-label">Contraseña:</label>
+                            <input type="password" class="form-control" id="register_password" name="register_password" required>
                         </div>
                         <button type="submit" class="btn btn-success">Registrarse como Profesor</button>
                     </form>
@@ -67,5 +70,7 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
