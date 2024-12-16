@@ -9,7 +9,7 @@ if (isset($_SESSION['alumno_actualizado']) && $_SESSION['alumno_actualizado']) {
 }
 
 // Consulta SQL para obtener los datos de la tabla "alumnos"
-$query = "SELECT dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso
+$query = "SELECT dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, clase
           FROM alumnos";
 $result = $mysqli->query($query);
 
@@ -68,7 +68,7 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                         <th>Email</th>
                         <th>Dirección</th>
                         <th>Vehículo</th>
-                        <th>Curso</th>
+                        <th>Clase</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -84,7 +84,7 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <td><?php echo htmlspecialchars($alumno['email']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['vehiculo']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['curso']); ?></td>
+                                <td><?php echo htmlspecialchars($alumno['clase']); ?></td>
                                 <td>
                                     <a href="gestionAlumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este alumno?');">
