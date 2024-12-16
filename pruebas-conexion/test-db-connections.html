@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connection Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .result {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Database Connection Tests</h1>
+    <button id="testButton">Run Tests</button>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('testButton').addEventListener('click', function () {
+            fetch('test-db-connections.php')
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+                    for (const [config, result] of Object.entries(data)) {
+                        const resultDiv = document.createElement('div');
+                        resultDiv.className = `result ${result.status}`;
+                        resultDiv.innerHTML = `
+                            <h3>Configuration ${config.split('_')[1]}</h3>
+                            <p><strong>Status:</strong> ${result.status}</p>
+                            <p><strong>Message:</strong> ${result.message}</p>
+                        `;
+                        resultsDiv.appendChild(resultDiv);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('results').innerHTML = `<p>An error occurred: ${error.message}</p>`;
+                });
+        });
+    </script>
+</body>
+
+</html>
