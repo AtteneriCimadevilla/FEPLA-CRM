@@ -43,13 +43,31 @@ CREATE TABLE alumnos (
 	email VARCHAR(255),
 	direccion VARCHAR(255),
 	vehiculo ENUM('Si','No'),
-	curso CHAR(6),
+	clase enum('2º DAM', '1º DAM', '2º SMR', '1º SMR'),
 	dni_tutor CHAR(9),
 	id_empresa int UNSIGNED,
 	FOREIGN KEY (id_empresa) REFERENCES empresas(id),
 	FOREIGN KEY (dni_tutor) REFERENCES profesores(dni_nie) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+CREATE TABLE formaciones (
+	dni_nie_alumno char(9),
+	id_empresa int UNSIGNED,
+	curso enum('24/25', '25/26', '26/27'),
+	FOREIGN KEY (dni_nie_alumno) REFERENCES alumnos(dni_nie) ON UPDATE CASCADE,
+	FOREIGN KEY (id_empresa) REFERENCES empresas(id) ON UPDATE CASCADE,
+	PRIMARY KEY (dni_nie_alumno, id_empresa)
+);
+
+CREATE TABLE registro (
+	fecha date NOT NULL,
+	id_empresa int UNSIGNED,
+	dni_nie_alumno char(9),
+	texto_registro varchar(255),
+	FOREIGN KEY (id_empresa) REFERENCES empresas(id) ON UPDATE CASCADE,
+	FOREIGN KEY (dni_nie_alumno) REFERENCES alumnos(dni_nie) ON UPDATE CASCADE,
+	PRIMARY KEY (fecha, id_empresa, dni_nie_alumno)
+);
 
 /*Empresas*/
 INSERT INTO empresas (cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas) VALUES
@@ -79,20 +97,20 @@ VALUES
 ('67891123Q', '12345678', 'Alfredo', 'Stiedemann', 'Morissette', '950896725', 'alfredomorissete@gmail.com');
 
 /*Alumnos*/
-INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso)
+INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, clase)
 VALUES 
-('1234A', 'Juan', 'Vega', 'Saenz', '2000-08-08', '618253876', 'juanvegasaenz@gmail.com', 'C/Mercurio', 'Si', '2ºDAM'),
-('23456S', 'Salvador', 'Perez', 'Sanchez', '2003-01-08', '950254837', 'salvadorperez@gmail.com', 'C/Real del barrio alto', 'No', '2ºDAM'),
-('34567H', 'Helen', 'Koss', NULL, '1999-05-06', '628349590', 'Helenkoos@gmail.com', 'C/Estrella fugaz', 'Si', '2ºDAM'),
-('45678J', 'María', 'García', 'Lopez', '2002-11-10', '612345678', 'mariagarcia@gmail.com', 'C/Luna Nueva', 'No', '2ºDAM'),
-('56789K', 'Pablo', 'Hernández', 'Martínez', '2001-04-22', '613245678', 'pablohernandez@gmail.com', 'C/Arco Iris', 'Si', '2ºDAM'),
-('67890L', 'Lucía', 'Ruiz', 'González', '2000-07-15', '614345678', 'luciaruiz@gmail.com', 'C/Norte', 'No', '2ºDAM'),
-('78901M', 'Alejandro', 'Díaz', 'Torres', '2003-09-05', '615445678', 'alejandrodiaz@gmail.com', 'C/Campo Verde', 'Si', '2ºDAM'),
-('89012N', 'Sara', 'Moreno', 'Pérez', '1999-03-18', '616545678', 'saramoreno@gmail.com', 'C/Sol Naciente', 'No', '2ºDAM'),
-('90123O', 'Miguel', 'Santos', 'Romero', '2002-12-24', '617645678', 'miguelsantos@gmail.com', 'C/Océano', 'Si', '2ºDAM'),
-('01234P', 'Carmen', 'Lopez', 'Ramos', '2001-05-30', '618745678', 'carmenlopez@gmail.com', 'C/Lago Azul', 'No', '2ºDAM'),
-('12345Q', 'Raúl', 'Jiménez', 'Serrano', '2000-10-17', '619845678', 'rauljimenez@gmail.com', 'C/Cerro Alto', 'Si', '2ºDAM'),
-('23456R', 'Ana', 'Martínez', 'Ortega', '2003-02-28', '620945678', 'anamartinez@gmail.com', 'C/Los Pinos', 'No', '2ºDAM'),
-('34567S', 'David', 'Gómez', 'Gil', '1999-06-09', '621045678', 'davidgomez@gmail.com', 'C/Roca', 'Si', '2ºDAM'),
-('45678T', 'Elena', 'Ramírez', 'Flores', '2001-08-13', '622145678', 'elenaramirez@gmail.com', 'C/Puesta del Sol', 'No', '2ºDAM'),
-('56789U', 'Jorge', 'Castro', 'Ibáñez', '2002-07-21', '623245678', 'jorgecastro@gmail.com', 'C/Llano Verde', 'Si', '2ºDAM');
+('1234A', 'Juan', 'Vega', 'Saenz', '2000-08-08', '618253876', 'juanvegasaenz@gmail.com', 'C/Mercurio', 'Si', '2º DAM'),
+('23456S', 'Salvador', 'Perez', 'Sanchez', '2003-01-08', '950254837', 'salvadorperez@gmail.com', 'C/Real del barrio alto', 'No', '2º DAM'),
+('34567H', 'Helen', 'Koss', NULL, '1999-05-06', '628349590', 'Helenkoos@gmail.com', 'C/Estrella fugaz', 'Si', '2º DAM'),
+('45678J', 'María', 'García', 'Lopez', '2002-11-10', '612345678', 'mariagarcia@gmail.com', 'C/Luna Nueva', 'No', '2º DAM'),
+('56789K', 'Pablo', 'Hernández', 'Martínez', '2001-04-22', '613245678', 'pablohernandez@gmail.com', 'C/Arco Iris', 'Si', '2º DAM'),
+('67890L', 'Lucía', 'Ruiz', 'González', '2000-07-15', '614345678', 'luciaruiz@gmail.com', 'C/Norte', 'No', '2º DAM'),
+('78901M', 'Alejandro', 'Díaz', 'Torres', '2003-09-05', '615445678', 'alejandrodiaz@gmail.com', 'C/Campo Verde', 'Si', '2º DAM'),
+('89012N', 'Sara', 'Moreno', 'Pérez', '1999-03-18', '616545678', 'saramoreno@gmail.com', 'C/Sol Naciente', 'No', '2º DAM'),
+('90123O', 'Miguel', 'Santos', 'Romero', '2002-12-24', '617645678', 'miguelsantos@gmail.com', 'C/Océano', 'Si', '2º DAM'),
+('01234P', 'Carmen', 'Lopez', 'Ramos', '2001-05-30', '618745678', 'carmenlopez@gmail.com', 'C/Lago Azul', 'No', '2º DAM'),
+('12345Q', 'Raúl', 'Jiménez', 'Serrano', '2000-10-17', '619845678', 'rauljimenez@gmail.com', 'C/Cerro Alto', 'Si', '2º DAM'),
+('23456R', 'Ana', 'Martínez', 'Ortega', '2003-02-28', '620945678', 'anamartinez@gmail.com', 'C/Los Pinos', 'No', '2º DAM'),
+('34567S', 'David', 'Gómez', 'Gil', '1999-06-09', '621045678', 'davidgomez@gmail.com', 'C/Roca', 'Si', '2º DAM'),
+('45678T', 'Elena', 'Ramírez', 'Flores', '2001-08-13', '622145678', 'elenaramirez@gmail.com', 'C/Puesta del Sol', 'No', '2º DAM'),
+('56789U', 'Jorge', 'Castro', 'Ibáñez', '2002-07-21', '623245678', 'jorgecastro@gmail.com', 'C/Llano Verde', 'Si', '2º DAM');
