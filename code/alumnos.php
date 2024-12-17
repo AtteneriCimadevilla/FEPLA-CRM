@@ -19,7 +19,8 @@ $query = "SELECT
     a.direccion AS direccion, 
     a.vehiculo AS vehiculo, 
     a.clase AS clase, 
-    e.nombre_comercial AS empresa
+    e.nombre_comercial AS empresa,
+    f.curso AS curso
 FROM 
     alumnos a
 LEFT JOIN 
@@ -28,13 +29,13 @@ LEFT JOIN
     empresas e ON f.id_empresa = e.id;";
 $result = $mysqli->query($query);
 
-    $query_empresas = "SELECT id, nombre_comercial FROM empresas";
-    $result_empresas = $mysqli->query($query_empresas);
+$query_empresas = "SELECT id, nombre_comercial FROM empresas";
+$result_empresas = $mysqli->query($query_empresas);
 
-    $empresas_options = '';
-    while ($row = $result_empresas->fetch_assoc()) {
-        $empresas_options .= '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['nombre_comercial']) . '</option>';
-    }
+$empresas_options = '';
+while ($row = $result_empresas->fetch_assoc()) {
+    $empresas_options .= '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['nombre_comercial']) . '</option>';
+}
 
 // Handle delete request
 if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
@@ -59,6 +60,36 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
     <title>FEPLA CRM Alumnos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="alumno.css"> <!-- CSS personalizado -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -109,27 +140,14 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <td><?php echo htmlspecialchars($alumno['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['vehiculo']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['clase']); ?></td>
+                                <!-- Botón para editar formación -->
                                 <td>
-                                    <?php
-                                    if ($alumno['empresa'] === null) {
-                                        // Fetch empresas from the database
-                                        $query_empresas = "SELECT id, nombre_comercial FROM empresas";
-                                        $result_empresas = mysqli_query($mysqli, $query_empresas);
-
-                                        // Generate the drop-down menu
-                                        echo '<form method="POST" action="insert_empresa.php">';
-                                        echo '<select name="empresa" id="empresa">';
-                                        echo '<option value="">Selecciona una Empresa</option>';
-                                        echo $empresas_options; // Imprime todas las opciones de una sola vez
-                                        echo '</select>';
-                                        echo '<input type="hidden" name="dni_nie_alumno" value="' . $alumno['dni_nie'] . '">';  // Hidden field to pass the alumno's ID
-                                        echo '<input type="submit" value="Save">';
-                                        echo '</form>';
-                                    } else {
-                                        // Display the current empresa name if it's assigned
-                                        echo htmlspecialchars($alumno['empresa']);
-                                    }
-                                    ?>
+                                    <?php if ($alumno['empresa']): ?>
+                                        <span><?php echo htmlspecialchars($alumno['empresa']); ?></span>
+                                        <button class="btn-edit" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Editar</button>
+                                    <?php else: ?>
+                                        <button class="btn-create" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Crear formación</button>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <a href="gestionAlumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
@@ -147,6 +165,31 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                     <?php endif; ?>
                 </tbody>
             </table>
+
+            <!-- MODAL/POPUP PARA ASIGNAR FORMACIONES -->
+            <div id="modalFormacion" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form id="formFormacion" method="post" action="formacion_handler.php">
+                        <input type="hidden" name="dni_nie" id="dni_nie">
+                        <label for="empresa">Empresa:</label>
+                        <select name="empresa" id="empresa">
+                            <option value="">Seleccionar empresa</option>
+                            <?php echo $empresas_options; ?> <!-- Echo the options properly -->
+                        </select>
+                        <label for="curso">Curso:</label>
+                        <select name="curso" id="curso">
+                            <option value="24/25">24/25</option>
+                            <option value="25/26">25/26</option>
+                            <option value="26/27">26/27</option>
+                        </select>
+                        <button type="submit" name="action" value="save">Guardar</button>
+                        <button type="submit" name="action" value="delete">Eliminar asociación</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MODAL/POPUP PARA ASIGNAR FORMACIONES -->
         </div>
     </div>
 
@@ -169,27 +212,6 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                 </div>
             </div>
         </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var popupElement = document.getElementById('popup');
-                var popup = new bootstrap.Modal(popupElement);
-                popup.show();
-
-                // Handle closing the modal
-                popupElement.addEventListener('hidden.bs.modal', function() {
-                    // Remove the modal from the DOM after it's hidden
-                    popupElement.parentNode.removeChild(popupElement);
-                });
-
-                // Add event listeners to close buttons
-                var closeButtons = popupElement.querySelectorAll('[data-bs-dismiss="modal"]');
-                closeButtons.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        popup.hide();
-                    });
-                });
-            });
-        </script>
     <?php endif; ?>
 
     <script type="module" src="alumnos.js"></script>
