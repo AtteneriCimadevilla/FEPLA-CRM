@@ -16,9 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the query and check if successful
     if ($mysqli->query($query)) {
-        echo "Formación asociada correctamente.";
+        echo "Formación creada correctamente.";
     } else {
-        echo "Error: " . $mysqli->error;
+        echo "Error al asociar la formación: " . $mysqli->error;
     }
 }
 ?>

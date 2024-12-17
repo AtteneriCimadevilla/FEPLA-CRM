@@ -28,6 +28,14 @@ LEFT JOIN
     empresas e ON f.id_empresa = e.id;";
 $result = $mysqli->query($query);
 
+    $query_empresas = "SELECT id, nombre_comercial FROM empresas";
+    $result_empresas = $mysqli->query($query_empresas);
+
+    $empresas_options = '';
+    while ($row = $result_empresas->fetch_assoc()) {
+        $empresas_options .= '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['nombre_comercial']) . '</option>';
+    }
+
 // Handle delete request
 if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
     $dni_nie_to_delete = $_POST['dni_nie'];
@@ -111,10 +119,8 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                         // Generate the drop-down menu
                                         echo '<form method="POST" action="insert_empresa.php">';
                                         echo '<select name="empresa" id="empresa">';
-                                        echo '<option value="">Select an Empresa</option>';
-                                        while ($row = mysqli_fetch_assoc($result_empresas)) {  // Use $result_empresas here
-                                            echo '<option value="' . $row['id'] . '">' . $row['nombre_comercial'] . '</option>';
-                                        }
+                                        echo '<option value="">Selecciona una Empresa</option>';
+                                        echo $empresas_options; // Imprime todas las opciones de una sola vez
                                         echo '</select>';
                                         echo '<input type="hidden" name="dni_nie_alumno" value="' . $alumno['dni_nie'] . '">';  // Hidden field to pass the alumno's ID
                                         echo '<input type="submit" value="Save">';
