@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+[2024-12-16 16:35:11] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-16 16:35:11] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-17 23:58:52] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-17 23:58:52] Login error: Login successful for email: davidschmidt@gmail.com
+=======
 [2024-12-16 17:05:31] Login error: Attempting login for email: zoeramirez@gmail.com
 [2024-12-16 17:05:31] Login error: Login successful for email: zoeramirez@gmail.com
 [2024-12-17 01:56:06] Login error: Attempting login for email: zoeramirez@gmail.com
@@ -8,3 +14,4 @@
 [2024-12-17 15:31:06] Login error: Incorrect password for email: zoeramirez@gmail.com
 [2024-12-17 15:32:32] Login error: Attempting login for email: zoeramirez@gmail.com
 [2024-12-17 15:32:32] Login error: Login successful for email: zoeramirez@gmail.com
+>>>>>>> 0750e502d26e1ed964443256302d6361b089731a
