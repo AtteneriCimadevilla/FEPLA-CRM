@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $direccion = trim($_POST['direccion']);
     $vehiculo = $_POST['vehiculo'];
-    $curso = trim($_POST['curso']);
+    $clase = trim($_POST['clase']);
 
     // Validaciones básicas
     if (empty($dni_nie) || strlen($dni_nie) != 9) {
@@ -53,16 +53,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if DNI/NIE has changed
             if ($dni_nie != $_GET['dni_nie']) {
                 // DNI/NIE has changed, we need to update it
-                $stmt = $mysqli->prepare("UPDATE alumnos SET dni_nie=?, nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, curso=? WHERE dni_nie=?");
-                $stmt->bind_param("sssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $curso, $_GET['dni_nie']);
+                $stmt = $mysqli->prepare("UPDATE alumnos SET dni_nie=?, nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, clase=? WHERE dni_nie=?");
+                $stmt->bind_param("sssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $clase, $_GET['dni_nie']);
             } else {
                 // DNI/NIE hasn't changed, update other fields
-                $stmt = $mysqli->prepare("UPDATE alumnos SET nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, curso=? WHERE dni_nie=?");
-                $stmt->bind_param("ssssssssss", $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $curso, $dni_nie);
+                $stmt = $mysqli->prepare("UPDATE alumnos SET nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, clase=? WHERE dni_nie=?");
+                $stmt->bind_param("ssssssssss", $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $clase, $dni_nie);
             }
         } else {
-            $stmt = $mysqli->prepare("INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $curso);
+            $stmt = $mysqli->prepare("INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, clase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $clase);
         }
 
         if ($stmt->execute()) {
@@ -146,8 +146,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <div class="mb-3">
-                <label for="curso" class="form-label">Curso</label>
-                <input type="text" class="form-control" id="curso" name="curso" value="<?php echo $editing ? htmlspecialchars($alumno['curso']) : ''; ?>">
+                <label for="clase" class="form-label">Clase</label>
+                <select class="form-select" id="clase" name="clase" required>
+                    <option value="2º DAM" <?php echo ($editing && $alumno['clase'] == '2º DAM') ? 'selected' : ''; ?>>2º DAM</option>
+                    <option value="1º DAM" <?php echo ($editing && $alumno['clase'] == '1º DAM') ? 'selected' : ''; ?>>1º DAM</option>
+                    <option value="2º SMR" <?php echo ($editing && $alumno['clase'] == '2º SMR') ? 'selected' : ''; ?>>2º SMR</option>
+                    <option value="1º SMR" <?php echo ($editing && $alumno['clase'] == '1º SMR') ? 'selected' : ''; ?>>1º SMR</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary"><?php echo $editing ? 'Actualizar' : 'Crear'; ?> Alumno</button>
             <a href="alumnos.php" class="btn btn-secondary">Volver</a>
