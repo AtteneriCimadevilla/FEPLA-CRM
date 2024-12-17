@@ -101,7 +101,30 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <td><?php echo htmlspecialchars($alumno['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['vehiculo']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['clase']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['empresa']); ?></td>
+                                <td>
+                                    <?php
+                                    if ($alumno['empresa'] === null) {
+                                        // Fetch empresas from the database
+                                        $query_empresas = "SELECT id, nombre_comercial FROM empresas";
+                                        $result_empresas = mysqli_query($mysqli, $query_empresas);
+
+                                        // Generate the drop-down menu
+                                        echo '<form method="POST" action="insert_empresa.php">';
+                                        echo '<select name="empresa" id="empresa">';
+                                        echo '<option value="">Select an Empresa</option>';
+                                        while ($row = mysqli_fetch_assoc($result_empresas)) {  // Use $result_empresas here
+                                            echo '<option value="' . $row['id'] . '">' . $row['nombre_comercial'] . '</option>';
+                                        }
+                                        echo '</select>';
+                                        echo '<input type="hidden" name="dni_nie_alumno" value="' . $alumno['dni_nie'] . '">';  // Hidden field to pass the alumno's ID
+                                        echo '<input type="submit" value="Save">';
+                                        echo '</form>';
+                                    } else {
+                                        // Display the current empresa name if it's assigned
+                                        echo htmlspecialchars($alumno['empresa']);
+                                    }
+                                    ?>
+                                </td>
                                 <td>
                                     <a href="gestionAlumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este alumno?');">
