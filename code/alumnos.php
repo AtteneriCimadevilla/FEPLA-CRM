@@ -9,8 +9,23 @@ if (isset($_SESSION['alumno_actualizado']) && $_SESSION['alumno_actualizado']) {
 }
 
 // Consulta SQL para obtener los datos de la tabla "alumnos"
-$query = "SELECT dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, clase
-          FROM alumnos";
+$query = "SELECT 
+    a.dni_nie AS dni_nie, 
+    a.nombre AS nombre, 
+    CONCAT_WS(' ', a.apellido1, a.apellido2) AS apellidos,
+    a.fecha_nacimiento AS fecha_nacimiento, 
+    a.telefono AS telefono, 
+    a.email AS email, 
+    a.direccion AS direccion, 
+    a.vehiculo AS vehiculo, 
+    a.clase AS clase, 
+    e.nombre_comercial AS empresa
+FROM 
+    alumnos a
+LEFT JOIN 
+    formaciones f ON a.dni_nie = f.dni_nie_alumno
+LEFT JOIN 
+    empresas e ON f.id_empresa = e.id;";
 $result = $mysqli->query($query);
 
 // Handle delete request
@@ -63,12 +78,13 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                         <th>DNI/NIE</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
-                        <th>Fecha Nacimiento</th>
+                        <th>Fecha de nacimiento</th>
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Dirección</th>
                         <th>Vehículo</th>
                         <th>Clase</th>
+                        <th>Empresa asignada</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -78,13 +94,14 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                             <tr>
                                 <td><?php echo htmlspecialchars($alumno['dni_nie']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['apellido1'] . ' ' . $alumno['apellido2']); ?></td>
+                                <td><?php echo htmlspecialchars($alumno['apellidos']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['fecha_nacimiento']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['telefono']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['email']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['vehiculo']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['clase']); ?></td>
+                                <td><?php echo htmlspecialchars($alumno['empresa']); ?></td>
                                 <td>
                                     <a href="gestionAlumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este alumno?');">
