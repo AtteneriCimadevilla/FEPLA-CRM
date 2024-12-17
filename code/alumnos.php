@@ -9,9 +9,32 @@ if (isset($_SESSION['alumno_actualizado']) && $_SESSION['alumno_actualizado']) {
 }
 
 // Consulta SQL para obtener los datos de la tabla "alumnos"
-$query = "SELECT dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, curso
-          FROM alumnos";
+$query = "SELECT 
+    a.dni_nie AS dni_nie, 
+    a.nombre AS nombre, 
+    CONCAT_WS(' ', a.apellido1, a.apellido2) AS apellidos,
+    a.fecha_nacimiento AS fecha_nacimiento, 
+    a.telefono AS telefono, 
+    a.email AS email, 
+    a.direccion AS direccion, 
+    a.vehiculo AS vehiculo, 
+    a.clase AS clase, 
+    e.nombre_comercial AS empresa
+FROM 
+    alumnos a
+LEFT JOIN 
+    formaciones f ON a.dni_nie = f.dni_nie_alumno
+LEFT JOIN 
+    empresas e ON f.id_empresa = e.id;";
 $result = $mysqli->query($query);
+
+    $query_empresas = "SELECT id, nombre_comercial FROM empresas";
+    $result_empresas = $mysqli->query($query_empresas);
+
+    $empresas_options = '';
+    while ($row = $result_empresas->fetch_assoc()) {
+        $empresas_options .= '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['nombre_comercial']) . '</option>';
+    }
 
 // Handle delete request
 if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
@@ -63,12 +86,13 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                         <th>DNI/NIE</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
-                        <th>Fecha Nacimiento</th>
+                        <th>Fecha de nacimiento</th>
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Dirección</th>
                         <th>Vehículo</th>
-                        <th>Curso</th>
+                        <th>Clase</th>
+                        <th>Empresa asignada</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -78,13 +102,35 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                             <tr>
                                 <td><?php echo htmlspecialchars($alumno['dni_nie']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['apellido1'] . ' ' . $alumno['apellido2']); ?></td>
+                                <td><?php echo htmlspecialchars($alumno['apellidos']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['fecha_nacimiento']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['telefono']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['email']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['vehiculo']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['curso']); ?></td>
+                                <td><?php echo htmlspecialchars($alumno['clase']); ?></td>
+                                <td>
+                                    <?php
+                                    if ($alumno['empresa'] === null) {
+                                        // Fetch empresas from the database
+                                        $query_empresas = "SELECT id, nombre_comercial FROM empresas";
+                                        $result_empresas = mysqli_query($mysqli, $query_empresas);
+
+                                        // Generate the drop-down menu
+                                        echo '<form method="POST" action="insert_empresa.php">';
+                                        echo '<select name="empresa" id="empresa">';
+                                        echo '<option value="">Selecciona una Empresa</option>';
+                                        echo $empresas_options; // Imprime todas las opciones de una sola vez
+                                        echo '</select>';
+                                        echo '<input type="hidden" name="dni_nie_alumno" value="' . $alumno['dni_nie'] . '">';  // Hidden field to pass the alumno's ID
+                                        echo '<input type="submit" value="Save">';
+                                        echo '</form>';
+                                    } else {
+                                        // Display the current empresa name if it's assigned
+                                        echo htmlspecialchars($alumno['empresa']);
+                                    }
+                                    ?>
+                                </td>
                                 <td>
                                     <a href="gestionAlumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este alumno?');">
