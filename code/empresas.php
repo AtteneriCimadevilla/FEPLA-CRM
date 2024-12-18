@@ -60,17 +60,9 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
             <table class="table table-hover table-empresas">
                 <thead class="thead-dark">
                     <tr>
-                        <th>CIF</th>
-                        <th>Nombre Comercial</th>
-                        <th>Nombre Empresa</th>
-                        <th>Teléfono Empresa</th>
-                        <th>Nombre Contacto</th>
-                        <th>Teléfono Contacto</th>
-                        <th>Email Contacto</th>
-                        <th>Dirección</th>
-                        <th>Interesado</th>
-                        <th>Cantidad Alumnos</th>
-                        <th>Notas</th>
+                        <th>Empresa</th>
+                        <th>Contacto</th>
+                        <th>Interés en formaciones</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -78,17 +70,30 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                     <?php if ($result->num_rows > 0): ?>
                         <?php while ($empresa = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($empresa['cif']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['nombre_comercial']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['nombre_empresa']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['telefono_empresa']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['nombre_contacto']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['telefono_contacto']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['email_contacto']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['direccion']); ?></td>
-                                <td><?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></td>
-                                <td><?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></td>
-                                <td><?php echo htmlspecialchars($empresa['notas']); ?></td>
+                                <!-- Columna Empresa -->
+                                <td>
+                                    <strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?><br>
+                                    <strong>Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?><br>
+                                    <strong>Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?><br>
+                                    <strong>Teléfono:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?><br>
+                                    <strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?>
+                                </td>
+                                
+                                <!-- Columna Contacto -->
+                                <td>
+                                    <strong>Nombre:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?><br>
+                                    <strong>Teléfono:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?><br>
+                                    <strong>Email:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?>
+                                </td>
+                                
+                                <!-- Columna Interés en formaciones -->
+                                <td>
+                                    <strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?><br>
+                                    <strong>Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?><br>
+                                    <strong>Notas:</strong> <?php echo htmlspecialchars($empresa['notas']); ?>
+                                </td>
+                                
+                                <!-- Columna Acciones -->
                                 <td>
                                     <a href="gestionEmpresa.php?id=<?php echo urlencode($empresa['id']); ?>" class="btn btn-sm btn-primary">Editar</a>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta empresa?');">
@@ -100,7 +105,7 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="12" class="text-center">No hay empresas registradas.</td>
+                            <td colspan="4" class="text-center">No hay empresas registradas.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -133,18 +138,8 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                 var popup = new bootstrap.Modal(popupElement);
                 popup.show();
 
-                // Handle closing the modal
                 popupElement.addEventListener('hidden.bs.modal', function() {
-                    // Remove the modal from the DOM after it's hidden
                     popupElement.parentNode.removeChild(popupElement);
-                });
-
-                // Add event listeners to close buttons
-                var closeButtons = popupElement.querySelectorAll('[data-bs-dismiss="modal"]');
-                closeButtons.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        popup.hide();
-                    });
                 });
             });
         </script>
