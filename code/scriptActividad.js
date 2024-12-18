@@ -53,7 +53,7 @@ $(document).ready(function () {
             if (type === 'empresa') {
                 window.location.href = 'perfil_empresa.php?id=' + id;
             } else if (type === 'alumno') {
-                window.location.href = 'perfil_alumno.php?dni=' + id;
+                window.location.href = 'alumno.php?dni=' + id;
             }
         } else {
             alert('Por favor, seleccione una empresa o un alumno para filtrar.');
