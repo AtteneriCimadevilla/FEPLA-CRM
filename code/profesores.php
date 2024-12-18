@@ -1,29 +1,64 @@
 <?php
 require 'conexion.php';
 
-session_start();
-$mostrar_popup = false;
-if (isset($_SESSION['profesor_actualizado']) && $_SESSION['profesor_actualizado']) {
-    $mostrar_popup = true;
-    unset($_SESSION['profesor_actualizado']);
+// Función para obtener la lista de profesores
+function obtenerProfesores($mysqli)
+{
+    $query = "SELECT dni_nie, nombre, apellido1, apellido2, telefono, email, tipo_usuario FROM profesores";
+    $result = $mysqli->query($query);
+    $profesores = [];
+
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $profesores[] = $row;
+        }
+    }
+
+    return $profesores;
 }
 
-// Consulta SQL para obtener los datos de la tabla "profesores"
-$query = "SELECT dni_nie, nombre, apellido1, apellido2, telefono, email, tipo_usuario FROM profesores";
-$result = $mysqli->query($query);
+// Obtener la acción desde el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $accion = $_POST['accion'];
+    $dni_nie = $_POST['dni_nie'] ?? null;
+    $nombre = $_POST['nombre'] ?? null;
+    $apellido1 = $_POST['apellido1'] ?? null;
+    $apellido2 = $_POST['apellido2'] ?? null;
+    $telefono = $_POST['telefono'] ?? null;
+    $email = $_POST['email'] ?? null;
+    $tipo_usuario = $_POST['tipo_usuario'] ?? 'user';
+    $contrasenya = $_POST['contrasenya'] ?? null;
 
-// Handle delete request
-if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
-    $dni_nie_to_delete = $_POST['dni_nie'];
-    $delete_query = "DELETE FROM profesores WHERE dni_nie = ?";
-    $stmt = $mysqli->prepare($delete_query);
-    $stmt->bind_param("s", $dni_nie_to_delete);
-    $stmt->execute();
-    $stmt->close();
-    // Redirect to refresh the page after deletion
+    if ($accion === 'add') {
+        // Hashear la contraseña
+        $hash_contrasenya = password_hash($contrasenya, PASSWORD_DEFAULT);
+
+        // Añadir profesor
+        $query = "INSERT INTO profesores (dni_nie, contrasenya, nombre, apellido1, apellido2, telefono, email, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("ssssssss", $dni_nie, $hash_contrasenya, $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario);
+        $stmt->execute();
+    } elseif ($accion === 'edit') {
+        // Editar profesor
+        $query = "UPDATE profesores SET nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("sssssss", $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
+        $stmt->execute();
+    } elseif ($accion === 'delete') {
+        // Eliminar profesor
+        $query = "DELETE FROM profesores WHERE dni_nie = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s", $dni_nie);
+        $stmt->execute();
+    }
+
+    // Redirigir para evitar reenvío de formularios
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
+
+// Obtener la lista de profesores para mostrar
+$profesores = obtenerProfesores($mysqli);
 ?>
 
 <!DOCTYPE html>
@@ -32,115 +67,111 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FEPLA CRM Profesores</title>
+    <title>Gestión de Profesores</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="profesores.css"> <!-- CSS personalizado -->
 </head>
 
 <body>
-    <div class="container container-profesores my-4">
-        <header class="d-flex justify-content-between align-items-center mb-3">
-            <img src="logo.png" alt="logo" style="height: 50px;">
-            <div class="busqueda">
-                <input type="text" id="searchFilter" placeholder="🔍">
-                <button id="searchButton">Filtrar</button>
-            </div>
-        </header>
+    <div class="container my-4">
+        <h1 class="text-center">Gestión de Profesores</h1>
 
-        <h1 class="page-title text-center mb-4">Profesores</h1>
-
-        <!-- Add Teacher Button -->
-        <div class="mb-3">
-            <a href="gestionProfesor.php" class="btn btn-primary">Añadir Profesor</a>
-        </div>
-
-        <!-- Tabla responsive de profesores -->
-        <div class="table-responsive">
-            <table class="table table-hover table-profesores">
-                <thead class="thead-dark">
+        <!-- Tabla de profesores -->
+        <table class="table table-bordered mb-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th>DNI/NIE</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Tipo de Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($profesores as $profesor): ?>
                     <tr>
-                        <th>DNI/NIE</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Tipo de Usuario</th>
-                        <th>Acciones</th>
+                        <td><?= htmlspecialchars($profesor['dni_nie']) ?></td>
+                        <td><?= htmlspecialchars($profesor['nombre']) ?></td>
+                        <td><?= htmlspecialchars($profesor['apellido1'] . ' ' . $profesor['apellido2']) ?></td>
+                        <td><?= htmlspecialchars($profesor['telefono']) ?></td>
+                        <td><?= htmlspecialchars($profesor['email']) ?></td>
+                        <td><?= htmlspecialchars($profesor['tipo_usuario']) ?></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editarProfesor('<?= htmlspecialchars(json_encode($profesor)) ?>')">Editar</button>
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="accion" value="delete">
+                                <input type="hidden" name="dni_nie" value="<?= htmlspecialchars($profesor['dni_nie']) ?>">
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if ($result->num_rows > 0): ?>
-                        <?php while ($profesor = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($profesor['dni_nie']); ?></td>
-                                <td><?php echo htmlspecialchars($profesor['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($profesor['apellido1'] . ' ' . $profesor['apellido2']); ?></td>
-                                <td><?php echo htmlspecialchars($profesor['telefono']); ?></td>
-                                <td><?php echo htmlspecialchars($profesor['email']); ?></td>
-                                <td><?php echo htmlspecialchars($profesor['tipo_usuario']); ?></td>
-                                <td>
-                                    <a href="gestionProfesor.php?dni_nie=<?php echo urlencode($profesor['dni_nie']); ?>" class="btn btn-sm btn-primary">Editar</a>
-                                    <form method="POST" style="display: inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este profesor?');">
-                                        <input type="hidden" name="dni_nie" value="<?php echo htmlspecialchars($profesor['dni_nie']); ?>">
-                                        <button type="submit" name="delete" class="btn btn-sm btn-danger">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="7" class="text-center">No hay profesores registrados.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
-    <?php $mysqli->close(); ?>
-
-    <?php if ($mostrar_popup): ?>
-        <div id="popup" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Éxito</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Profesor actualizado con éxito</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
+        <!-- Formulario para añadir o editar un profesor -->
+        <form method="POST">
+            <input type="hidden" name="accion" id="accion" value="add">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="dni_nie">DNI/NIE</label>
+                    <input type="text" class="form-control" id="dni_nie" name="dni_nie" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="apellido1">Primer Apellido</label>
+                    <input type="text" class="form-control" id="apellido1" name="apellido1" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="apellido2">Segundo Apellido</label>
+                    <input type="text" class="form-control" id="apellido2" name="apellido2">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" class="form-control" id="telefono" name="telefono">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
                 </div>
             </div>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var popupElement = document.getElementById('popup');
-                var popup = new bootstrap.Modal(popupElement);
-                popup.show();
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="contrasenya">Contraseña</label>
+                    <input type="password" class="form-control" id="contrasenya" name="contrasenya" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="tipo_usuario">Tipo de Usuario</label>
+                    <select class="form-control" id="tipo_usuario" name="tipo_usuario">
+                        <option value="user">Usuario</option>
+                        <option value="admin">Administrador</option>
+                        <option value="root">Root</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-primary mt-4">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-                // Handle closing the modal
-                popupElement.addEventListener('hidden.bs.modal', function() {
-                    popupElement.parentNode.removeChild(popupElement);
-                });
-
-                var closeButtons = popupElement.querySelectorAll('[data-bs-dismiss="modal"]');
-                closeButtons.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        popup.hide();
-                    });
-                });
-            });
-        </script>
-    <?php endif; ?>
-
-    <script type="module" src="profesores.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function editarProfesor(profesor) {
+            const data = JSON.parse(profesor);
+            document.getElementById('accion').value = 'edit';
+            document.getElementById('dni_nie').value = data.dni_nie;
+            document.getElementById('nombre').value = data.nombre;
+            document.getElementById('apellido1').value = data.apellido1;
+            document.getElementById('apellido2').value = data.apellido2;
+            document.getElementById('telefono').value = data.telefono;
+            document.getElementById('email').value = data.email;
+            document.getElementById('tipo_usuario').value = data.tipo_usuario;
+        }
+    </script>
 </body>
 
 </html>
