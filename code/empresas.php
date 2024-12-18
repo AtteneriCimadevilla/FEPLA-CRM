@@ -36,6 +36,21 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
     <title>FEPLA CRM Empresas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="empresa.css"> <!-- CSS personalizado -->
+    <style>
+        .table-empresas th:first-child,
+        .table-empresas td:first-child {
+            width: 30%;
+        }
+
+        .table-empresas th:nth-child(3),
+        .table-empresas td:nth-child(3) {
+            width: 30%;
+        }
+        .table-empresas th:nth-child(4),
+        .table-empresas td:nth-child(4) {
+            width: 10%;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,26 +88,26 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                                 <!-- Columna Empresa -->
                                 <td>
                                     <strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?><br>
-                                    <strong>Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?><br>
+                                    <strong>Comercial:</strong> <a href="empresa.php?id=<?php echo urlencode($empresa['id']); ?>"><?php echo htmlspecialchars($empresa['nombre_comercial']); ?></a><br>
                                     <strong>Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?><br>
                                     <strong>Teléfono:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?><br>
                                     <strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?>
                                 </td>
-                                
+
                                 <!-- Columna Contacto -->
                                 <td>
                                     <strong>Nombre:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?><br>
                                     <strong>Teléfono:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?><br>
                                     <strong>Email:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?>
                                 </td>
-                                
+
                                 <!-- Columna Interés en formaciones -->
                                 <td>
                                     <strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?><br>
                                     <strong>Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?><br>
                                     <strong>Notas:</strong> <?php echo htmlspecialchars($empresa['notas']); ?>
                                 </td>
-                                
+
                                 <!-- Columna Acciones -->
                                 <td>
                                     <a href="gestionEmpresa.php?id=<?php echo urlencode($empresa['id']); ?>" class="btn btn-sm btn-primary">Editar</a>
