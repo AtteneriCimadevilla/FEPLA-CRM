@@ -11,8 +11,7 @@ if (isset($_SESSION['alumno_actualizado']) && $_SESSION['alumno_actualizado']) {
 // Consulta SQL para obtener los datos de la tabla "alumnos"
 $query = "SELECT 
     a.dni_nie AS dni_nie, 
-    a.nombre AS nombre, 
-    CONCAT_WS(' ', a.apellido1, a.apellido2) AS apellidos,
+    CONCAT_WS(' ', a.nombre, a.apellido1, a.apellido2) AS nombre_completo,
     a.fecha_nacimiento AS fecha_nacimiento, 
     a.telefono AS telefono, 
     a.email AS email, 
@@ -116,7 +115,6 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                     <tr>
                         <th>DNI/NIE</th>
                         <th>Nombre</th>
-                        <th>Apellidos</th>
                         <th>Fecha de nacimiento</th>
                         <th>Teléfono</th>
                         <th>Email</th>
@@ -132,8 +130,11 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                         <?php while ($alumno = $result->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($alumno['dni_nie']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['apellidos']); ?></td>
+                                <td>
+                                    <a href="alumno.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>">
+                                        <?php echo htmlspecialchars($alumno['nombre_completo']); ?>
+                                    </a>
+                                </td>
                                 <td><?php echo htmlspecialchars($alumno['fecha_nacimiento']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['telefono']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['email']); ?></td>
