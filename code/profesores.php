@@ -110,6 +110,8 @@ $profesores = obtenerProfesores($mysqli);
             </tbody>
         </table>
 
+        <h3 class="text-center">Añadir un profesor</h3>
+
         <!-- Formulario para añadir o editar un profesor -->
         <form method="POST">
             <input type="hidden" name="accion" id="accion" value="add">

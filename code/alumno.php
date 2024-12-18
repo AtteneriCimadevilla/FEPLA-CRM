@@ -1,6 +1,13 @@
 <?php
 require 'conexion.php';
 
+// Verificar si el parámetro 'dni' está en la URL
+if (isset($_GET['dni_nie']) && !empty($_GET['dni_nie'])) {
+    $dni_nie = $_GET['dni_nie']; // Obtener el DNI/NIE desde la URL
+} else {
+    die("No se ha proporcionado un DNI/NIE válido.");
+}
+
 // Consulta para obtener los detalles del alumno
 $stmt = $mysqli->prepare("
     SELECT 
@@ -25,7 +32,6 @@ $stmt = $mysqli->prepare("
 ");
 
 // Proporcionar el valor para el placeholder
-$dni_nie = "12345678Q"; // Reemplaza con el DNI/NIE del alumno
 $stmt->bind_param("s", $dni_nie);
 
 // Ejecuta la consulta
