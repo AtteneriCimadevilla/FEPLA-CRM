@@ -33,4 +33,15 @@
 [2024-12-18 16:20:37] Login error: Incorrect password for email: davidschmidt@gmail.com
 [2024-12-18 16:21:27] Login error: Attempting login for email: davidschmidt@gmail.com
 [2024-12-18 16:21:27] Login error: Login successful for email: davidschmidt@gmail.com
+<<<<<<< HEAD
 >>>>>>> e6108010f36721d41d4532a0275ce9db5b32bff1
+=======
+[2024-12-18 16:30:51] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:30:51] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 16:51:21] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:51:21] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 16:52:53] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:52:53] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 19:44:50] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 19:44:50] Login error: Login successful for email: davidschmidt@gmail.com
+>>>>>>> fd05f9c51163676a994332d00386f5850a2ec567
