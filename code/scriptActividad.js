@@ -51,7 +51,7 @@ $(document).ready(function () {
         if (selectedValue) {
             var [type, id] = selectedValue.split('_');
             if (type === 'empresa') {
-                window.location.href = 'perfil_empresa.php?id=' + id;
+                window.location.href = 'empresa.php?id=' + id;
             } else if (type === 'alumno') {
                 window.location.href = 'alumno.php?dni=' + id;
             }
