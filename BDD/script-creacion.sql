@@ -61,11 +61,13 @@ CREATE TABLE formaciones (
 
 CREATE TABLE registro (
 	id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	dni_nie_profesor char(9),
 	fecha date NOT NULL,
 	tipo_actividad enum('Llamada', 'Email', 'Visita'),
 	id_empresa int UNSIGNED,
 	dni_nie_alumno char(9),
 	texto_registro varchar(255),
+	FOREIGN KEY (dni_nie_profesor) REFERENCES profesores(dni_nie) ON UPDATE CASCADE,
 	FOREIGN KEY (id_empresa) REFERENCES empresas(id) ON UPDATE CASCADE,
 	FOREIGN KEY (dni_nie_alumno) REFERENCES alumnos(dni_nie) ON UPDATE CASCADE
 );
@@ -117,18 +119,18 @@ VALUES
 ('Z5678901U', 'Jorge', 'Castro', 'Ibáñez', '2002-07-21', '623245678', 'jorgecastro@gmail.com', 'C/Llano Verde', 'Si', '2º DAM');
 
 /*Registro*/
-INSERT INTO registro (fecha, tipo_actividad, id_empresa, dni_nie_alumno, texto_registro) VALUES
-('2024-12-01', 'Llamada', 1, null, 'Dicen que llame al nuevo teléfono entre las 9 y las 12 de la mañana.'),
-('2024-12-02', 'Llamada', 1, null, 'Me dicen que están interesados y que me confirmarán cuántos alumnos.'),
-('2024-12-03', 'Email', 1, '12345678Q', 'Quieren tres alumnos en prácticas.'),
-('2024-12-07', 'Visita', 1, null, 'Dos alumnos de 2º DAM y uno de 1º SMR.'),
-('2024-12-08', 'Llamada', 2, '12345678Q', 'Confirmaron que les envíe los CVs de los alumnos.'),
-('2024-12-09', 'Email', 3, null, 'Solicitan más información sobre la duración de las prácticas.'),
-('2024-12-10', 'Visita', 4, '12345678Q', 'Me piden dos alumnos para su oficina en el centro de la ciudad.'),
-('2024-12-11', 'Email', 5, '12345678Q', 'Han recibido la información y están en proceso de decidir.'),
-('2024-12-12', 'Llamada', 6, null, 'Me comentan que les interesa un alumno con conocimientos en marketing.'),
-('2024-12-13', 'Visita', 7, null, 'Requieren alumnos para cubrir horarios de tardes.'),
-('2024-12-14', 'Llamada', 8, null, 'Confirman que necesitan tres alumnos para prácticas en administración.'),
-('2024-12-15', 'Email', 9, '12345678Q', 'Me piden detalles sobre los requisitos de los alumnos.'),
-('2024-12-16', 'Visita', 10, null, 'Quieren cinco alumnos para prácticas en distintas áreas de la empresa.');
+INSERT INTO registro (dni_nie_profesor, fecha, tipo_actividad, id_empresa, dni_nie_alumno, texto_registro) VALUES
+('45678123Y', '2024-12-01', 'Llamada', 1, null, 'Dicen que llame al nuevo teléfono entre las 9 y las 12 de la mañana.'),
+('45678123Y', '2024-12-02', 'Llamada', 1, null, 'Me dicen que están interesados y que me confirmarán cuántos alumnos.'),
+('45678123Y', '2024-12-03', 'Email', 1, '12345678Q', 'Quieren tres alumnos en prácticas.'),
+('45678123Y', '2024-12-07', 'Visita', 1, null, 'Dos alumnos de 2º DAM y uno de 1º SMR.'),
+('45678123Y', '2024-12-08', 'Llamada', 2, '12345678Q', 'Confirmaron que les envíe los CVs de los alumnos.'),
+('45678123Y', '2024-12-09', 'Email', 3, null, 'Solicitan más información sobre la duración de las prácticas.'),
+('45678123Y', '2024-12-10', 'Visita', 4, '12345678Q', 'Me piden dos alumnos para su oficina en el centro de la ciudad.'),
+('45678123Y', '2024-12-11', 'Email', 5, '12345678Q', 'Han recibido la información y están en proceso de decidir.'),
+('45678123Y', '2024-12-12', 'Llamada', 6, null, 'Me comentan que les interesa un alumno con conocimientos en marketing.'),
+('45678123Y', '2024-12-13', 'Visita', 7, null, 'Requieren alumnos para cubrir horarios de tardes.'),
+('45678123Y', '2024-12-14', 'Llamada', 8, null, 'Confirman que necesitan tres alumnos para prácticas en administración.'),
+('45678123Y', '2024-12-15', 'Email', 9, '12345678Q', 'Me piden detalles sobre los requisitos de los alumnos.'),
+('45678123Y', '2024-12-16', 'Visita', 10, null, 'Quieren cinco alumnos para prácticas en distintas áreas de la empresa.');
 
