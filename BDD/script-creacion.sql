@@ -17,7 +17,7 @@ CREATE TABLE empresas (
 	notas text
 );
 
-CREATE TABLE usuarios (
+CREATE TABLE tipos_usuario (
     tipo ENUM('root', 'admin', 'user') PRIMARY KEY
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE profesores(
 	telefono varchar(50),
 	email varchar(255),
 	tipo_usuario ENUM('root', 'admin', 'user') DEFAULT 'user',
-	FOREIGN KEY (tipo_usuario) REFERENCES usuarios(tipo)
+	FOREIGN KEY (tipo_usuario) REFERENCES tipos_usuario(tipo)
 );
 
 CREATE TABLE alumnos (
@@ -47,7 +47,7 @@ CREATE TABLE alumnos (
 	dni_tutor CHAR(9),
 	id_empresa int UNSIGNED,
 	FOREIGN KEY (id_empresa) REFERENCES empresas(id),
-	FOREIGN KEY (dni_tutor) REFERENCES profesores(dni_nie) ON DELETE SET NULL ON UPDATE CASCADE
+	FOREIGN KEY (dni_tutor) REFERENCES profesores(dni_nie) ON UPDATE CASCADE
 );
 
 CREATE TABLE formaciones (
@@ -60,13 +60,14 @@ CREATE TABLE formaciones (
 );
 
 CREATE TABLE registro (
+	id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	fecha date NOT NULL,
+	tipo_actividad enum('Llamada', 'Email', 'Visita'),
 	id_empresa int UNSIGNED,
 	dni_nie_alumno char(9),
 	texto_registro varchar(255),
 	FOREIGN KEY (id_empresa) REFERENCES empresas(id) ON UPDATE CASCADE,
-	FOREIGN KEY (dni_nie_alumno) REFERENCES alumnos(dni_nie) ON UPDATE CASCADE,
-	PRIMARY KEY (fecha, id_empresa, dni_nie_alumno)
+	FOREIGN KEY (dni_nie_alumno) REFERENCES alumnos(dni_nie) ON UPDATE CASCADE
 );
 
 /*Empresas*/
@@ -83,7 +84,7 @@ INSERT INTO empresas (cif, nombre_comercial, nombre_empresa, telefono_empresa, n
 ('J0123456J', 'BlueOcean', 'Blue Ocean Consulting', '964123456', 'Pedro Giménez', '626123456', 'pedro.gimenez@blueocean.com', 'Av. Del Mar 45, Alicante', 0, 1, 'Poco interés en prácticas, pero dispuestos a colaborar en el futuro.');
 
 /*Usuarios*/
-INSERT INTO usuarios (tipo)
+INSERT INTO tipos_usuario (tipo)
 VALUES 
 ('root'), 
 ('admin'), 
@@ -99,18 +100,35 @@ VALUES
 /*Alumnos*/
 INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, clase)
 VALUES 
-('1234A', 'Juan', 'Vega', 'Saenz', '2000-08-08', '618253876', 'juanvegasaenz@gmail.com', 'C/Mercurio', 'Si', '2º DAM'),
-('23456S', 'Salvador', 'Perez', 'Sanchez', '2003-01-08', '950254837', 'salvadorperez@gmail.com', 'C/Real del barrio alto', 'No', '2º DAM'),
-('34567H', 'Helen', 'Koss', NULL, '1999-05-06', '628349590', 'Helenkoos@gmail.com', 'C/Estrella fugaz', 'Si', '2º DAM'),
-('45678J', 'María', 'García', 'Lopez', '2002-11-10', '612345678', 'mariagarcia@gmail.com', 'C/Luna Nueva', 'No', '2º DAM'),
-('56789K', 'Pablo', 'Hernández', 'Martínez', '2001-04-22', '613245678', 'pablohernandez@gmail.com', 'C/Arco Iris', 'Si', '2º DAM'),
-('67890L', 'Lucía', 'Ruiz', 'González', '2000-07-15', '614345678', 'luciaruiz@gmail.com', 'C/Norte', 'No', '2º DAM'),
-('78901M', 'Alejandro', 'Díaz', 'Torres', '2003-09-05', '615445678', 'alejandrodiaz@gmail.com', 'C/Campo Verde', 'Si', '2º DAM'),
-('89012N', 'Sara', 'Moreno', 'Pérez', '1999-03-18', '616545678', 'saramoreno@gmail.com', 'C/Sol Naciente', 'No', '2º DAM'),
-('90123O', 'Miguel', 'Santos', 'Romero', '2002-12-24', '617645678', 'miguelsantos@gmail.com', 'C/Océano', 'Si', '2º DAM'),
-('01234P', 'Carmen', 'Lopez', 'Ramos', '2001-05-30', '618745678', 'carmenlopez@gmail.com', 'C/Lago Azul', 'No', '2º DAM'),
-('12345Q', 'Raúl', 'Jiménez', 'Serrano', '2000-10-17', '619845678', 'rauljimenez@gmail.com', 'C/Cerro Alto', 'Si', '2º DAM'),
-('23456R', 'Ana', 'Martínez', 'Ortega', '2003-02-28', '620945678', 'anamartinez@gmail.com', 'C/Los Pinos', 'No', '2º DAM'),
-('34567S', 'David', 'Gómez', 'Gil', '1999-06-09', '621045678', 'davidgomez@gmail.com', 'C/Roca', 'Si', '2º DAM'),
-('45678T', 'Elena', 'Ramírez', 'Flores', '2001-08-13', '622145678', 'elenaramirez@gmail.com', 'C/Puesta del Sol', 'No', '2º DAM'),
-('56789U', 'Jorge', 'Castro', 'Ibáñez', '2002-07-21', '623245678', 'jorgecastro@gmail.com', 'C/Llano Verde', 'Si', '2º DAM');
+('12345678Q', 'Juan', 'Vega', 'Saenz', '2000-08-08', '618253876', 'juanvegasaenz@gmail.com', 'C/Mercurio', 'Si', '2º DAM'),
+('23456789S', 'Salvador', 'Perez', 'Sanchez', '2003-01-08', '950254837', 'salvadorperez@gmail.com', 'C/Real del barrio alto', 'No', '2º DAM'),
+('34567890H', 'Helen', 'Koss', NULL, '1999-05-06', '628349590', 'Helenkoos@gmail.com', 'C/Estrella fugaz', 'Si', '2º DAM'),
+('45678901J', 'María', 'García', 'Lopez', '2002-11-10', '612345678', 'mariagarcia@gmail.com', 'C/Luna Nueva', 'No', '2º DAM'),
+('56789012K', 'Pablo', 'Hernández', 'Martínez', '2001-04-22', '613245678', 'pablohernandez@gmail.com', 'C/Arco Iris', 'Si', '2º DAM'),
+('67890123L', 'Lucía', 'Ruiz', 'González', '2000-07-15', '614345678', 'luciaruiz@gmail.com', 'C/Norte', 'No', '2º DAM'),
+('78901234M', 'Alejandro', 'Díaz', 'Torres', '2003-09-05', '615445678', 'alejandrodiaz@gmail.com', 'C/Campo Verde', 'Si', '2º DAM'),
+('89012345N', 'Sara', 'Moreno', 'Pérez', '1999-03-18', '616545678', 'saramoreno@gmail.com', 'C/Sol Naciente', 'No', '2º DAM'),
+('90123456O', 'Miguel', 'Santos', 'Romero', '2002-12-24', '617645678', 'miguelsantos@gmail.com', 'C/Océano', 'Si', '2º DAM'),
+('11234567P', 'Carmen', 'Lopez', 'Ramos', '2001-05-30', '618745678', 'carmenlopez@gmail.com', 'C/Lago Azul', 'No', '2º DAM'),
+('Y1234567Q', 'Raúl', 'Jiménez', 'Serrano', '2000-10-17', '619845678', 'rauljimenez@gmail.com', 'C/Cerro Alto', 'Si', '2º DAM'),
+('Z2345678R', 'Ana', 'Martínez', 'Ortega', '2003-02-28', '620945678', 'anamartinez@gmail.com', 'C/Los Pinos', 'No', '2º DAM'),
+('X3456789S', 'David', 'Gómez', 'Gil', '1999-06-09', '621045678', 'davidgomez@gmail.com', 'C/Roca', 'Si', '2º DAM'),
+('Y4567890T', 'Elena', 'Ramírez', 'Flores', '2001-08-13', '622145678', 'elenaramirez@gmail.com', 'C/Puesta del Sol', 'No', '2º DAM'),
+('Z5678901U', 'Jorge', 'Castro', 'Ibáñez', '2002-07-21', '623245678', 'jorgecastro@gmail.com', 'C/Llano Verde', 'Si', '2º DAM');
+
+/*Registro*/
+INSERT INTO registro (fecha, tipo_actividad, id_empresa, dni_nie_alumno, texto_registro) VALUES
+('2024-12-01', 'Llamada', 1, null, 'Dicen que llame al nuevo teléfono entre las 9 y las 12 de la mañana.'),
+('2024-12-02', 'Llamada', 1, null, 'Me dicen que están interesados y que me confirmarán cuántos alumnos.'),
+('2024-12-03', 'Email', 1, '12345678Q', 'Quieren tres alumnos en prácticas.'),
+('2024-12-07', 'Visita', 1, null, 'Dos alumnos de 2º DAM y uno de 1º SMR.'),
+('2024-12-08', 'Llamada', 2, '12345678Q', 'Confirmaron que les envíe los CVs de los alumnos.'),
+('2024-12-09', 'Email', 3, null, 'Solicitan más información sobre la duración de las prácticas.'),
+('2024-12-10', 'Visita', 4, '12345678Q', 'Me piden dos alumnos para su oficina en el centro de la ciudad.'),
+('2024-12-11', 'Email', 5, '12345678Q', 'Han recibido la información y están en proceso de decidir.'),
+('2024-12-12', 'Llamada', 6, null, 'Me comentan que les interesa un alumno con conocimientos en marketing.'),
+('2024-12-13', 'Visita', 7, null, 'Requieren alumnos para cubrir horarios de tardes.'),
+('2024-12-14', 'Llamada', 8, null, 'Confirman que necesitan tres alumnos para prácticas en administración.'),
+('2024-12-15', 'Email', 9, '12345678Q', 'Me piden detalles sobre los requisitos de los alumnos.'),
+('2024-12-16', 'Visita', 10, null, 'Quieren cinco alumnos para prácticas en distintas áreas de la empresa.');
+
