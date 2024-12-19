@@ -17,17 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_empresa_seleccionada = $_POST['id_empresa'];
     $dni_nie_alumno_seleccionado = $_POST['dni_nie_alumno'];
 
-    if (empty($fecha) || empty($tipo_actividad) || empty($texto_registro) || empty($id_empresa_seleccionada) || empty($dni_nie_alumno_seleccionado)) {
-        $mensaje = '<div class="alert alert-danger">Todos los campos son obligatorios.</div>';
+    if (empty($fecha) || empty($tipo_actividad) || empty($texto_registro)) {
+        $mensaje = '<div class="alert alert-danger">Rellene los campos obligatorios.</div>';
     } else {
-        $stmt = $mysqli->prepare("INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("issss", $id_empresa_seleccionada, $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
 
-        if ($stmt->execute()) {
-            $mensaje = '<div class="alert alert-success">Actividad agregada con éxito.</div>';
+        if (!empty($id_empresa_seleccionada) && !empty($dni_nie_alumno_seleccionado)) {
+            $stmt = $mysqli->prepare("INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("issss", $id_empresa_seleccionada, $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
+        } else if (empty($id_empresa_seleccionado)) {
+            $stmt = $mysqli->prepare("INSERT INTO registro (dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
         } else {
-            $mensaje = '<div class="alert alert-danger">Error al agregar la actividad: ' . $mysqli->error . '</div>';
+            $stmt = $mysqli->prepare("INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("issss", $id_empresa_seleccionada, $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
         }
+            
+        $mensaje = ($stmt->execute()) ? '<div class="alert alert-success">Actividad agregada con éxito.</div>' : '<div class="alert alert-danger">Error al agregar la actividad: ' . $mysqli->error . '</div>';
         $stmt->close();
     }
 }
@@ -71,13 +76,12 @@ $mysqli->close();
         <?php echo $mensaje; ?>
         <form method="POST" action="">
             <div class="mb-3">
-                <label for="fecha" class="form-label">Fecha</label>
+                <label for="fecha" class="form-label">* Fecha</label>
                 <input type="date" class="form-control" id="fecha" name="fecha" required>
             </div>
             <div class="mb-3">
-                <label for="tipo_actividad" class="form-label">Tipo de Actividad</label>
+                <label for="tipo_actividad" class="form-label">* Tipo de actividad</label>
                 <select class="form-select" id="tipo_actividad" name="tipo_actividad" required>
-                    <option value="">Seleccione un tipo de actividad</option>
                     <option value="Llamada">Llamada</option>
                     <option value="Email">Email</option>
                     <option value="Visita">Visita</option>
@@ -86,7 +90,7 @@ $mysqli->close();
             <?php if ($id_empresa > 0): ?>
                 <div class="mb-3">
                     <label for="dni_nie_alumno" class="form-label">Alumno</label>
-                    <select class="form-select" id="dni_nie_alumno" name="dni_nie_alumno" required>
+                    <select class="form-select" id="dni_nie_alumno" name="dni_nie_alumno">
                         <option value="">Seleccione un alumno</option>
                         <?php foreach ($alumnos as $alumno): ?>
                             <option value="<?php echo htmlspecialchars($alumno['dni_nie']); ?>">
@@ -99,7 +103,7 @@ $mysqli->close();
             <?php else: ?>
                 <div class="mb-3">
                     <label for="id_empresa" class="form-label">Empresa</label>
-                    <select class="form-select" id="id_empresa" name="id_empresa" required>
+                    <select class="form-select" id="id_empresa" name="id_empresa">
                         <option value="">Seleccione una empresa</option>
                         <?php foreach ($empresas as $empresa): ?>
                             <option value="<?php echo htmlspecialchars($empresa['id']); ?>">
@@ -111,7 +115,7 @@ $mysqli->close();
                 <input type="hidden" name="dni_nie_alumno" value="<?php echo htmlspecialchars($dni_nie_alumno); ?>">
             <?php endif; ?>
             <div class="mb-3">
-                <label for="texto_registro" class="form-label">Detalles</label>
+                <label for="texto_registro" class="form-label">* Detalles</label>
                 <textarea class="form-control" id="texto_registro" name="texto_registro" rows="3" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Agregar Actividad</button>
