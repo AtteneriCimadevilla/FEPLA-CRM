@@ -133,6 +133,21 @@ $mysqli->close();
                         No se encontró al alumno.
                     </div>
                 <?php endif; ?>
+                <!-- Empresa Asignada -->
+                <h2 class="mt-4">Empresa Asignada</h2>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            <?php if ($alumno['empresa']): ?>
+                                <span><?php echo htmlspecialchars($alumno['empresa']); ?></span>
+                                <button class="btn btn-warning btn-sm" onclick="abrirVentanaEmergente('crear_formacion.php?dni=<?= urlencode($alumno['dni_nie']) ?>&edit=1')">Editar</button>
+                                <button class="btn btn-danger btn-sm" onclick="confirmarBorrarFormacion('<?= urlencode($alumno['dni_nie']) ?>')">Borrar formación</button>
+                            <?php else: ?>
+                                <button class="btn btn-primary btn-sm" onclick="abrirVentanaEmergente('crear_formacion.php?dni=<?= urlencode($alumno['dni_nie']) ?>')">Crear formación</button>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <!-- Columna de Registros de Actividades (en la parte derecha) -->
@@ -167,20 +182,7 @@ $mysqli->close();
             </div>
         </div>
 
-        <!-- Empresa Asignada -->
-        <h2 class="mt-4">Empresa Asignada</h2>
-        <table class="table table-bordered">
-            <tr>
-                <td>
-                    <?php if ($alumno['empresa']): ?>
-                        <span id="empresaAsignada"><?php echo htmlspecialchars($alumno['empresa']); ?></span>
-                        <button class="btn btn-warning btn-sm" onclick="editarEmpresa('<?= htmlspecialchars($alumno['dni_nie']) ?>', '<?= htmlspecialchars($alumno['empresa']) ?>')">Editar</button>
-                    <?php else: ?>
-                        <button class="btn btn-primary btn-sm" onclick="abrirVentanaEmergente('crear_formacion.php?dni=<?= htmlspecialchars($alumno['dni_nie']) ?>')">Crear formación</button>
-                    <?php endif; ?>
-                </td>
-            </tr>
-        </table>
+
 
     </div>
 
@@ -248,6 +250,28 @@ $mysqli->close();
                     console.error('Error:', error);
                     alert('Error al actualizar la empresa');
                 });
+        }
+
+        function confirmarBorrarFormacion(dni) {
+            if (confirm('¿Está seguro de que desea borrar esta formación?')) {
+                // Realizar una solicitud AJAX para borrar la formación
+                fetch('borrar_formacion.php?dni=' + dni, {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Formación borrada con éxito');
+                            location.reload(); // Recargar la página para reflejar los cambios
+                        } else {
+                            alert('Error al borrar la formación: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al borrar la formación');
+                    });
+            }
         }
     </script>
 
