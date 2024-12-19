@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
     } elseif ($accion === 'edit') {
         // Editar profesor
-        $query = "UPDATE profesores SET nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
+        $query = "UPDATE profesores SET contrasenya = ?, nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("sssssss", $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
+        $stmt->bind_param("ssssssss", $contrasenya, $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
         $stmt->execute();
     } elseif ($accion === 'delete') {
         // Eliminar profesor
@@ -80,11 +80,9 @@ $profesores = obtenerProfesores($mysqli);
             <thead class="thead-dark">
                 <tr>
                     <th>DNI/NIE</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
+                    <th>Nombre y apellidos</th>
                     <th>Teléfono</th>
                     <th>Email</th>
-                    <th>Tipo de Usuario</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -92,11 +90,9 @@ $profesores = obtenerProfesores($mysqli);
                 <?php foreach ($profesores as $profesor): ?>
                     <tr>
                         <td><?= htmlspecialchars($profesor['dni_nie']) ?></td>
-                        <td><?= htmlspecialchars($profesor['nombre']) ?></td>
-                        <td><?= htmlspecialchars($profesor['apellido1'] . ' ' . $profesor['apellido2']) ?></td>
+                        <td><?= htmlspecialchars($profesor['nombre'] . ' ' . $profesor['apellido1'] . ' ' . $profesor['apellido2']) ?></td>
                         <td><?= htmlspecialchars($profesor['telefono']) ?></td>
                         <td><?= htmlspecialchars($profesor['email']) ?></td>
-                        <td><?= htmlspecialchars($profesor['tipo_usuario']) ?></td>
                         <td>
                             <button class="btn btn-sm btn-warning" onclick="editarProfesor('<?= htmlspecialchars(json_encode($profesor)) ?>')">Editar</button>
                             <form method="POST" style="display:inline;">
