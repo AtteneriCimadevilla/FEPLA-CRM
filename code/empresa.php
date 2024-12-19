@@ -65,58 +65,64 @@ $mysqli->close();
             <h1 class="text-center mb-4">Detalles de Empresa</h1>
         </header>
 
-        <!-- Información de la Empresa -->
-        <section class="perfil card mb-4">
-            <div class="card-body">
-                <h2 class="card-title">Información General</h2>
-                <p><strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?></p>
-                <p><strong>Nombre Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?></p>
-                <p><strong>Nombre de la Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?></p>
-                <p><strong>Teléfono de Empresa:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?></p>
-                <p><strong>Nombre de Contacto:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?></p>
-                <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
-                <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
-                <p><strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?></p>
-                <p><strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></p>
-                <p><strong>Cantidad de Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></p>
-                <div class="notas">
-                    <strong>Notas:</strong>
-                    <p><?php echo nl2br(htmlspecialchars($empresa['notas'])); ?></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección de Registro (Actividades) -->
-        <section class="registro card mb-4">
-            <div class="card-body">
-                <h2 class="card-title mb-4">Registro de Actividades</h2>
-                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?id_empresa=<?php echo $empresa['id']; ?>')">Añadir Actividad</button>
-                <?php if (!empty($actividades)): ?>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Actividad</th>
-                                <th>Detalles</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($actividades as $actividad): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($actividad['fecha']); ?></td>
-                                    <td><?php echo htmlspecialchars($actividad['tipo_actividad']); ?></td>
-                                    <td><?php echo htmlspecialchars($actividad['texto_registro']); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <div class="alert alert-info" role="alert">
-                        No hay actividades registradas actualmente.
+        <div class="row">
+            <!-- Columna izquierda: Información General -->
+            <div class="col-md-6">
+                <section class="perfil card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">Información General</h2>
+                        <p><strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?></p>
+                        <p><strong>Nombre Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?></p>
+                        <p><strong>Nombre de la Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?></p>
+                        <p><strong>Teléfono de Empresa:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?></p>
+                        <p><strong>Nombre de Contacto:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?></p>
+                        <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
+                        <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
+                        <p><strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?></p>
+                        <p><strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></p>
+                        <p><strong>Cantidad de Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></p>
+                        <div class="notas">
+                            <strong>Notas:</strong>
+                            <p><?php echo nl2br(htmlspecialchars($empresa['notas'])); ?></p>
+                        </div>
                     </div>
-                <?php endif; ?>
+                </section>
             </div>
-        </section>
+
+            <!-- Columna derecha: Registro de Actividades -->
+            <div class="col-md-6">
+                <section class="registro card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Registro de Actividades</h2>
+                        <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?id_empresa=<?php echo $empresa['id']; ?>')">Añadir Actividad</button>
+                        <?php if (!empty($actividades)): ?>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Actividad</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($actividades as $actividad): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($actividad['fecha']); ?></td>
+                                            <td><?php echo htmlspecialchars($actividad['tipo_actividad']); ?></td>
+                                            <td><?php echo htmlspecialchars($actividad['texto_registro']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="alert alert-info" role="alert">
+                                No hay actividades registradas actualmente.
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
+            </div>
+        </div>
 
         <!-- Botón Crear Formación -->
         <div class="acciones text-center">
