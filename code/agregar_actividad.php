@@ -1,34 +1,27 @@
 <?php
-require 'conexion.php';
+include 'conexion.php';
 
-$dni_nie = isset($_GET['dni']) ? $_GET['dni'] : '';
+$id_empresa = isset($_GET['id_empresa']) ? intval($_GET['id_empresa']) : 0;
+$dni_nie_alumno = isset($_GET['dni_nie']) ? $_GET['dni_nie'] : '';
 
-if (empty($dni_nie)) {
-    die("No se ha proporcionado un DNI/NIE válido.");
+if ($id_empresa === 0 && empty($dni_nie_alumno)) {
+    die("No se ha proporcionado un ID de empresa o DNI/NIE de alumno válido.");
 }
-
-// Fetch companies for the dropdown
-$stmt = $mysqli->prepare("SELECT id, nombre_comercial FROM empresas");
-$stmt->execute();
-$result = $stmt->get_result();
-$empresas = $result->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
 
 $mensaje = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fecha = $_POST['fecha'];
     $tipo_actividad = $_POST['tipo_actividad'];
-    $id_empresa = $_POST['id_empresa'];
     $texto_registro = $_POST['texto_registro'];
+    $id_empresa_seleccionada = $_POST['id_empresa'];
+    $dni_nie_alumno_seleccionado = $_POST['dni_nie_alumno'];
 
-    // Validate inputs
-    if (empty($fecha) || empty($tipo_actividad) || empty($id_empresa) || empty($texto_registro)) {
+    if (empty($fecha) || empty($tipo_actividad) || empty($texto_registro) || empty($id_empresa_seleccionada) || empty($dni_nie_alumno_seleccionado)) {
         $mensaje = '<div class="alert alert-danger">Todos los campos son obligatorios.</div>';
     } else {
-        // Insert new activity record
-        $stmt = $mysqli->prepare("INSERT INTO registro (dni_nie_alumno, fecha, tipo_actividad, id_empresa, texto_registro) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $dni_nie, $fecha, $tipo_actividad, $id_empresa, $texto_registro);
+        $stmt = $mysqli->prepare("INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("issss", $id_empresa_seleccionada, $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
 
         if ($stmt->execute()) {
             $mensaje = '<div class="alert alert-success">Actividad agregada con éxito.</div>';
@@ -37,6 +30,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt->close();
     }
+}
+
+// Fetch companies for the dropdown if adding activity for a student
+$empresas = [];
+if (empty($id_empresa)) {
+    $stmt = $mysqli->prepare("SELECT id, nombre_comercial FROM empresas");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $empresas = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
+
+// Fetch students for the dropdown if adding activity for a company
+$alumnos = [];
+if ($id_empresa > 0) {
+    $stmt = $mysqli->prepare("SELECT dni_nie, CONCAT(nombre, ' ', apellido1, ' ', apellido2) AS nombre_completo FROM alumnos");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $alumnos = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
 }
 
 $mysqli->close();
@@ -63,19 +76,40 @@ $mysqli->close();
             </div>
             <div class="mb-3">
                 <label for="tipo_actividad" class="form-label">Tipo de Actividad</label>
-                <input type="text" class="form-control" id="tipo_actividad" name="tipo_actividad" required>
-            </div>
-            <div class="mb-3">
-                <label for="id_empresa" class="form-label">Empresa</label>
-                <select class="form-select" id="id_empresa" name="id_empresa" required>
-                    <option value="">Seleccione una empresa</option>
-                    <?php foreach ($empresas as $empresa): ?>
-                        <option value="<?php echo htmlspecialchars($empresa['id']); ?>">
-                            <?php echo htmlspecialchars($empresa['nombre_comercial']); ?>
-                        </option>
-                    <?php endforeach; ?>
+                <select class="form-select" id="tipo_actividad" name="tipo_actividad" required>
+                    <option value="">Seleccione un tipo de actividad</option>
+                    <option value="Llamada">Llamada</option>
+                    <option value="Email">Email</option>
+                    <option value="Visita">Visita</option>
                 </select>
             </div>
+            <?php if ($id_empresa > 0): ?>
+                <div class="mb-3">
+                    <label for="dni_nie_alumno" class="form-label">Alumno</label>
+                    <select class="form-select" id="dni_nie_alumno" name="dni_nie_alumno" required>
+                        <option value="">Seleccione un alumno</option>
+                        <?php foreach ($alumnos as $alumno): ?>
+                            <option value="<?php echo htmlspecialchars($alumno['dni_nie']); ?>">
+                                <?php echo htmlspecialchars($alumno['nombre_completo']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <input type="hidden" name="id_empresa" value="<?php echo $id_empresa; ?>">
+            <?php else: ?>
+                <div class="mb-3">
+                    <label for="id_empresa" class="form-label">Empresa</label>
+                    <select class="form-select" id="id_empresa" name="id_empresa" required>
+                        <option value="">Seleccione una empresa</option>
+                        <?php foreach ($empresas as $empresa): ?>
+                            <option value="<?php echo htmlspecialchars($empresa['id']); ?>">
+                                <?php echo htmlspecialchars($empresa['nombre_comercial']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <input type="hidden" name="dni_nie_alumno" value="<?php echo htmlspecialchars($dni_nie_alumno); ?>">
+            <?php endif; ?>
             <div class="mb-3">
                 <label for="texto_registro" class="form-label">Detalles</label>
                 <textarea class="form-control" id="texto_registro" name="texto_registro" rows="3" required></textarea>
@@ -86,7 +120,6 @@ $mysqli->close();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Close the window and refresh the parent page after successful submission
         <?php if (strpos($mensaje, 'alert-success') !== false): ?>
             setTimeout(function() {
                 window.opener.location.reload();

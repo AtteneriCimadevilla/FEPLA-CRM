@@ -25,66 +25,113 @@ if (isset($_GET['id'])) {
         echo "Error en la consulta.";
         exit();
     }
+
+    // Consulta para obtener los registros de actividades de la empresa
+    $sql_actividades = "SELECT fecha, tipo_actividad, texto_registro FROM registro WHERE id_empresa = ? ORDER BY fecha DESC";
+    $stmt_actividades = $mysqli->prepare($sql_actividades);
+
+    if ($stmt_actividades) {
+        $stmt_actividades->bind_param("i", $id);
+        $stmt_actividades->execute();
+        $resultado_actividades = $stmt_actividades->get_result();
+        $actividades = $resultado_actividades->fetch_all(MYSQLI_ASSOC);
+        $stmt_actividades->close();
+    } else {
+        echo "Error en la consulta de actividades.";
+        exit();
+    }
 } else {
     echo "ID de empresa no proporcionado.";
     exit();
 }
+
+$mysqli->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Empresa</title>
     <link rel="stylesheet" href="styleEmpresa.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <div class="contenedor">
+    <div class="container mt-5">
         <header>
-            <h1>Detalles de Empresa</h1>
+            <h1 class="text-center mb-4">Detalles de Empresa</h1>
         </header>
 
         <!-- Información de la Empresa -->
-        <section class="perfil">
-            <h2>Información General</h2>
-            <p><strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?></p>
-            <p><strong>Nombre Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?></p>
-            <p><strong>Nombre de la Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?></p>
-            <p><strong>Teléfono de Empresa:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?></p>
-            <p><strong>Nombre de Contacto:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?></p>
-            <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
-            <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
-            <p><strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?></p>
-            <p><strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></p>
-            <p><strong>Cantidad de Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></p>
-            <!-- Campo resaltado -->
-            <div class="notas">
-                <strong>Notas:</strong>
-                <p><?php echo nl2br(htmlspecialchars($empresa['notas'])); ?></p>
+        <section class="perfil card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Información General</h2>
+                <p><strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?></p>
+                <p><strong>Nombre Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?></p>
+                <p><strong>Nombre de la Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?></p>
+                <p><strong>Teléfono de Empresa:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?></p>
+                <p><strong>Nombre de Contacto:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?></p>
+                <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
+                <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
+                <p><strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?></p>
+                <p><strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></p>
+                <p><strong>Cantidad de Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></p>
+                <div class="notas">
+                    <strong>Notas:</strong>
+                    <p><?php echo nl2br(htmlspecialchars($empresa['notas'])); ?></p>
+                </div>
             </div>
         </section>
 
         <!-- Sección de Registro (Actividades) -->
-        <section class="registro">
-            <h2>Registro de Actividades</h2>
-            <!-- Botón para abrir un formulario modal -->
-            <a href="actividad.php?empresa_id=<?php echo $empresa['id']; ?>">
-                <button>Añadir Actividad</button>
-            </a>
-
-            <!-- Aquí puedes agregar dinámicamente las actividades -->
-            <p>No hay actividades registradas actualmente.</p>
+        <section class="registro card mb-4">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Registro de Actividades</h2>
+                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?id_empresa=<?php echo $empresa['id']; ?>')">Añadir Actividad</button>
+                <?php if (!empty($actividades)): ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Actividad</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($actividades as $actividad): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($actividad['fecha']); ?></td>
+                                    <td><?php echo htmlspecialchars($actividad['tipo_actividad']); ?></td>
+                                    <td><?php echo htmlspecialchars($actividad['texto_registro']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="alert alert-info" role="alert">
+                        No hay actividades registradas actualmente.
+                    </div>
+                <?php endif; ?>
+            </div>
         </section>
 
-
         <!-- Botón Crear Formación -->
-        <div class="acciones">
-            <a href="crear_formacion.php?empresa_id=<?php echo $empresa['id']; ?>">
-                <button>Crear Formación</button>
+        <div class="acciones text-center">
+            <a href="crear_formacion.php?empresa_id=<?php echo $empresa['id']; ?>" class="btn btn-success">
+                Crear Formación
             </a>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function abrirVentanaEmergente(url) {
+            window.open(url, 'VentanaEmergente', 'width=800,height=600,resizable=yes');
+        }
+    </script>
 </body>
+
 </html>

@@ -138,8 +138,7 @@ $mysqli->close();
             <!-- Columna de Registros de Actividades (en la parte derecha) -->
             <div class="col-md-6">
                 <h2 class="mb-4">Registros de Actividades</h2>
-                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?dni=<?= htmlspecialchars($dni_nie) ?>')">Agregar Actividad</button>
-                <?php if (count($registros) > 0): ?>
+                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>')">Añadir Actividad</button> <?php if (count($registros) > 0): ?>
                     <table class="table table-striped">
                         <thead>
                             <tr>
