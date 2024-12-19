@@ -52,9 +52,10 @@ $stmt->close();
 
 // Consulta para obtener los registros de actividades del alumno
 $stmt2 = $mysqli->prepare("
-    SELECT fecha, tipo_actividad, id_empresa, texto_registro
-    FROM registro
-    WHERE dni_nie_alumno = ?;
+    SELECT r.fecha, r.tipo_actividad, e.nombre_comercial AS empresa, r.texto_registro
+    FROM registro r
+    LEFT JOIN empresas e ON r.id_empresa = e.id
+    WHERE r.dni_nie_alumno = ?;
 ");
 $stmt2->bind_param("s", $dni_nie);
 $stmt2->execute();
@@ -99,6 +100,9 @@ $mysqli->close();
 
 <body>
     <div class="container mt-5">
+        <!-- Botón de Volver -->
+        <a href="javascript:history.back()" class="btn btn-secondary mb-3">&laquo; Volver</a>
+
         <div class="row">
             <!-- Columna de Detalles del Alumno -->
             <div class="col-md-6">
@@ -134,6 +138,7 @@ $mysqli->close();
             <!-- Columna de Registros de Actividades (en la parte derecha) -->
             <div class="col-md-6">
                 <h2 class="mb-4">Registros de Actividades</h2>
+                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?dni=<?= htmlspecialchars($dni_nie) ?>')">Agregar Actividad</button>
                 <?php if (count($registros) > 0): ?>
                     <table class="table table-striped">
                         <thead>
@@ -149,7 +154,7 @@ $mysqli->close();
                                 <tr>
                                     <td><?= htmlspecialchars($registro['fecha']) ?></td>
                                     <td><?= htmlspecialchars($registro['tipo_actividad']) ?></td>
-                                    <td><?= htmlspecialchars($registro['id_empresa']) ?></td>
+                                    <td><?= htmlspecialchars($registro['empresa']) ?></td>
                                     <td><?= htmlspecialchars($registro['texto_registro']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -169,8 +174,8 @@ $mysqli->close();
             <tr>
                 <td>
                     <?php if ($alumno['empresa']): ?>
-                        <span><?php echo htmlspecialchars($alumno['empresa']); ?></span>
-                        <button class="btn btn-warning btn-sm" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>" data-empresa="<?= htmlspecialchars($alumno['empresa']) ?>">Editar</button>
+                        <span id="empresaAsignada"><?php echo htmlspecialchars($alumno['empresa']); ?></span>
+                        <button class="btn btn-warning btn-sm" onclick="editarEmpresa('<?= htmlspecialchars($alumno['dni_nie']) ?>', '<?= htmlspecialchars($alumno['empresa']) ?>')">Editar</button>
                     <?php else: ?>
                         <button class="btn btn-primary btn-sm" onclick="abrirVentanaEmergente('crear_formacion.php?dni=<?= htmlspecialchars($alumno['dni_nie']) ?>')">Crear formación</button>
                     <?php endif; ?>
@@ -180,13 +185,70 @@ $mysqli->close();
 
     </div>
 
+    <!-- Modal para editar empresa -->
+    <div class="modal fade" id="editarEmpresaModal" tabindex="-1" aria-labelledby="editarEmpresaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarEmpresaModalLabel">Editar Empresa Asignada</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarEmpresaForm">
+                        <input type="hidden" id="dni_nie" name="dni_nie">
+                        <div class="mb-3">
+                            <label for="empresa" class="form-label">Empresa</label>
+                            <select class="form-select" id="empresa" name="empresa" required>
+                                <?php echo $empresas_options; ?>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEmpresa()">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Vincula a Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         function abrirVentanaEmergente(url) {
-            // Abrir una nueva ventana con la URL proporcionada
             window.open(url, 'VentanaEmergente', 'width=800,height=600,resizable=yes');
+        }
+
+        function editarEmpresa(dni, empresa) {
+            document.getElementById('dni_nie').value = dni;
+            document.getElementById('empresa').value = empresa;
+            var modal = new bootstrap.Modal(document.getElementById('editarEmpresaModal'));
+            modal.show();
+        }
+
+        function guardarEmpresa() {
+            var form = document.getElementById('editarEmpresaForm');
+            var formData = new FormData(form);
+
+            fetch('actualizar_empresa.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('empresaAsignada').textContent = data.empresa;
+                        var modal = bootstrap.Modal.getInstance(document.getElementById('editarEmpresaModal'));
+                        modal.hide();
+                    } else {
+                        alert('Error al actualizar la empresa');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al actualizar la empresa');
+                });
         }
     </script>
 
