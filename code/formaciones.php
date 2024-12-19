@@ -38,6 +38,10 @@ $mysqli->close();
 </head>
 
 <body>
+            <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+        ← Volver a Home </a>   
+            <h1 class="text-center mb-4">Detalles de Empresa</h1>
+        </header>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Listado de Formaciones en Centros de Trabajo</h1>
 

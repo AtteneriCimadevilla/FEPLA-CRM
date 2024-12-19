@@ -62,6 +62,8 @@ $mysqli->close();
 <body>
     <div class="container mt-5">
         <header>
+        <a href="empresas.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+        ← Volver </a>   
             <h1 class="text-center mb-4">Detalles de Empresa</h1>
         </header>
 

@@ -58,7 +58,6 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FEPLA CRM Alumnos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="alumno.css"> <!-- CSS personalizado -->
     <style>
         .modal {
             display: none;
@@ -94,7 +93,9 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
 <body>
     <div class="container container-alumnos my-4">
         <header class="d-flex justify-content-between align-items-center mb-3">
-            <img src="logo.png" alt="logo" style="height: 50px;">
+        <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+        ← Volver al Home </a>   
+        <img src="logo.png" alt="logo" style="height: 50px;">
             <div class="busqueda">
                 <input type="text" id="searchFilter" placeholder="🔍">
                 <button id="searchButton">Filtrar</button>

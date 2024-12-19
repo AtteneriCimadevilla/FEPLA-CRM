@@ -99,9 +99,14 @@ $mysqli->close();
 </head>
 
 <body>
+        <header class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Flecha para volver al home -->
+    <a href="alumnos.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+        ← Volver
+    </a>
+</header>
     <div class="container mt-5">
-        <!-- Botón de Volver -->
-        <a href="javascript:history.back()" class="btn btn-secondary mb-3">&laquo; Volver</a>
+
 
         <div class="row">
             <!-- Columna de Detalles del Alumno -->

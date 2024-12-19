@@ -50,6 +50,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         .nav-link:hover {
             background-color: #444;
         }
+
+        .gap-3 {
+            gap: 20px; /* Espaciado uniforme entre botones */
+        }
+
+        .listados-btn {
+            width: 250px; /* Ancho fijo para todos los botones */
+            height: 60px; /* Altura fija */
+            font-size: 1.2rem; /* Tamaño del texto uniforme */
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
     </style>
 </head>
 <body>
@@ -126,6 +140,19 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 <p class="card-text">Ver actividad reciente</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+               <!-- Listados -->
+                <div class="col-12 mt-5 text-center">
+                    <h3>Listados</h3>
+                    <div class="d-flex justify-content-center mt-3 gap-3">
+                        <button class="btn btn-primary listados-btn" onclick="window.location.href='formaciones.php'">
+                            Listado de Formaciones
+                        </button>
+                        <button class="btn btn-secondary listados-btn" onclick="window.location.href='actividades.php'">
+                            Listado de Actividades
+                        </button>
                     </div>
                 </div>
             </div>

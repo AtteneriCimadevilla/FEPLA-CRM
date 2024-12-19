@@ -69,6 +69,9 @@ $mysqli->close();
     <link rel="stylesheet" href="estiloActividad.css">
 </head>
 <body>
+        <header class="d-flex justify-content-between align-items-center mb-3">
+            <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+            ← Volver al Home </a>  
     <div class="container mt-5">
         <h1 class="text-center mb-4">Actividades Registradas</h1>
         
