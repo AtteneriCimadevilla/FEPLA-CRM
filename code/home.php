@@ -63,7 +63,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             text-align: center;
             vertical-align: middle;
         }
-        
+
     </style>
 </head>
 <body>
@@ -145,7 +145,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
                <!-- Listados -->
                 <div class="col-12 mt-5 text-center">
-                    <h3>Listados</h3>
+                    <h3>Informes</h3>
                     <div class="d-flex justify-content-center mt-3 gap-3">
                         <button class="btn btn-primary listados-btn" onclick="window.location.href='formaciones.php'">
                             Listado de Formaciones

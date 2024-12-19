@@ -58,11 +58,11 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         <header class="d-flex justify-content-between align-items-center mb-3">
             <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
             ← Volver al Home </a>  
-            <img src="logo.png" alt="logo" style="height: 50px;">
+   <!--      <img src="logo.png" alt="logo" style="height: 50px;">
             <div class="busqueda">
                 <input type="text" id="searchFilter" placeholder="🔍">
                 <button id="searchButton">Filtrar</button>
-            </div>
+            </div> -->
         </header>
 
         <h1 class="page-title text-center mb-4">Empresas</h1>

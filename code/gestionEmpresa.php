@@ -83,6 +83,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <header>
+        <a href="empresas.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+        ← Volver </a>   
+        </header>
     <div class="container mt-5">
         <h1 class="text-center"><?php echo $editing ? 'Editar' : 'Crear'; ?> Empresa</h1>
 

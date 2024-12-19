@@ -3,10 +3,12 @@ require 'conexion.php';
 
 $dni_nie = $_GET['dni'] ?? '';
 $is_editing = isset($_GET['edit']) && $_GET['edit'] == '1';
+$id = $_GET['id'] ?? '';
 
-if (empty($dni_nie)) {
-    die("No se ha proporcionado un DNI/NIE válido.");
+if (empty($dni_nie || $id)) {
+    die("No se ha proporcionado un DNI/NIE o ID válido.");
 }
+
 
 // Obtener los datos del alumno
 $stmt = $mysqli->prepare("SELECT * FROM alumnos WHERE dni_nie = ?");
@@ -26,6 +28,14 @@ if ($is_editing) {
     $formacion_actual = $resultado_formacion->fetch_assoc();
     $stmt->close();
 }
+
+// Obtener los datos de la empresa
+$stmt = $mysqli->prepare("SELECT * FROM empresas WHERE id = ?");
+$stmt->bind_param("s", $id);
+$stmt->execute();
+$resultado_empresa = $stmt->get_result();
+$empresa = $resultado_empresa->fetch_assoc();
+$stmt->close();
 
 // Obtener las empresas
 $empresas_resultado = $mysqli->query("SELECT * FROM empresas");
@@ -51,7 +61,6 @@ $mysqli->close();
 <body>
     <div class="container mt-5">
         <h1 class="text-center"><?= $is_editing ? 'Editar' : 'Crear' ?> Formación</h1>
-
         <form action="guardar_formacion.php" method="POST">
             <input type="hidden" name="dni_nie_alumno" value="<?= htmlspecialchars($dni_nie) ?>">
             <input type="hidden" name="is_editing" value="<?= $is_editing ? '1' : '0' ?>">
