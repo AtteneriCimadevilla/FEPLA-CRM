@@ -46,6 +46,7 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         .table-empresas td:nth-child(3) {
             width: 30%;
         }
+
         .table-empresas th:nth-child(4),
         .table-empresas td:nth-child(4) {
             width: 10%;
@@ -57,8 +58,8 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
     <div class="container container-empresas my-4">
         <header class="d-flex justify-content-between align-items-center mb-3">
             <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
-            ← Volver al Home </a>  
-   <!--      <img src="logo.png" alt="logo" style="height: 50px;">
+                ← Volver al Home </a>
+            <!--      <img src="logo.png" alt="logo" style="height: 50px;">
             <div class="busqueda">
                 <input type="text" id="searchFilter" placeholder="🔍">
                 <button id="searchButton">Filtrar</button>
@@ -70,6 +71,13 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         <!-- Add Company Button -->
         <div class="mb-3">
             <a href="gestionEmpresa.php" class="btn btn-primary">Añadir Empresa</a>
+        </div>
+
+        <!-- Botón para exportar empresas -->
+        <div class="text-end mb-3">
+            <a href="exportar_empresas.php" class="btn btn-success">
+                Exportar a CSV
+            </a>
         </div>
 
         <!-- Tabla responsive de empresas -->
@@ -162,7 +170,7 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         </script>
     <?php endif; ?>
 
-    <script type="module" src="empresas.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
