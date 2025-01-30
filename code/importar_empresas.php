@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (($handle = fopen($file, "r")) !== FALSE) {
             // Skip the header row
-            fgetcsv($handle, 1000, ",");
+            fgetcsv($handle, 1000, ";");
 
             $importCount = 0;
 
