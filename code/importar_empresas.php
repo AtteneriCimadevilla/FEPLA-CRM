@@ -8,21 +8,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $file = $_FILES["csvFile"]["tmp_name"];
 
         if (($handle = fopen($file, "r")) !== FALSE) {
+<<<<<<< HEAD
             // Leer el BOM si está presente
             $bom = fread($handle, 3);
             if ($bom !== "\xEF\xBB\xBF") {
                 // Si no hay BOM, volver al inicio del archivo
                 rewind($handle);
             }
+=======
+            // Verificar y convertir el CSV a UTF-8
+            $csvContent = file_get_contents($file);
+            $csvContent = mb_convert_encoding($csvContent, 'UTF-8', mb_detect_encoding($csvContent, 'UTF-8, ISO-8859-1, WINDOWS-1252', true));
+            file_put_contents($file, $csvContent);
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
 
             fgetcsv($handle, 1000, ";"); // Saltar la cabecera
 
             $importCount = 0;
 
             // Preparar la consulta con sentencias preparadas para evitar SQL Injection
+<<<<<<< HEAD
             $query = "INSERT INTO empresas (nif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, cp, web, email_empresa, interesado, cantidad_alumnos, descripcion, actividad_principal, otras_actividades, dni_profesor)
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                       ON DUPLICATE KEY UPDATE
+=======
+            $query = "INSERT INTO empresas (cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                      ON DUPLICATE KEY UPDATE 
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
                       nombre_comercial = VALUES(nombre_comercial),
                       nombre_empresa = VALUES(nombre_empresa),
                       telefono_empresa = VALUES(telefono_empresa),
@@ -30,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                       telefono_contacto = VALUES(telefono_contacto),
                       email_contacto = VALUES(email_contacto),
                       direccion = VALUES(direccion),
+<<<<<<< HEAD
                       cp = VALUES(cp),
                       web = VALUES(web),
                       email_empresa = VALUES(email_empresa),
@@ -39,6 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                       actividad_principal = VALUES(actividad_principal),
                       otras_actividades = VALUES(otras_actividades),
                       dni_profesor = VALUES(dni_profesor)";
+=======
+                      interesado = VALUES(interesado),
+                      cantidad_alumnos = VALUES(cantidad_alumnos),
+                      notas = VALUES(notas)";
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
 
             $stmt = $mysqli->prepare($query);
 
@@ -50,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 // Limpiar y validar datos
+<<<<<<< HEAD
                 $nif = isset($data[0]) ? trim($data[0]) : '';
                 $nombre_comercial = isset($data[1]) ? trim($data[1]) : '';
                 $nombre_empresa = isset($data[2]) ? trim($data[2]) : '';
@@ -85,6 +105,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt->bind_param(
                     "ssssssssssssissss",
                     $nif,
+=======
+                $cif = trim($data[0]);
+                $nombre_comercial = trim($data[1]);
+                $nombre_empresa = trim($data[2]);
+                $telefono_empresa = trim($data[3]);
+                $nombre_contacto = trim($data[4]);
+                $telefono_contacto = trim($data[5]);
+                $email_contacto = trim($data[6]);
+                $direccion = trim($data[7]);
+                $interesado = (strtolower(trim($data[8])) == 'sí') ? 1 : 0;
+                $cantidad_alumnos = intval(trim($data[9]));
+                $notas = trim($data[10]);
+
+                // Bind de parámetros
+                $stmt->bind_param(
+                    "sssssssssis",
+                    $cif,
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
                     $nombre_comercial,
                     $nombre_empresa,
                     $telefono_empresa,
@@ -92,6 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $telefono_contacto,
                     $email_contacto,
                     $direccion,
+<<<<<<< HEAD
                     $cp,
                     $web,
                     $email_empresa,
@@ -101,13 +140,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $actividad_principal,
                     $otras_actividades,
                     $dni_profesor
+=======
+                    $interesado,
+                    $cantidad_alumnos,
+                    $notas
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
                 );
 
                 // Ejecutar consulta
                 if ($stmt->execute()) {
                     $importCount++;
                 } else {
+<<<<<<< HEAD
                     error_log("Error al insertar la empresa con NIF $nif: " . $stmt->error);
+=======
+                    error_log("Error al insertar la empresa con CIF $cif: " . $stmt->error);
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
                 }
             }
 
@@ -128,4 +176,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 $mysqli->close();
 header("Location: empresas.php");
+<<<<<<< HEAD
 exit();
+=======
+exit();
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb

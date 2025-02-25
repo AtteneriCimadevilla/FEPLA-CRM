@@ -72,7 +72,12 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
             <a href="exportar_empresas.php" class="btn btn-success">
                 Exportar a CSV
             </a>
+<<<<<<< HEAD
             <button type="button" class="btn btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#importModal">
+=======
+            <!-- Nuevo botón para importar CSV -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
                 Importar CSV
             </button>
         </div>
@@ -140,7 +145,11 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+<<<<<<< HEAD
                     <h5 class="modal-title" id="importModalLabel">Importar Empresas desde CSV</h5>
+=======
+                    <h5 class="modal-title" id="importModalLabel">Importar CSV</h5>
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -188,6 +197,70 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         </script>
     <?php endif; ?>
 
+<<<<<<< HEAD
+=======
+    <?php
+    if (isset($_SESSION['import_success'])) {
+        $importCount = $_SESSION['import_count'];
+        echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var importSuccessModal = new bootstrap.Modal(document.getElementById('importSuccessModal'));
+            importSuccessModal.show();
+        });
+    </script>";
+        unset($_SESSION['import_success']);
+        unset($_SESSION['import_count']);
+    }
+
+    if (isset($_SESSION['import_error'])) {
+        $importError = $_SESSION['import_error'];
+        echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var importErrorModal = new bootstrap.Modal(document.getElementById('importErrorModal'));
+            importErrorModal.show();
+        });
+    </script>";
+        unset($_SESSION['import_error']);
+    }
+    ?>
+
+    <!-- Modal para éxito de importación -->
+    <div class="modal fade" id="importSuccessModal" tabindex="-1" aria-labelledby="importSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importSuccessModalLabel">Importación Exitosa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Se han importado o actualizado <?php echo $importCount; ?> registros correctamente.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para error de importación -->
+    <div class="modal fade" id="importErrorModal" tabindex="-1" aria-labelledby="importErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importErrorModalLabel">Error de Importación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><?php echo $importError; ?></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+>>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
