@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
 // Verificar si el formulario se ha enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
-    $cif = trim($_POST['cif']);
+    $nif = trim($_POST['nif']);
     $nombre_comercial = trim($_POST['nombre_comercial']);
     $nombre_empresa = trim($_POST['nombre_empresa']);
     $telefono_empresa = trim($_POST['telefono_empresa']);
@@ -34,10 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cantidad_alumnos = trim($_POST['cantidad_alumnos']);
     $notas = trim($_POST['notas']);
 
-    // Validaciones básicas
-    if (empty($cif) || strlen($cif) != 9) {
-        $errores[] = "El CIF debe tener 9 caracteres.";
-    }
+    // // Validaciones básicas
+    // if (strlen($cif) != 9) {
+    //     $errores[] = "El NIF debe tener 9 caracteres.";
+    // }
+
     if (empty($nombre_comercial)) {
         $errores[] = "El nombre comercial es obligatorio.";
     }
@@ -48,11 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Si no hay errores, insertar o actualizar en la base de datos
     if (empty($errores)) {
         if ($editing) {
-            $stmt = $mysqli->prepare("UPDATE empresas SET cif=?, nombre_comercial=?, nombre_empresa=?, telefono_empresa=?, nombre_contacto=?, telefono_contacto=?, email_contacto=?, direccion=?, interesado=?, cantidad_alumnos=?, notas=? WHERE id=?");
-            $stmt->bind_param("ssssssssisii", $cif, $nombre_comercial, $nombre_empresa, $telefono_empresa, $nombre_contacto, $telefono_contacto, $email_contacto, $direccion, $interesado, $cantidad_alumnos, $notas, $id);
+            $stmt = $mysqli->prepare("UPDATE empresas SET nif=?, nombre_comercial=?, nombre_empresa=?, telefono_empresa=?, nombre_contacto=?, telefono_contacto=?, email_contacto=?, direccion=?, interesado=?, cantidad_alumnos=?, descripcion=? WHERE id=?");
+            $stmt->bind_param("ssssssssisii", $cif, $nombre_comercial, $nombre_empresa, $telefono_empresa, $nombre_contacto, $telefono_contacto, $email_contacto, $direccion, $interesado, $cantidad_alumnos, $descripcion, $id);
         } else {
-            $stmt = $mysqli->prepare("INSERT INTO empresas (cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssiis", $cif, $nombre_comercial, $nombre_empresa, $telefono_empresa, $nombre_contacto, $telefono_contacto, $email_contacto, $direccion, $interesado, $cantidad_alumnos, $notas);
+            $stmt = $mysqli->prepare("INSERT INTO empresas (nif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssiis", $nif, $nombre_comercial, $nombre_empresa, $telefono_empresa, $nombre_contacto, $telefono_contacto, $email_contacto, $direccion, $interesado, $cantidad_alumnos, $descripcion);
         }
 
         if ($stmt->execute()) {
@@ -104,8 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($empresa['id']); ?>">
             <?php endif; ?>
             <div class="mb-3">
-                <label for="cif" class="form-label">CIF</label>
-                <input type="text" class="form-control" id="cif" name="cif" maxlength="9" value="<?php echo $editing ? htmlspecialchars($empresa['cif']) : ''; ?>" required>
+                <label for="nif" class="form-label">NIF</label>
+                <input type="text" class="form-control" id="nif" name="nif" maxlength="9" value="<?php echo $editing ? htmlspecialchars($empresa['nif']) : ''; ?>">
             </div>
             <div class="mb-3">
                 <label for="nombre_comercial" class="form-label">Nombre Comercial</label>
@@ -144,8 +145,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="number" class="form-control" id="cantidad_alumnos" name="cantidad_alumnos" min="0" value="<?php echo $editing ? htmlspecialchars($empresa['cantidad_alumnos']) : ''; ?>">
             </div>
             <div class="mb-3">
-                <label for="notas" class="form-label">Notas</label>
-                <textarea class="form-control" id="notas" name="notas"><?php echo $editing ? htmlspecialchars($empresa['notas']) : ''; ?></textarea>
+                <label for="notas" class="form-label">Descripción</label>
+                <textarea class="form-control" id="notas" name="notas"><?php echo $editing ? htmlspecialchars($empresa['descripcion']) : ''; ?></textarea>
             </div>
             <button type="submit" class="btn btn-primary"><?php echo $editing ? 'Actualizar' : 'Crear'; ?> Empresa</button>
             <a href="empresas.php" class="btn btn-secondary">Volver</a>

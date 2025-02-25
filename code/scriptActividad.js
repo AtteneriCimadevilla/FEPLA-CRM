@@ -26,6 +26,12 @@ $(document).ready(function () {
     // Handle form submission
     $('#activityForm').submit(function (e) {
         e.preventDefault();
+        const empresa = $('#empresa').val();
+        const alumno = $('#alumno').val();
+        if (!empresa || !alumno) {
+            $('#message').html('<div class="alert alert-danger">Seleccione una empresa y un alumno.</div>');
+            return;
+        }
         $.ajax({
             type: 'POST',
             url: 'procesar_actividad.php',

@@ -19,10 +19,14 @@ $stmt = $mysqli->prepare("
         a.email AS email, 
         a.direccion AS direccion, 
         a.vehiculo AS vehiculo, 
-        a.clase AS clase, 
+        CONCAT(c.nombre, ' - ', g.alias_grupo) AS grupo,
         e.nombre_comercial AS empresa
     FROM 
         alumnos a
+    LEFT JOIN 
+        grupos g ON a.id_grupo = g.id_grupo
+    LEFT JOIN 
+        catalogo_ciclos c ON g.id_ciclo = c.id_ciclo
     LEFT JOIN 
         formaciones f ON a.dni_nie = f.dni_nie_alumno
     LEFT JOIN 
@@ -99,14 +103,13 @@ $mysqli->close();
 </head>
 
 <body>
-        <header class="d-flex justify-content-between align-items-center mb-3">
+    <header class="d-flex justify-content-between align-items-center mb-3">
     <!-- Flecha para volver al home -->
     <a href="alumnos.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
         ← Volver
     </a>
-</header>
+    </header>
     <div class="container mt-5">
-
 
         <div class="row">
             <!-- Columna de Detalles del Alumno -->
@@ -129,8 +132,8 @@ $mysqli->close();
                             <p><strong>Teléfono:</strong> <?= htmlspecialchars($alumno['telefono']) ?></p>
                             <p><strong>Email:</strong> <?= htmlspecialchars($alumno['email']) ?></p>
                             <p><strong>Dirección:</strong> <?= htmlspecialchars($alumno['direccion']) ?></p>
-                            <p><strong>Vehículo:</strong> <?= $alumno['vehiculo'] ? 'Sí' : 'No' ?></p>
-                            <p><strong>Clase:</strong> <?= htmlspecialchars($alumno['clase']) ?></p>
+                            <p><strong>Vehículo:</strong> <?= $alumno['vehiculo'] ?></p>
+                            <p><strong>Grupo:</strong> <?= htmlspecialchars($alumno['grupo']) ?></p>
                         </div>
                     </div>
                 <?php else: ?>
@@ -158,7 +161,8 @@ $mysqli->close();
             <!-- Columna de Registros de Actividades (en la parte derecha) -->
             <div class="col-md-6">
                 <h2 class="mb-4">Registros de Actividades</h2>
-                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>')">Añadir Actividad</button> <?php if (count($registros) > 0): ?>
+                <button class="btn btn-primary mb-3" onclick="abrirVentanaEmergente('agregar_actividad.php?dni_nie=<?php echo urlencode($alumno['dni_nie']); ?>')">Añadir Actividad</button>
+                <?php if (count($registros) > 0): ?>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -186,8 +190,6 @@ $mysqli->close();
                 <?php endif; ?>
             </div>
         </div>
-
-
 
     </div>
 
@@ -283,3 +285,4 @@ $mysqli->close();
 </body>
 
 </html>
+

@@ -4,10 +4,11 @@ require 'conexion.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dni_nie = $_POST['dni_nie'];
     $empresa_id = $_POST['empresa'];
+    $curso = $_POST['curso']; // Add this line to get the curso value
 
     // Update the formaciones table
-    $stmt = $mysqli->prepare("UPDATE formaciones SET id_empresa = ? WHERE dni_nie_alumno = ?");
-    $stmt->bind_param("is", $empresa_id, $dni_nie);
+    $stmt = $mysqli->prepare("UPDATE formaciones SET id_empresa = ?, curso = ? WHERE dni_nie_alumno = ?");
+    $stmt->bind_param("iss", $empresa_id, $curso, $dni_nie);
     $result = $stmt->execute();
 
     if ($result) {

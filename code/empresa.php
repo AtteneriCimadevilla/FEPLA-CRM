@@ -1,11 +1,9 @@
 <?php
-include 'conexion.php'; // Archivo de conexión a la base de datos
+include 'conexion.php';
 
-// Verificar si se recibió el ID
 if (isset($_GET['id'])) {
-    $id = intval($_GET['id']); // Asegurarse de que sea un número entero
+    $id = intval($_GET['id']);
 
-    // Consulta preparada para obtener la empresa
     $sql = "SELECT * FROM empresas WHERE id = ?";
     $stmt = $mysqli->prepare($sql);
 
@@ -26,7 +24,6 @@ if (isset($_GET['id'])) {
         exit();
     }
 
-    // Consulta para obtener los registros de actividades de la empresa
     $sql_actividades = "SELECT fecha, tipo_actividad, texto_registro FROM registro WHERE id_empresa = ? ORDER BY fecha DESC";
     $stmt_actividades = $mysqli->prepare($sql_actividades);
 
@@ -73,7 +70,7 @@ $mysqli->close();
                 <section class="perfil card mb-4">
                     <div class="card-body">
                         <h2 class="card-title">Información General</h2>
-                        <p><strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?></p>
+                        <p><strong>NIF:</strong> <?php echo htmlspecialchars($empresa['nif']); ?></p>
                         <p><strong>Nombre Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?></p>
                         <p><strong>Nombre de la Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?></p>
                         <p><strong>Teléfono de Empresa:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?></p>
@@ -81,12 +78,21 @@ $mysqli->close();
                         <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
                         <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
                         <p><strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?></p>
+                        <p><strong>CP:</strong> <?php echo htmlspecialchars($empresa['cp']); ?></p>
+                        <p><strong>Web:</strong> <?php echo htmlspecialchars($empresa['web']); ?></p>
+                        <p><strong>Email de Empresa:</strong> <?php echo htmlspecialchars($empresa['email_empresa']); ?></p>
                         <p><strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?></p>
                         <p><strong>Cantidad de Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?></p>
                         <div class="notas">
-                            <strong>Notas:</strong>
-                            <p><?php echo nl2br(htmlspecialchars($empresa['notas'])); ?></p>
+                            <strong>Descripción:</strong>
+                            <p><?php echo nl2br(htmlspecialchars($empresa['descripcion'])); ?></p>
                         </div>
+                        <p><strong>Actividad Principal:</strong> <?php echo htmlspecialchars($empresa['actividad_principal']); ?></p>
+                        <div class="notas">
+                            <strong>Otras Actividades:</strong>
+                            <p><?php echo nl2br(htmlspecialchars($empresa['otras_actividades'])); ?></p>
+                        </div>
+                        <p><strong>DNI Profesor:</strong> <?php echo htmlspecialchars($empresa['dni_profesor']); ?></p>
                     </div>
                 </section>
             </div>

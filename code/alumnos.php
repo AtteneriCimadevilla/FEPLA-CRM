@@ -17,15 +17,26 @@ $query = "SELECT
     a.email AS email, 
     a.direccion AS direccion, 
     a.vehiculo AS vehiculo, 
-    a.clase AS clase, 
+    CONCAT(c.nombre, ' - ', g.alias_grupo) AS grupo,
     e.nombre_comercial AS empresa,
     f.curso AS curso
 FROM 
     alumnos a
 LEFT JOIN 
+    grupos g ON a.id_grupo = g.id_grupo
+LEFT JOIN 
+    catalogo_ciclos c ON g.id_ciclo = c.id_ciclo
+LEFT JOIN 
     formaciones f ON a.dni_nie = f.dni_nie_alumno
 LEFT JOIN 
-    empresas e ON f.id_empresa = e.id;";
+    empresas e ON f.id_empresa = e.id";
+
+// Si se selecciona un grupo, agregar el filtro
+if (isset($_GET['grupo']) && !empty($_GET['grupo'])) {
+    $grupo_id = intval($_GET['grupo']);
+    $query .= " WHERE g.id_grupo = $grupo_id";
+}
+
 $result = $mysqli->query($query);
 
 $query_empresas = "SELECT id, nombre_comercial FROM empresas";
@@ -35,6 +46,13 @@ $empresas_options = '';
 while ($row = $result_empresas->fetch_assoc()) {
     $empresas_options .= '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['nombre_comercial']) . '</option>';
 }
+
+// Obtener los grupos para el filtro
+$grupos_filtro_query = "SELECT id_grupo, CONCAT(c.nombre, ' - ', g.alias_grupo) AS nombre_grupo 
+                        FROM grupos g 
+                        JOIN catalogo_ciclos c ON g.id_ciclo = c.id_ciclo";
+$grupos_filtro_result = $mysqli->query($grupos_filtro_query);
+$grupos_filtro = $grupos_filtro_result->fetch_all(MYSQLI_ASSOC);
 
 // Handle delete request
 if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
@@ -87,19 +105,30 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
             font-weight: bold;
             cursor: pointer;
         }
+
+        /* Evitar el desplazamiento horizontal */
+        .table-responsive {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        /* Ajustar el ancho de las columnas */
+        .table-alumnos th,
+        .table-alumnos td {
+            white-space: nowrap;
+            max-width: 200px; /* Ajusta según sea necesario */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 
 <body>
     <div class="container container-alumnos my-4">
         <header class="d-flex justify-content-between align-items-center mb-3">
-        <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
-        ← Volver al Home </a>   
-   <!--     <img src="logo.png" alt="logo" style="height: 50px;">
-            <div class="busqueda">
-                <input type="text" id="searchFilter" placeholder="🔍">
-                <button id="searchButton">Filtrar</button>
-            </div> -->
+            <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+                ← Volver al Home
+            </a>
         </header>
 
         <h1 class="page-title text-center mb-4">Alumnos</h1>
@@ -107,6 +136,21 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
         <!-- Add Student Button -->
         <div class="mb-3">
             <a href="gestionAlumno.php" class="btn btn-primary">Añadir Alumno</a>
+        </div>
+
+        <!-- Filtro por grupo -->
+        <div class="mb-3">
+            <form method="GET" action="">
+                <label for="grupo" class="form-label">Filtrar por grupo:</label>
+                <select class="form-select" id="grupo" name="grupo" onchange="this.form.submit()">
+                    <option value="">Todos los grupos</option>
+                    <?php foreach ($grupos_filtro as $grupo): ?>
+                        <option value="<?= $grupo['id_grupo'] ?>" <?= (isset($_GET['grupo']) && $_GET['grupo'] == $grupo['id_grupo']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($grupo['nombre_grupo']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
         </div>
 
         <!-- Tabla responsive de alumnos -->
@@ -121,7 +165,7 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                         <th>Email</th>
                         <th>Dirección</th>
                         <th>Vehículo</th>
-                        <th>Clase</th>
+                        <th>Grupo</th>
                         <th>Empresa asignada</th>
                         <th>Acciones</th>
                     </tr>
@@ -141,14 +185,14 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <td><?php echo htmlspecialchars($alumno['email']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['vehiculo']); ?></td>
-                                <td><?php echo htmlspecialchars($alumno['clase']); ?></td>
+                                <td><?php echo htmlspecialchars($alumno['grupo']); ?></td>
                                 <!-- Botón para editar formación -->
                                 <td>
                                     <?php if ($alumno['empresa']): ?>
                                         <span><?php echo htmlspecialchars($alumno['empresa']); ?></span>
-                                        <button class="btn-edit" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Editar</button>
+                                        <button class="btn btn-warning btn-sm btn-edit" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Editar</button>
                                     <?php else: ?>
-                                        <button class="btn-create" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Crear formación</button>
+                                        <button class="btn btn-primary btn-sm btn-create" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Crear formación</button>
                                     <?php endif; ?>
                                 </td>
                                 <td>
@@ -177,11 +221,11 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                         <label for="empresa">Empresa:</label>
                         <select name="empresa" id="empresa">
                             <option value="">Seleccionar empresa</option>
-                            <?php echo $empresas_options; ?> <!-- Echo the options properly -->
+                            <?php echo $empresas_options; ?>
                         </select>
                         <label for="curso">Curso:</label>
                         <select name="curso" id="curso">
-                            <option value="24/25">24/25</option>
+                            <option value="24/25" selected>24/25</option> <!-- Predefinir 24/25 -->
                             <option value="25/26">25/26</option>
                             <option value="26/27">26/27</option>
                         </select>
@@ -190,8 +234,6 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                     </form>
                 </div>
             </div>
-
-            <!-- MODAL/POPUP PARA ASIGNAR FORMACIONES -->
         </div>
     </div>
 
@@ -216,10 +258,10 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
         </div>
     <?php endif; ?>
 
-    <script type="module" src="alumnos.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="alumnos.js"></script>
 </body>
 
 </html>

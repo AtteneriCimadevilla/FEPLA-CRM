@@ -9,8 +9,7 @@ if (isset($_SESSION['empresa_actualizada']) && $_SESSION['empresa_actualizada'])
 }
 
 // Consulta SQL para obtener los datos de la tabla "empresas"
-$query = "SELECT id, cif, nombre_comercial, nombre_empresa, telefono_empresa, nombre_contacto, telefono_contacto, email_contacto, direccion, interesado, cantidad_alumnos, notas
-          FROM empresas";
+$query = "SELECT * FROM empresas";
 $result = $mysqli->query($query);
 
 // Handle delete request
@@ -59,11 +58,6 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         <header class="d-flex justify-content-between align-items-center mb-3">
             <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
                 ← Volver al Home </a>
-            <!--      <img src="logo.png" alt="logo" style="height: 50px;">
-            <div class="busqueda">
-                <input type="text" id="searchFilter" placeholder="🔍">
-                <button id="searchButton">Filtrar</button>
-            </div> -->
         </header>
 
         <h1 class="page-title text-center mb-4">Empresas</h1>
@@ -73,11 +67,14 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
             <a href="gestionEmpresa.php" class="btn btn-primary">Añadir Empresa</a>
         </div>
 
-        <!-- Botón para exportar empresas -->
+        <!-- Botones para exportar e importar empresas -->
         <div class="text-end mb-3">
             <a href="exportar_empresas.php" class="btn btn-success">
                 Exportar a CSV
             </a>
+            <button type="button" class="btn btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#importModal">
+                Importar CSV
+            </button>
         </div>
 
         <!-- Tabla responsive de empresas -->
@@ -97,7 +94,7 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                             <tr>
                                 <!-- Columna Empresa -->
                                 <td>
-                                    <strong>CIF:</strong> <?php echo htmlspecialchars($empresa['cif']); ?><br>
+                                    <strong>NIF:</strong> <?php echo htmlspecialchars($empresa['nif']); ?><br>
                                     <strong>Comercial:</strong> <a href="empresa.php?id=<?php echo urlencode($empresa['id']); ?>"><?php echo htmlspecialchars($empresa['nombre_comercial']); ?></a><br>
                                     <strong>Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?><br>
                                     <strong>Teléfono:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?><br>
@@ -115,7 +112,7 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                                 <td>
                                     <strong>Interesado:</strong> <?php echo $empresa['interesado'] ? 'Sí' : 'No'; ?><br>
                                     <strong>Alumnos:</strong> <?php echo htmlspecialchars($empresa['cantidad_alumnos']); ?><br>
-                                    <strong>Notas:</strong> <?php echo htmlspecialchars($empresa['notas']); ?>
+                                    <strong>Descripción:</strong> <?php echo htmlspecialchars($empresa['descripcion']); ?>
                                 </td>
 
                                 <!-- Columna Acciones -->
@@ -135,6 +132,27 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- Modal para importar CSV -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Importar Empresas desde CSV</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="importar_empresas.php" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="csvFile" class="form-label">Seleccionar archivo CSV</label>
+                            <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Importar</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -169,7 +187,6 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
             });
         </script>
     <?php endif; ?>
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>

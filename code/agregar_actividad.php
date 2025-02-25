@@ -1,12 +1,9 @@
 <?php
 include 'conexion.php';
 
+// Obtener datos de la URL
 $id_empresa = isset($_GET['id_empresa']) ? intval($_GET['id_empresa']) : 0;
 $dni_nie_alumno = isset($_GET['dni_nie']) ? $_GET['dni_nie'] : '';
-
-if ($id_empresa === 0 && empty($dni_nie_alumno)) {
-    die("No se ha proporcionado un ID de empresa o DNI/NIE de alumno válido.");
-}
 
 $mensaje = '';
 
@@ -14,30 +11,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fecha = $_POST['fecha'];
     $tipo_actividad = $_POST['tipo_actividad'];
     $texto_registro = $_POST['texto_registro'];
-    $id_empresa_seleccionada = $_POST['id_empresa'];
-    $dni_nie_alumno_seleccionado = $_POST['dni_nie_alumno'];
+    $id_empresa_seleccionada = isset($_POST['id_empresa']) ? intval($_POST['id_empresa']) : null;
+    $dni_nie_alumno_seleccionado = $_POST['dni_nie_alumno'] ?? '';
 
+    // Validación de campos obligatorios
     if (empty($fecha) || empty($tipo_actividad) || empty($texto_registro)) {
         $mensaje = '<div class="alert alert-danger">Rellene los campos obligatorios.</div>';
     } else {
+        // Preparar consulta con parámetros opcionales
+        $query = "INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $mysqli->prepare($query);
 
-        if (!empty($id_empresa_seleccionada) && !empty($dni_nie_alumno_seleccionado)) {
-            $stmt = $mysqli->prepare("INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("issss", $id_empresa_seleccionada, $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
-        } else if (empty($id_empresa_seleccionado)) {
-            $stmt = $mysqli->prepare("INSERT INTO registro (dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
-        } else {
-            $stmt = $mysqli->prepare("INSERT INTO registro (id_empresa, dni_nie_alumno, fecha, tipo_actividad, texto_registro) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("issss", $id_empresa_seleccionada, $dni_nie_alumno_seleccionado, $fecha, $tipo_actividad, $texto_registro);
-        }
-            
-        $mensaje = ($stmt->execute()) ? '<div class="alert alert-success">Actividad agregada con éxito.</div>' : '<div class="alert alert-danger">Error al agregar la actividad: ' . $mysqli->error . '</div>';
+        // Insertar datos, permitiendo valores nulos
+        $stmt->bind_param(
+            "issss",
+            $id_empresa_seleccionada,
+            $dni_nie_alumno_seleccionado,
+            $fecha,
+            $tipo_actividad,
+            $texto_registro
+        );
+
+        // Ejecutar consulta
+        $mensaje = ($stmt->execute())
+            ? '<div class="alert alert-success">Actividad agregada con éxito.</div>'
+            : '<div class="alert alert-danger">Error al agregar la actividad: ' . $mysqli->error . '</div>';
         $stmt->close();
     }
 }
 
-// Fetch companies for the dropdown if adding activity for a student
+// Obtener lista de empresas si no hay una seleccionada
 $empresas = [];
 if (empty($id_empresa)) {
     $stmt = $mysqli->prepare("SELECT id, nombre_comercial FROM empresas");
@@ -47,7 +50,7 @@ if (empty($id_empresa)) {
     $stmt->close();
 }
 
-// Fetch students for the dropdown if adding activity for a company
+// Obtener lista de alumnos si se selecciona una empresa
 $alumnos = [];
 if ($id_empresa > 0) {
     $stmt = $mysqli->prepare("SELECT dni_nie, CONCAT(nombre, ' ', apellido1, ' ', apellido2) AS nombre_completo FROM alumnos");
@@ -89,7 +92,7 @@ $mysqli->close();
             </div>
             <?php if ($id_empresa > 0): ?>
                 <div class="mb-3">
-                    <label for="dni_nie_alumno" class="form-label">Alumno</label>
+                    <label for="dni_nie_alumno" class="form-label">Alumno (opcional)</label>
                     <select class="form-select" id="dni_nie_alumno" name="dni_nie_alumno">
                         <option value="">Seleccione un alumno</option>
                         <?php foreach ($alumnos as $alumno): ?>

@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $direccion = trim($_POST['direccion']);
     $vehiculo = $_POST['vehiculo'];
-    $clase = trim($_POST['clase']);
+    $id_grupo = trim($_POST['id_grupo']);
 
     // Validaciones básicas
     if (empty($dni_nie) || strlen($dni_nie) != 9) {
@@ -53,16 +53,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if DNI/NIE has changed
             if ($dni_nie != $_GET['dni_nie']) {
                 // DNI/NIE has changed, we need to update it
-                $stmt = $mysqli->prepare("UPDATE alumnos SET dni_nie=?, nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, clase=? WHERE dni_nie=?");
-                $stmt->bind_param("sssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $clase, $_GET['dni_nie']);
+                $stmt = $mysqli->prepare("UPDATE alumnos SET dni_nie=?, nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, id_grupo=? WHERE dni_nie=?");
+                $stmt->bind_param("sssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $id_grupo, $_GET['dni_nie']);
             } else {
                 // DNI/NIE hasn't changed, update other fields
-                $stmt = $mysqli->prepare("UPDATE alumnos SET nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, clase=? WHERE dni_nie=?");
-                $stmt->bind_param("ssssssssss", $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $clase, $dni_nie);
+                $stmt = $mysqli->prepare("UPDATE alumnos SET nombre=?, apellido1=?, apellido2=?, fecha_nacimiento=?, telefono=?, email=?, direccion=?, vehiculo=?, id_grupo=? WHERE dni_nie=?");
+                $stmt->bind_param("ssssssssss", $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $id_grupo, $dni_nie);
             }
         } else {
-            $stmt = $mysqli->prepare("INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, clase) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $clase);
+            $stmt = $mysqli->prepare("INSERT INTO alumnos (dni_nie, nombre, apellido1, apellido2, fecha_nacimiento, telefono, email, direccion, vehiculo, id_grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssss", $dni_nie, $nombre, $apellido1, $apellido2, $fecha_nacimiento, $telefono, $email, $direccion, $vehiculo, $id_grupo);
         }
 
         if ($stmt->execute()) {
@@ -80,6 +80,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
 }
+
+// Fetch groups for the dropdown
+$grupos_query = "SELECT id_grupo, CONCAT(c.nombre, ' - ', g.alias_grupo) AS nombre_grupo 
+                 FROM grupos g 
+                 JOIN catalogo_ciclos c ON g.id_ciclo = c.id_ciclo";
+$grupos_result = $mysqli->query($grupos_query);
+$grupos = $grupos_result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -93,12 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-        <header class="d-flex justify-content-between align-items-center mb-3">
-    <!-- Flecha para volver al home -->
-    <a href="alumnos.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
-        ← Volver
-    </a>
-</header>
+    <header class="d-flex justify-content-between align-items-center mb-3">
+        <a href="alumnos.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+            ← Volver
+        </a>
+    </header>
     <div class="container mt-5">
         <h1 class="text-center"><?php echo $editing ? 'Editar' : 'Crear'; ?> Alumno</h1>
 
@@ -152,12 +158,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <div class="mb-3">
-                <label for="clase" class="form-label">Clase</label>
-                <select class="form-select" id="clase" name="clase" required>
-                    <option value="2º DAM" <?php echo ($editing && $alumno['clase'] == '2º DAM') ? 'selected' : ''; ?>>2º DAM</option>
-                    <option value="1º DAM" <?php echo ($editing && $alumno['clase'] == '1º DAM') ? 'selected' : ''; ?>>1º DAM</option>
-                    <option value="2º SMR" <?php echo ($editing && $alumno['clase'] == '2º SMR') ? 'selected' : ''; ?>>2º SMR</option>
-                    <option value="1º SMR" <?php echo ($editing && $alumno['clase'] == '1º SMR') ? 'selected' : ''; ?>>1º SMR</option>
+                <label for="id_grupo" class="form-label">Grupo</label>
+                <select class="form-select" id="id_grupo" name="id_grupo" required>
+                    <?php foreach ($grupos as $grupo): ?>
+                        <option value="<?php echo $grupo['id_grupo']; ?>" <?php echo ($editing && $alumno['id_grupo'] == $grupo['id_grupo']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($grupo['nombre_grupo']); ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary"><?php echo $editing ? 'Actualizar' : 'Crear'; ?> Alumno</button>
@@ -167,3 +174,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
+
