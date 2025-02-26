@@ -1,16 +1,13 @@
 <?php
 require 'conexion.php';
 
-<<<<<<< HEAD
-header('Content-Type: application/json');
-=======
+
 session_start();
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: index.html");
     exit;
 }
->>>>>>> 7b79f9632a18645b56c083748e9f5f3763caac33
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dni_nie_alumno = $_POST['dni_nie_alumno'];
