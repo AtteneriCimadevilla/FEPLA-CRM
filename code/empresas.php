@@ -2,6 +2,12 @@
 require 'conexion.php';
 
 session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 $mostrar_popup = false;
 if (isset($_SESSION['empresa_actualizada']) && $_SESSION['empresa_actualizada']) {
     $mostrar_popup = true;
@@ -72,12 +78,8 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
             <a href="exportar_empresas.php" class="btn btn-success">
                 Exportar a CSV
             </a>
-<<<<<<< HEAD
             <button type="button" class="btn btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#importModal">
-=======
-            <!-- Nuevo botón para importar CSV -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
->>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
+
                 Importar CSV
             </button>
         </div>
@@ -145,11 +147,8 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-<<<<<<< HEAD
                     <h5 class="modal-title" id="importModalLabel">Importar Empresas desde CSV</h5>
-=======
-                    <h5 class="modal-title" id="importModalLabel">Importar CSV</h5>
->>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
+
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -197,8 +196,6 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         </script>
     <?php endif; ?>
 
-<<<<<<< HEAD
-=======
     <?php
     if (isset($_SESSION['import_success'])) {
         $importCount = $_SESSION['import_count'];
@@ -260,7 +257,6 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
         </div>
     </div>
 
->>>>>>> 88c2eaab726dc65c5641d2a6656f523cb05a7bbb
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
