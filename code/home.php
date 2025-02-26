@@ -143,6 +143,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
 
+                <!-- Módulo de Formaciones -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card dashboard-card h-100" onclick="window.location.href='formaciones.php'">
+                        <div class="card-body text-center">
+                            <i class="bi bi-journal-text card-icon text-danger"></i>
+                            <h5 class="card-title">Formaciones</h5>
+                            <p class="card-text">Gestionar formaciones en empresas</p>
+                        </div>
+                    </div>
+                </div>
                <!-- Listados -->
                 <div class="col-12 mt-5 text-center">
                     <h3>Informes</h3>

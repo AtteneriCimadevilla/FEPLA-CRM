@@ -20,7 +20,9 @@ $stmt = $mysqli->prepare("
         a.direccion AS direccion, 
         a.vehiculo AS vehiculo, 
         CONCAT(c.nombre, ' - ', g.alias_grupo) AS grupo,
-        e.nombre_comercial AS empresa
+        e.nombre_comercial AS empresa,
+        f.id_empresa,
+        f.curso
     FROM 
         alumnos a
     LEFT JOIN 
@@ -261,9 +263,16 @@ $mysqli->close();
 
         function confirmarBorrarFormacion(dni) {
             if (confirm('¿Está seguro de que desea borrar esta formación?')) {
+                // Crear FormData con los datos necesarios
+                const formData = new FormData();
+                formData.append('dni_nie', dni);
+                formData.append('id_empresa', '<?php echo $alumno["id_empresa"] ?? ""; ?>');
+                formData.append('curso', '<?php echo $alumno["curso"] ?? ""; ?>');
+
                 // Realizar una solicitud AJAX para borrar la formación
-                fetch('borrar_formacion.php?dni=' + dni, {
-                        method: 'POST'
+                fetch('borrar_formacion.php', {
+                        method: 'POST',
+                        body: formData
                     })
                     .then(response => response.json())
                     .then(data => {

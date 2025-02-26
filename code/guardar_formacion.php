@@ -1,6 +1,8 @@
 <?php
 require 'conexion.php';
 
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dni_nie_alumno = $_POST['dni_nie_alumno'];
     $id_empresa = $_POST['id_empresa'];
@@ -20,7 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $stmt->get_result();
             
             if ($result->num_rows > 0) {
-                throw new Exception("El alumno ya tiene una formación asignada para este curso");
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'El alumno ya tiene una formación asignada para este curso'
+                ]);
+                exit;
             }
 
             // Crear nueva formación
@@ -29,29 +35,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($stmt->execute()) {
-            echo "<script>
-                    alert('Formación " . ($is_editing ? "actualizada" : "creada") . " con éxito');
-                    window.opener.location.reload();
-                    window.close();
-                  </script>";
+            echo json_encode([
+                'success' => true,
+                'message' => 'Formación ' . ($is_editing ? 'actualizada' : 'creada') . ' con éxito'
+            ]);
         } else {
             throw new Exception($mysqli->error);
         }
 
     } catch (Exception $e) {
-        echo "<script>
-                alert('Error: " . addslashes($e->getMessage()) . "');
-                history.back();
-              </script>";
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ]);
     }
 
     $stmt->close();
 } else {
-    echo "<script>
-            alert('Método no permitido');
-            window.close();
-          </script>";
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método no permitido'
+    ]);
 }
 
 $mysqli->close();
 
+?>
