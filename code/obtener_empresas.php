@@ -8,15 +8,22 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-$sql_companies = "SELECT id, nombre_comercial FROM empresas";
-$result_companies = $mysqli->query($sql_companies);
+header('Content-Type: application/json');
 
-$companies = [];
-while($row = $result_companies->fetch_assoc()) {
-    $companies[] = $row;
+$sql = "SELECT id, nombre_comercial FROM empresas ORDER BY nombre_comercial";
+$result = $mysqli->query($sql);
+
+if (!$result) {
+    echo json_encode(["error" => "Error al obtener las empresas: " . $mysqli->error]);
+    exit;
 }
 
-echo json_encode($companies);
+$empresas = [];
+while ($row = $result->fetch_assoc()) {
+    $empresas[] = $row;
+}
+
+echo json_encode($empresas);
 
 $mysqli->close();
 ?>

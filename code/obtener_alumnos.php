@@ -8,26 +8,40 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-$sql_students = "SELECT 
-    a.dni_nie, 
-    CONCAT(a.nombre, ' ', a.apellido1, ' ', COALESCE(a.apellido2, '')) AS nombre_completo,
-    CONCAT(c.nombre, ' - ', g.alias_grupo) AS grupo
-FROM 
-    alumnos a
-LEFT JOIN 
-    grupos g ON a.id_grupo = g.id_grupo
-LEFT JOIN 
-    catalogo_ciclos c ON g.id_ciclo = c.id_ciclo";
+header('Content-Type: application/json');
 
-$result_students = $mysqli->query($sql_students);
+$grupo = isset($_GET['grupo']) ? $mysqli->real_escape_string($_GET['grupo']) : '';
 
-$students = [];
-while($row = $result_students->fetch_assoc()) {
-    $students[] = $row;
+if (empty($grupo)) {
+    echo json_encode(["error" => "Grupo es requerido"]);
+    exit;
 }
 
-echo json_encode($students);
+$sql = "SELECT dni_nie, CONCAT(nombre, ' ', apellido1, ' ', COALESCE(apellido2, '')) AS nombre_completo 
+        FROM alumnos WHERE id_grupo = ?";
+$stmt = $mysqli->prepare($sql);
 
+if (!$stmt) {
+    echo json_encode(["error" => "Error en la preparación de la consulta: " . $mysqli->error]);
+    exit;
+}
+
+$stmt->bind_param("i", $grupo);
+
+if (!$stmt->execute()) {
+    echo json_encode(["error" => "Error al ejecutar la consulta: " . $stmt->error]);
+    exit;
+}
+
+$result = $stmt->get_result();
+
+$alumnos = [];
+while ($row = $result->fetch_assoc()) {
+    $alumnos[] = $row;
+}
+
+echo json_encode($alumnos);
+
+$stmt->close();
 $mysqli->close();
 ?>
-
