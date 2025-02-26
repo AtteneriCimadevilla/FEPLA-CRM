@@ -122,7 +122,8 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
         .table-alumnos th,
         .table-alumnos td {
             white-space: nowrap;
-            max-width: 200px; /* Ajusta según sea necesario */
+            max-width: 200px;
+            /* Ajusta según sea necesario */
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -195,13 +196,13 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <!-- Botón para editar formación -->
                                 <td>
                                     <?php if ($alumno['empresa']): ?>
-                                        <span><?php echo htmlspecialchars($alumno['empresa']); ?></span>
-                                        <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?php echo urlencode($alumno['dni_nie']); ?>&edit=1')" class="btn btn-warning btn-sm">
-                                            Editar Formación
+                                        <span><?= htmlspecialchars($alumno['empresa']) ?></span>
+                                        <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?= urlencode($alumno['dni_nie']) ?>&id_ciclo=<?= urlencode($alumno['id_ciclo']) ?>&id_grupo=<?= urlencode($alumno['id_grupo']) ?>&edit=1')" class="btn btn-warning btn-sm">
+                                            Editar formación
                                         </button>
                                     <?php else: ?>
-                                        <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?php echo urlencode($alumno['dni_nie']); ?>')" class="btn btn-primary btn-sm">
-                                            Crear Formación
+                                        <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?= urlencode($alumno['dni_nie']) ?>&id_ciclo=<?= urlencode($alumno['id_ciclo']) ?>&id_grupo=<?= urlencode($alumno['id_grupo']) ?>')" class="btn btn-primary btn-sm">
+                                            Crear formación
                                         </button>
                                     <?php endif; ?>
                                 </td>
@@ -257,4 +258,3 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
 </body>
 
 </html>
-
