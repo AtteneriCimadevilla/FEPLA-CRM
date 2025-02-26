@@ -3,15 +3,15 @@ require_once "conexion.php";
 
 header('Content-Type: application/json');
 
-$grupo = isset($_GET['grupo']) ? $mysqli->real_escape_string($_GET['grupo']) : '';
+$ciclo = isset($_GET['ciclo']) ? $mysqli->real_escape_string($_GET['ciclo']) : '';
+$curso = isset($_GET['curso']) ? $mysqli->real_escape_string($_GET['curso']) : '';
 
-if (empty($grupo)) {
-    echo json_encode(["error" => "Grupo es requerido"]);
+if (empty($ciclo) || empty($curso)) {
+    echo json_encode(["error" => "Ciclo y curso son requeridos"]);
     exit;
 }
 
-$sql = "SELECT dni_nie, CONCAT(nombre, ' ', apellido1, ' ', COALESCE(apellido2, '')) AS nombre_completo 
-        FROM alumnos WHERE id_grupo = ?";
+$sql = "SELECT id_grupo, alias_grupo FROM grupos WHERE id_ciclo = ? AND curso = ?";
 $stmt = $mysqli->prepare($sql);
 
 if (!$stmt) {
@@ -19,7 +19,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $grupo);
+$stmt->bind_param("is", $ciclo, $curso);
 
 if (!$stmt->execute()) {
     echo json_encode(["error" => "Error al ejecutar la consulta: " . $stmt->error]);
@@ -28,12 +28,12 @@ if (!$stmt->execute()) {
 
 $result = $stmt->get_result();
 
-$alumnos = [];
+$grupos = [];
 while ($row = $result->fetch_assoc()) {
-    $alumnos[] = $row;
+    $grupos[] = $row;
 }
 
-echo json_encode($alumnos);
+echo json_encode($grupos);
 
 $stmt->close();
 $mysqli->close();

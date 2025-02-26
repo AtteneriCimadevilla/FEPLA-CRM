@@ -7,33 +7,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $curso = $_POST['curso'];
     $is_editing = $_POST['is_editing'] === '1';
 
-    // Comprobar si el alumno ya tiene una formación asignada
-    $stmt = $mysqli->prepare("SELECT id_empresa FROM formaciones WHERE dni_nie_alumno = ?");
-    $stmt->bind_param("s", $dni_nie_alumno);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $existing_formacion = $result->fetch_assoc();
-    $stmt->close();
+    try {
+        if ($is_editing) {
+            // Actualizar formación existente
+            $stmt = $mysqli->prepare("UPDATE formaciones SET curso = ? WHERE dni_nie_alumno = ? AND id_empresa = ?");
+            $stmt->bind_param("ssi", $curso, $dni_nie_alumno, $id_empresa);
+        } else {
+            // Verificar si ya existe una formación para este alumno en este curso
+            $stmt = $mysqli->prepare("SELECT id_empresa FROM formaciones WHERE dni_nie_alumno = ? AND curso = ?");
+            $stmt->bind_param("ss", $dni_nie_alumno, $curso);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                throw new Exception("El alumno ya tiene una formación asignada para este curso");
+            }
 
-    if ($is_editing || $existing_formacion) {
-        // Actualizar la formación existente
-        $stmt = $mysqli->prepare("UPDATE formaciones SET id_empresa = ?, curso = ? WHERE dni_nie_alumno = ?");
-        $stmt->bind_param("iss", $id_empresa, $curso, $dni_nie_alumno);
-    } else {
-        // Crear una nueva formación
-        $stmt = $mysqli->prepare("INSERT INTO formaciones (dni_nie_alumno, id_empresa, curso) VALUES (?, ?, ?)");
-        $stmt->bind_param("sis", $dni_nie_alumno, $id_empresa, $curso);
-    }
+            // Crear nueva formación
+            $stmt = $mysqli->prepare("INSERT INTO formaciones (dni_nie_alumno, id_empresa, curso) VALUES (?, ?, ?)");
+            $stmt->bind_param("sis", $dni_nie_alumno, $id_empresa, $curso);
+        }
 
-    if ($stmt->execute()) {
+        if ($stmt->execute()) {
+            echo "<script>
+                    alert('Formación " . ($is_editing ? "actualizada" : "creada") . " con éxito');
+                    window.opener.location.reload();
+                    window.close();
+                  </script>";
+        } else {
+            throw new Exception($mysqli->error);
+        }
+
+    } catch (Exception $e) {
         echo "<script>
-                alert('Formación " . ($is_editing ? "actualizada" : "creada") . " con éxito');
-                window.opener.location.reload();
-                window.close();
-              </script>";
-    } else {
-        echo "<script>
-                alert('Error al " . ($is_editing ? "actualizar" : "crear") . " la formación: " . $mysqli->error . "');
+                alert('Error: " . addslashes($e->getMessage()) . "');
                 history.back();
               </script>";
     }
@@ -47,3 +54,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $mysqli->close();
+
