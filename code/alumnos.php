@@ -196,9 +196,13 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                 <td>
                                     <?php if ($alumno['empresa']): ?>
                                         <span><?php echo htmlspecialchars($alumno['empresa']); ?></span>
-                                        <button class="btn btn-warning btn-sm btn-edit" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Editar</button>
+                                        <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?php echo urlencode($alumno['dni_nie']); ?>&edit=1')" class="btn btn-warning btn-sm">
+                                            Editar Formación
+                                        </button>
                                     <?php else: ?>
-                                        <button class="btn btn-primary btn-sm btn-create" data-dni="<?= htmlspecialchars($alumno['dni_nie']) ?>">Crear formación</button>
+                                        <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?php echo urlencode($alumno['dni_nie']); ?>')" class="btn btn-primary btn-sm">
+                                            Crear Formación
+                                        </button>
                                     <?php endif; ?>
                                 </td>
                                 <td>
@@ -217,29 +221,6 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                     <?php endif; ?>
                 </tbody>
             </table>
-
-            <!-- MODAL/POPUP PARA ASIGNAR FORMACIONES -->
-            <div id="modalFormacion" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <form id="formFormacion" method="post" action="formacion_handler.php">
-                        <input type="hidden" name="dni_nie" id="dni_nie">
-                        <label for="empresa">Empresa:</label>
-                        <select name="empresa" id="empresa">
-                            <option value="">Seleccionar empresa</option>
-                            <?php echo $empresas_options; ?>
-                        </select>
-                        <label for="curso">Curso:</label>
-                        <select name="curso" id="curso">
-                            <option value="24/25" selected>24/25</option> <!-- Predefinir 24/25 -->
-                            <option value="25/26">25/26</option>
-                            <option value="26/27">26/27</option>
-                        </select>
-                        <button type="submit" name="action" value="save">Guardar</button>
-                        <button type="submit" name="action" value="delete">Eliminar asociación</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -268,6 +249,12 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="alumnos.js"></script>
+    <script>
+        function abrirVentanaEmergente(url) {
+            window.open(url, 'VentanaEmergente', 'width=800,height=800,resizable=yes,scrollbars=yes');
+        }
+    </script>
 </body>
 
 </html>
+

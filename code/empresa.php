@@ -141,18 +141,19 @@ $mysqli->close();
 
         <!-- Botón Crear Formación -->
         <div class="acciones text-center">
-            <a href="crear_formacion.php?empresa_id=<?php echo $empresa['id']; ?>" class="btn btn-success">
+            <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=empresa&id_empresa=<?php echo $empresa['id']; ?>')" class="btn btn-success">
                 Crear Formación
-            </a>
+            </button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function abrirVentanaEmergente(url) {
-            window.open(url, 'VentanaEmergente', 'width=800,height=600,resizable=yes');
+            window.open(url, 'VentanaEmergente', 'width=800,height=800,resizable=yes,scrollbars=yes');
         }
     </script>
 </body>
 
 </html>
+
