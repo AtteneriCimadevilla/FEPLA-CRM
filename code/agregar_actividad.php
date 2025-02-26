@@ -1,6 +1,13 @@
 <?php
 include 'conexion.php';
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 // Obtener datos de la URL
 $id_empresa = isset($_GET['id_empresa']) ? intval($_GET['id_empresa']) : null;
 $dni_nie_alumno = isset($_GET['dni_nie']) ? $_GET['dni_nie'] : null;
