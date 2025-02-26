@@ -133,7 +133,7 @@ VALUES (
         'Pastor',
         '5464474',
         'd.perezpastor@edu.gva.es',
-        'admin'
+        'user'
     ),
     (
         '56789123Z',
@@ -393,7 +393,7 @@ VALUES (
         '2000-08-08',
         '618253876',
         'juanvegasaenz@gmail.com',
-        'C/Mercurio',
+        'C/ Mercurio',
         'Si',
         1
     ),
@@ -405,7 +405,7 @@ VALUES (
         '2003-01-08',
         '950254837',
         'salvadorperez@gmail.com',
-        'C/Real del barrio alto',
+        'C/ Real del barrio alto',
         'No',
         2
     ),
@@ -417,7 +417,7 @@ VALUES (
         '1999-05-06',
         '628349590',
         'Helenkoos@gmail.com',
-        'C/Estrella fugaz',
+        'C/ Estrella fugaz',
         'Si',
         3
     ),
@@ -429,7 +429,7 @@ VALUES (
         '2002-11-10',
         '612345678',
         'mariagarcia@gmail.com',
-        'C/Luna Nueva',
+        'C/ Luna Nueva',
         'No',
         1
     ),
@@ -441,7 +441,7 @@ VALUES (
         '2001-04-22',
         '613245678',
         'pablohernandez@gmail.com',
-        'C/Arco Iris',
+        'C/ Arco Iris',
         'Si',
         3
     ),
@@ -453,7 +453,7 @@ VALUES (
         '2000-07-15',
         '614345678',
         'luciaruiz@gmail.com',
-        'C/Norte',
+        'C/ Norte',
         'No',
         2
     ),
@@ -465,7 +465,7 @@ VALUES (
         '2003-09-05',
         '615445678',
         'alejandrodiaz@gmail.com',
-        'C/Campo Verde',
+        'C/ Campo Verde',
         'Si',
         4
     ),
@@ -477,7 +477,7 @@ VALUES (
         '1999-03-18',
         '616545678',
         'saramoreno@gmail.com',
-        'C/Sol Naciente',
+        'C/ Sol Naciente',
         'No',
         4
     ),
@@ -489,7 +489,7 @@ VALUES (
         '2002-12-24',
         '617645678',
         'miguelsantos@gmail.com',
-        'C/Océano',
+        'C/ Océano',
         'Si',
         1
     ),
@@ -501,7 +501,7 @@ VALUES (
         '2001-05-30',
         '618745678',
         'carmenlopez@gmail.com',
-        'C/Lago Azul',
+        'C/ Lago Azul',
         'No',
         2
     );
