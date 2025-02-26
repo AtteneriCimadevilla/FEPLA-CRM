@@ -54,6 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const formData = new FormData(this);
 
+            // Si es una eliminación, pedir confirmación
+            if (formData.get('action') === 'delete') {
+                if (!confirm('¿Está seguro de que desea eliminar esta formación? Esta acción no se puede deshacer.')) {
+                    return;
+                }
+            }
+
             fetch("formacion_handler.php", {
                 method: "POST",
                 body: formData,
