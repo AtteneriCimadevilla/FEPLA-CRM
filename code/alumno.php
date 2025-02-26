@@ -1,6 +1,13 @@
 <?php
 require 'conexion.php';
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 // Verificar si el parámetro 'dni' está en la URL
 if (isset($_GET['dni_nie']) && !empty($_GET['dni_nie'])) {
     $dni_nie = $_GET['dni_nie']; // Obtener el DNI/NIE desde la URL

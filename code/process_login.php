@@ -1,4 +1,9 @@
 <?php
+
+//////////////////////////////////////////
+// NO SÉ SI ESTE ARCHIVO SE ESTÁ USANDO //
+//////////////////////////////////////////
+
 // process_login.php
 session_start();
 require_once 'conexion.php'; // Asegúrate de que esta ruta sea correcta

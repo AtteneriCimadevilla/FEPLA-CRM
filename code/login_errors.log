@@ -1,2 +1,163 @@
+<<<<<<< HEAD
 [2025-02-26 16:05:20] Login error: Attempting login for email: ja.sanchezortiz@edu.gva.es
 [2025-02-26 16:05:20] Login error: Login successful for email: ja.sanchezortiz@edu.gva.es
+=======
+<<<<<<< HEAD
+[2024-12-16 16:35:11] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-16 16:35:11] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-17 23:58:52] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-17 23:58:52] Login error: Login successful for email: davidschmidt@gmail.com
+=======
+[2024-12-16 17:05:31] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-16 17:05:31] Login error: Login successful for email: zoeramirez@gmail.com
+[2024-12-17 01:56:06] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-17 01:56:07] Login error: Login successful for email: zoeramirez@gmail.com
+[2024-12-17 01:57:00] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-17 01:57:00] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-17 15:31:06] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-17 15:31:06] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2024-12-17 15:32:32] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-17 15:32:32] Login error: Login successful for email: zoeramirez@gmail.com
+>>>>>>> 0750e502d26e1ed964443256302d6361b089731a
+<<<<<<< HEAD
+[2024-12-18 16:37:18] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-18 16:37:18] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-18 16:37:37] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-18 16:37:37] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-18 20:05:13] Login error: Attempting login for email: fsd@fasd.es
+[2024-12-18 20:05:13] Login error: Login successful for email: fsd@fasd.es
+=======
+[2024-12-18 15:57:38] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 15:57:38] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 16:07:09] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:07:09] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 16:20:28] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:20:28] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2024-12-18 16:20:37] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:20:37] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2024-12-18 16:21:27] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:21:27] Login error: Login successful for email: davidschmidt@gmail.com
+<<<<<<< HEAD
+>>>>>>> e6108010f36721d41d4532a0275ce9db5b32bff1
+=======
+[2024-12-18 16:30:51] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:30:51] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 16:51:21] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:51:21] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 16:52:53] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 16:52:53] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-18 19:44:50] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 19:44:50] Login error: Login successful for email: davidschmidt@gmail.com
+>>>>>>> fd05f9c51163676a994332d00386f5850a2ec567
+[2024-12-18 22:58:23] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-18 22:58:23] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-18 23:02:52] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 23:02:52] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2024-12-18 23:03:01] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-18 23:03:01] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-19 01:41:55] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-19 01:41:55] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-19 03:53:17] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-19 03:53:17] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2024-12-19 03:53:25] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-19 03:53:25] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2024-12-19 03:54:01] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-19 03:54:01] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2024-12-19 03:54:15] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-19 03:54:15] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2024-12-19 03:56:42] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-19 03:56:42] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-19 03:57:43] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-19 03:57:43] Login error: Login successful for email: zoeramirez@gmail.com
+[2024-12-19 04:01:50] Login error: Attempting login for email: alfredomorissete@gmail.com
+[2024-12-19 04:01:51] Login error: Incorrect password for email: alfredomorissete@gmail.com
+[2024-12-19 04:22:03] Login error: Attempting login for email: john@mail.com
+[2024-12-19 04:22:03] Login error: Login successful for email: john@mail.com
+[2024-12-19 04:26:08] Login error: Attempting login for email: alfredomorissete@gmail.com
+[2024-12-19 04:26:08] Login error: Incorrect password for email: alfredomorissete@gmail.com
+[2024-12-19 04:26:39] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-19 04:26:39] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-19 04:26:54] Login error: Attempting login for email: alfredomorissete@gmail.com
+[2024-12-19 04:26:54] Login error: Incorrect password for email: alfredomorissete@gmail.com
+[2024-12-19 04:27:02] Login error: Attempting login for email: alfredomorissete@gmail.com
+[2024-12-19 04:27:02] Login error: Incorrect password for email: alfredomorissete@gmail.com
+[2024-12-19 04:27:58] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-19 04:27:58] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2024-12-19 04:28:06] Login error: Attempting login for email: zoeramirez@gmail.com
+[2024-12-19 04:28:06] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2024-12-19 04:28:34] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2024-12-19 04:28:34] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+[2024-12-19 04:29:34] Login error: Attempting login for email: melinda@mail.com
+[2024-12-19 04:29:34] Login error: Login successful for email: melinda@mail.com
+[2024-12-19 14:24:17] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-19 14:24:17] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-19 16:02:30] Login error: Attempting login for email: davidschmidt@gmail.com
+[2024-12-19 16:02:30] Login error: Login successful for email: davidschmidt@gmail.com
+[2024-12-19 16:43:31] Login error: Attempting login for email: vj.santonja@mail.com
+[2024-12-19 16:43:31] Login error: Login successful for email: vj.santonja@mail.com
+<<<<<<< HEAD
+[2025-01-16 15:17:26] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-16 15:17:26] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2025-01-16 15:17:35] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-16 15:17:35] Login error: Login successful for email: davidschmidt@gmail.com
+[2025-01-16 15:23:13] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-16 15:23:13] Login error: Login successful for email: davidschmidt@gmail.com
+[2025-01-16 15:24:47] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-16 15:24:47] Login error: Login successful for email: davidschmidt@gmail.com
+=======
+[2025-01-09 15:04:23] Login error: Attempting login for email: zoeramirez@gmail.com
+[2025-01-09 15:04:23] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2025-01-09 15:05:59] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2025-01-09 15:05:59] Login error: Email not found: attrodsan@alu.edu.gva.es
+[2025-01-09 15:17:34] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2025-01-09 15:17:34] Login error: Login successful for email: attrodsan@alu.edu.gva.es
+>>>>>>> 59e11e026b9c9207af47b5c35c98f256559d3740
+[2025-01-23 14:23:56] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-23 14:23:56] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2025-01-23 14:24:05] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-23 14:24:05] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2025-01-23 14:24:32] Login error: Attempting login for email: zoeramirez@gmail.com
+[2025-01-23 14:24:32] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2025-01-23 14:24:47] Login error: Attempting login for email: zoeramirez@gmail.com
+[2025-01-23 14:24:47] Login error: Incorrect password for email: zoeramirez@gmail.com
+[2025-01-23 14:24:58] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-23 14:24:58] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2025-01-23 14:25:07] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-23 14:25:07] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2025-01-23 14:43:05] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-23 14:43:05] Login error: Incorrect password for email: davidschmidt@gmail.com
+[2025-01-23 14:47:14] Login error: Attempting login for email: davidschmidt@gmail.com
+[2025-01-23 14:47:14] Login error: Login successful for email: davidschmidt@gmail.com
+[2025-02-13 15:05:53] Login error: Attempting login for email: vj.santonjaivorra@edu.gva.es
+[2025-02-13 15:05:53] Login error: Incorrect password for email: vj.santonjaivorra@edu.gva.es
+[2025-02-13 15:07:05] Login error: Attempting login for email: mady@mady.com
+[2025-02-13 15:07:06] Login error: Login successful for email: mady@mady.com
+[2025-02-20 15:32:20] Login error: Attempting login for email: mady@mady.com
+[2025-02-20 15:32:20] Login error: Email not found: mady@mady.com
+[2025-02-20 15:36:53] Login error: Attempting login for email: vj.santonjaivorra@edu.gva.es
+[2025-02-20 15:36:53] Login error: Incorrect password for email: vj.santonjaivorra@edu.gva.es
+[2025-02-20 15:37:56] Login error: Attempting login for email: vj.santonjaivorra@edu.gva.es
+[2025-02-20 15:37:57] Login error: Login successful for email: vj.santonjaivorra@edu.gva.es
+[2025-02-20 16:51:10] Login error: Attempting login for email: vj.santonjaivorra@edu.gva.es
+[2025-02-20 16:51:10] Login error: Login successful for email: vj.santonjaivorra@edu.gva.es
+[2025-02-26 02:14:23] Login error: Attempting login for email: attrodsan@alu.edu.gva.es
+[2025-02-26 02:14:23] Login error: Email not found: attrodsan@alu.edu.gva.es
+[2025-02-26 02:14:57] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 02:14:57] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 02:17:59] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 02:17:59] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 02:51:27] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 02:51:27] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:46:31] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:46:31] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:47:01] Login error: Attempting login for email: vj.santonjaivorra@edu.gva.es
+[2025-02-26 04:47:01] Login error: Login successful for email: vj.santonjaivorra@edu.gva.es
+[2025-02-26 04:47:45] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:47:45] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:49:26] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:49:26] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:50:42] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:50:42] Login error: Login successful for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:51:13] Login error: Attempting login for email: d.pascualanton@edu.gva.es
+[2025-02-26 04:51:13] Login error: Login successful for email: d.pascualanton@edu.gva.es
+>>>>>>> 7b79f9632a18645b56c083748e9f5f3763caac33

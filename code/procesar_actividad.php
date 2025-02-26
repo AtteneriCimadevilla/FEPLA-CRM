@@ -2,7 +2,17 @@
 session_start();
 require_once "conexion.php";
 
-header('Content-Type: application/json');
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nota = $mysqli->real_escape_string($_POST['nota']);
+    $fecha = $mysqli->real_escape_string($_POST['fecha']);
+    $empresa_id = $mysqli->real_escape_string($_POST['empresa']);
+    $alumno_dni = $mysqli->real_escape_string($_POST['alumno']);
+    $profesor_dni = $_SESSION['dni_nie']; // Assuming you store the professor's DNI in the session
 
 // Verificar método HTTP
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
@@ -119,5 +129,4 @@ try {
     }
     $mysqli->close();
 }
-?>
-
+}

@@ -1,6 +1,13 @@
 <?php
 require_once "conexion.php";
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 header('Content-Type: application/json');
 
 $sql = "SELECT id, nombre_comercial FROM empresas ORDER BY nombre_comercial";

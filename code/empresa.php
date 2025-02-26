@@ -1,6 +1,13 @@
 <?php
 include 'conexion.php';
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
@@ -59,8 +66,8 @@ $mysqli->close();
 <body>
     <div class="container mt-5">
         <header>
-        <a href="empresas.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
-        ← Volver </a>   
+            <a href="empresas.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+                ← Volver </a>
             <h1 class="text-center mb-4">Detalles de Empresa</h1>
         </header>
 

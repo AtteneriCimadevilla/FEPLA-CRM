@@ -1,5 +1,13 @@
 <?php
 require 'conexion.php';
+
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 // Variables para manejar errores y mensajes de éxito
 $errores = [];
 $exito = "";
@@ -174,4 +182,3 @@ $grupos = $grupos_result->fetch_all(MYSQLI_ASSOC);
 </body>
 
 </html>
-

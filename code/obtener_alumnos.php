@@ -1,6 +1,13 @@
 <?php
 require_once "conexion.php";
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 header('Content-Type: application/json');
 
 $grupo = isset($_GET['grupo']) ? $mysqli->real_escape_string($_GET['grupo']) : '';
