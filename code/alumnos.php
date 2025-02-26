@@ -2,6 +2,12 @@
 require 'conexion.php';
 
 session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 $mostrar_popup = false;
 if (isset($_SESSION['alumno_actualizado']) && $_SESSION['alumno_actualizado']) {
     $mostrar_popup = true;
