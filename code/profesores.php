@@ -52,11 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $mensaje = "Profesor agregado correctamente.";
     } elseif ($accion === 'edit') {
-<<<<<<< HEAD
+
         // Actualizar profesor
-=======
+
         // Construir la consulta sin actualizar la contraseña si está vacía
->>>>>>> d4676bb6aea2391486c8e2593252460fceaecb6f
         if (!empty($contrasenya)) {
             $hash_contrasenya = password_hash($contrasenya, PASSWORD_DEFAULT);
             $query = "UPDATE profesores SET contrasenya = ?, nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
@@ -68,10 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("sssssss", $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
         }
         $stmt->execute();
-<<<<<<< HEAD
-=======
 
->>>>>>> d4676bb6aea2391486c8e2593252460fceaecb6f
         $mensaje = "Profesor actualizado correctamente.";
     } elseif ($accion === 'delete') {
         // Eliminar profesor
@@ -80,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("s", $dni_nie);
         $stmt->execute();
-<<<<<<< HEAD
         $result = $stmt->get_result()->fetch_assoc();
 
         if ($result['total'] > 0) {
@@ -95,13 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Redirigir para evitar reenvío de formularios
-=======
-
-        $mensaje = "Profesor eliminado correctamente.";
-    }
-
-    // Redirigir con mensaje en la URL
->>>>>>> d4676bb6aea2391486c8e2593252460fceaecb6f
     header("Location: " . $_SERVER['PHP_SELF'] . "?success=" . urlencode($mensaje));
     exit();
 }
