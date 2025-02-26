@@ -18,8 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     logError("Attempting login for email: " . $email);
 
-    $sql = "SELECT dni_nie, nombre, email, tipo_usuario, contrasenya FROM profesores WHERE email = ?";
-
+    $sql = "SELECT p.dni_nie, p.nombre, p.email, p.tipo_usuario, p.contrasenya, g.id_grupo 
+            FROM profesores p 
+            LEFT JOIN grupos g ON p.dni_nie = g.dni_tutor 
+            WHERE p.email = ?";
+            
     if ($stmt = $mysqli->prepare($sql)) {
         $stmt->bind_param("s", $param_email);
         $param_email = $email;
@@ -35,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION["nombre"] = $row['nombre'];
                     $_SESSION["email"] = $row['email'];
                     $_SESSION["tipo_usuario"] = $row['tipo_usuario'];
+                    $_SESSION["id_grupo"] = $row['id_grupo'] ?? null; // Guardar el grupo si es tutor
+                    
                     logError("Login successful for email: " . $email);
                     echo json_encode(["status" => "success", "message" => "Inicio de sesión exitoso"]);
                 } else {
