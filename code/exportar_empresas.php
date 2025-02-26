@@ -1,6 +1,12 @@
 <?php
 require 'conexion.php';
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
 
 // Establecer cabeceras para descarga de archivo con codificación correcta
 header('Content-Type: text/csv; charset=ISO-8859-1');

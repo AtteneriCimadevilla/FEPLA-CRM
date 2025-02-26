@@ -1,6 +1,13 @@
 <?php
 require 'conexion.php';
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dni_nie_alumno = $_POST['dni_nie_alumno'];
     $id_empresa = $_POST['id_empresa'];

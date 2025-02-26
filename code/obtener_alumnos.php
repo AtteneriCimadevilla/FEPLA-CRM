@@ -1,6 +1,13 @@
 <?php
 require_once "conexion.php";
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 $sql_students = "SELECT 
     a.dni_nie, 
     CONCAT(a.nombre, ' ', a.apellido1, ' ', COALESCE(a.apellido2, '')) AS nombre_completo,

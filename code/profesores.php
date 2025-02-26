@@ -1,6 +1,18 @@
 <?php
 require 'conexion.php';
 
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
+if ($_SESSION["tipo_usuario"] !== "admin") {
+    header("location: home.php");
+    exit;
+}
+
 // Función para obtener la lista de profesores
 function obtenerProfesores($mysqli)
 {
@@ -72,12 +84,12 @@ $profesores = obtenerProfesores($mysqli);
 </head>
 
 <body>
-        <header class="d-flex justify-content-between align-items-center mb-3">
-    <!-- Flecha para volver al home -->
-    <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
-        ← Volver al Home
-    </a>
-</header>
+    <header class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Flecha para volver al home -->
+        <a href="home.php" class="btn btn-outline-secondary btn-sm" style="position: absolute; top: 10px; left: 10px;">
+            ← Volver al Home
+        </a>
+    </header>
     <div class="container my-4">
         <h1 class="text-center">Gestión de Profesores</h1>
 

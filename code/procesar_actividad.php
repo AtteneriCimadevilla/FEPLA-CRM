@@ -2,6 +2,11 @@
 session_start();
 require_once "conexion.php";
 
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nota = $mysqli->real_escape_string($_POST['nota']);
     $fecha = $mysqli->real_escape_string($_POST['fecha']);

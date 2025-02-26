@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: index.html");
     exit;
 }
@@ -9,6 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,10 +22,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             transition: transform 0.2s, box-shadow 0.2s;
             cursor: pointer;
         }
-        
+
         .dashboard-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .card-icon {
@@ -52,20 +53,24 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         }
 
         .gap-3 {
-            gap: 20px; /* Espaciado uniforme entre botones */
+            gap: 20px;
+            /* Espaciado uniforme entre botones */
         }
 
         .listados-btn {
-            width: 250px; /* Ancho fijo para todos los botones */
-            height: 60px; /* Altura fija */
-            font-size: 1.2rem; /* Tamaño del texto uniforme */
+            width: 250px;
+            /* Ancho fijo para todos los botones */
+            height: 60px;
+            /* Altura fija */
+            font-size: 1.2rem;
+            /* Tamaño del texto uniforme */
             display: inline-block;
             text-align: center;
             vertical-align: middle;
         }
-
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -98,16 +103,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
 
                 <div class="row g-4">
-                    <!-- Módulo Profesores -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card dashboard-card h-100" onclick="window.location.href='profesores.php'">
-                            <div class="card-body text-center">
-                                <i class="bi bi-person-video3 card-icon text-primary"></i>
-                                <h5 class="card-title">Profesores</h5>
-                                <p class="card-text">Gestionar profesores</p>
+                    <?php if ($_SESSION["tipo_usuario"] === "admin") : ?>
+                        <!-- Módulo Profesores (Solo para admin) -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card dashboard-card h-100" onclick="window.location.href='profesores.php'">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-person-video3 card-icon text-primary"></i>
+                                    <h5 class="card-title">Profesores</h5>
+                                    <p class="card-text">Gestionar profesores</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
 
                     <!-- Módulo Empresas -->
                     <div class="col-md-6 col-lg-3">
@@ -143,7 +150,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
 
-               <!-- Listados -->
+                <!-- Listados -->
                 <div class="col-12 mt-5 text-center">
                     <h3>Informes</h3>
                     <div class="d-flex justify-content-center mt-3 gap-3">
@@ -161,4 +168,5 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
