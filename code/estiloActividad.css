@@ -1,34 +1,56 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-main);
+}
+
 .form-container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2em;
+    background-color: var(--background-paper);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(26, 35, 126, 0.1);
 }
 
 .form-group {
     margin-bottom: 20px;
 }
 
+.form-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: var(--primary-main);
+    border-color: var(--primary-main);
+    color: var(--background-paper);
+    width: 100%;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 35, 126, 0.2);
 }
 
 .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
+    background-color: var(--primary-light);
+    border-color: var(--primary-light);
+    color: var(--background-paper);
+    transition: all 0.3s ease;
+    width: 100%;
+    padding: 0.5rem 1rem;
 }
 
 .btn-secondary:hover {
-    background-color: #545b62;
-    border-color: #4e555b;
+    background-color: var(--primary-main);
+    border-color: var(--primary-main);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 35, 126, 0.2);
 }
 
 #message {
@@ -39,17 +61,25 @@
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
 .alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+    color: var(--success-main);
+    background-color: var(--success-light);
+    border-color: var(--success-border);
 }
 
 .alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+    color: var(--error-main);
+    background-color: var(--error-light);
+    border-color: var(--error-border);
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        margin-top: 1em;
+        padding: 1em;
+    }
 }

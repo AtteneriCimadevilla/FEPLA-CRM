@@ -17,58 +17,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="estilos.css">
-    <style>
-        .dashboard-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .sidebar {
-            min-height: 100vh;
-            background-color: #333;
-            padding-top: 2rem;
-        }
-
-        .main-content {
-            padding: 2rem;
-        }
-
-        .nav-link {
-            color: white;
-            padding: 0.5rem 1rem;
-        }
-
-        .nav-link:hover {
-            background-color: #444;
-        }
-
-        .gap-3 {
-            gap: 20px;
-            /* Espaciado uniforme entre botones */
-        }
-
-        .listados-btn {
-            width: 250px;
-            /* Ancho fijo para todos los botones */
-            height: 60px;
-            /* Altura fija */
-            font-size: 1.2rem;
-            /* Tamaño del texto uniforme */
-            display: inline-block;
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
 </head>
 
 <body>
@@ -78,8 +26,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <div class="col-md-2 sidebar">
                 <div class="d-flex flex-column">
                     <div class="text-center mb-4">
-                        <img src="logo.png" alt="logo" class="logo img-fluid mb-3" style="max-width: 120px;">
-                        <h5 class="text-white">CRM-FEPLA</h5>
+                        <img src="logo.png" alt="logo" class="logo img-fluid mb-3">
                     </div>
                     <div class="nav flex-column">
                         <a href="home.php" class="nav-link active">
@@ -138,26 +85,25 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         </div>
                     </div>
 
-                    <!-- Módulo Actividad -->
+                    <!-- Módulo Formaciones -->
                     <div class="col-md-6 col-lg-3">
-                        <div class="card dashboard-card h-100" onclick="window.location.href='actividad.php'">
+                        <div class="card dashboard-card h-100" onclick="window.location.href='formaciones.php'">
                             <div class="card-body text-center">
-                                <i class="bi bi-activity card-icon text-warning"></i>
-                                <h5 class="card-title">Actividad</h5>
-                                <p class="card-text">Ver actividad reciente</p>
+                                <i class="bi bi-journal-text card-icon text-danger"></i>
+                                <h5 class="card-title">Formaciones</h5>
+                                <p class="card-text">Gestionar formaciones</p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-
-                <!-- Módulo de Formaciones -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="card dashboard-card h-100" onclick="window.location.href='formaciones.php'">
-                        <div class="card-body text-center">
-                            <i class="bi bi-journal-text card-icon text-danger"></i>
-                            <h5 class="card-title">Formaciones</h5>
-                            <p class="card-text">Gestionar formaciones en empresas</p>
+                    <!-- Módulo Actividad -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card dashboard-card h-100" onclick="window.location.href='actividades.php'">
+                            <div class="card-body text-center">
+                                <i class="bi bi-activity card-icon text-warning"></i>
+                                <h5 class="card-title">Actividades</h5>
+                                <p class="card-text">Ver actividades</p>
+                            </div>
                         </div>
                     </div>
                 </div>
