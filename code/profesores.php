@@ -50,22 +50,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("ssssssss", $dni_nie, $hash_contrasenya, $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario);
         $stmt->execute();
+        $mensaje = "Profesor agregado correctamente.";
     } elseif ($accion === 'edit') {
-        // Editar profesor
-        $query = "UPDATE profesores SET contrasenya = ?, nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("ssssssss", $contrasenya, $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
+        // Construir la consulta sin actualizar la contraseña si está vacía
+        if (!empty($contrasenya)) {
+            $hash_contrasenya = password_hash($contrasenya, PASSWORD_DEFAULT);
+            $query = "UPDATE profesores SET contrasenya = ?, nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
+            $stmt = $mysqli->prepare($query);
+            $stmt->bind_param("ssssssss", $hash_contrasenya, $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
+        } else {
+            $query = "UPDATE profesores SET nombre = ?, apellido1 = ?, apellido2 = ?, telefono = ?, email = ?, tipo_usuario = ? WHERE dni_nie = ?";
+            $stmt = $mysqli->prepare($query);
+            $stmt->bind_param("sssssss", $nombre, $apellido1, $apellido2, $telefono, $email, $tipo_usuario, $dni_nie);
+        }
         $stmt->execute();
+
+        $mensaje = "Profesor actualizado correctamente.";
     } elseif ($accion === 'delete') {
         // Eliminar profesor
         $query = "DELETE FROM profesores WHERE dni_nie = ?";
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("s", $dni_nie);
         $stmt->execute();
+
+        $mensaje = "Profesor eliminado correctamente.";
     }
 
-    // Redirigir para evitar reenvío de formularios
-    header("Location: " . $_SERVER['PHP_SELF']);
+    // Redirigir con mensaje en la URL
+    header("Location: " . $_SERVER['PHP_SELF'] . "?success=" . urlencode($mensaje));
     exit();
 }
 
@@ -158,14 +170,13 @@ $profesores = obtenerProfesores($mysqli);
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label for="contrasenya">Contraseña</label>
-                    <input type="password" class="form-control" id="contrasenya" name="contrasenya" required>
+                    <input type="password" class="form-control" id="contrasenya" name="contrasenya">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="tipo_usuario">Tipo de Usuario</label>
                     <select class="form-control" id="tipo_usuario" name="tipo_usuario">
                         <option value="user">Usuario</option>
                         <option value="admin">Administrador</option>
-                        <option value="root">Root</option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
@@ -188,6 +199,16 @@ $profesores = obtenerProfesores($mysqli);
             document.getElementById('tipo_usuario').value = data.tipo_usuario;
         }
     </script>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('success')) {
+                alert(urlParams.get('success'));
+                history.replaceState({}, document.title, window.location.pathname);
+            }
+        };
+    </script>
+
 </body>
 
 </html>
