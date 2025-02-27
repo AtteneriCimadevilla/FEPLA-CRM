@@ -2,17 +2,7 @@
 session_start();
 require_once "conexion.php";
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: index.html");
-    exit;
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nota = $mysqli->real_escape_string($_POST['nota']);
-    $fecha = $mysqli->real_escape_string($_POST['fecha']);
-    $empresa_id = $mysqli->real_escape_string($_POST['empresa']);
-    $alumno_dni = $mysqli->real_escape_string($_POST['alumno']);
-    $profesor_dni = $_SESSION['dni_nie']; // Assuming you store the professor's DNI in the session
+header('Content-Type: application/json');
 
 // Verificar método HTTP
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
@@ -39,7 +29,7 @@ $profesor_dni = isset($_SESSION['dni_nie']) ? $_SESSION['dni_nie'] : null;
 if (empty($fecha) || empty($tipo_actividad) || empty($texto_registro) || empty($actividad_para)) {
     echo json_encode([
         "status" => "error", 
-        "message" => "Los campos fecha, tipo de actividad y texto son requeridos",
+        "message" => "Los campos fecha, tipo de actividad, texto y actividad para son requeridos",
         "data" => [
             "fecha" => $fecha,
             "tipo_actividad" => $tipo_actividad,
@@ -87,7 +77,7 @@ switch ($actividad_para) {
 
 // Preparar la consulta
 $sql_insert = "INSERT INTO registro (dni_nie_profesor, fecha, tipo_actividad, id_empresa, dni_nie_alumno, texto_registro) 
-               VALUES (?, ?, ?, ?, ?, ?)";
+             VALUES (?, ?, ?, ?, ?, ?)";
 
 try {
     $stmt = $mysqli->prepare($sql_insert);
@@ -129,4 +119,5 @@ try {
     }
     $mysqli->close();
 }
-}
+?>
+

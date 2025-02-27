@@ -1,0 +1,16 @@
+/* Color Palette */
+:root {
+    --primary-dark: #1a237e;
+    --primary-main: #3949ab;
+    --primary-light: #5c6bc0;
+    --background-main: #f0f4ff;
+    --background-paper: #ffffff;
+    --text-primary: #1a237e;
+    --text-secondary: #3949ab;
+    --error-main: #b71c1c;
+    --error-light: #ffebee;
+    --error-border: #ffcdd2;
+    --success-main: #1b5e20;
+    --success-light: #e8f5e9;
+    --success-border: #c8e6c9;
+}

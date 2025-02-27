@@ -29,12 +29,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <img src="logo.png" alt="logo" class="logo img-fluid mb-3">
                     </div>
                     <div class="nav flex-column">
-                        <a href="home.php" class="nav-link active">
-                            <i class="bi bi-house-door"></i> Inicio
-                        </a>
-                        <a href="#" class="nav-link">
-                            <i class="bi bi-person"></i> Mi Perfil
-                        </a>
                         <a href="logout.php" class="nav-link text-danger">
                             <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
                         </a>
@@ -98,18 +92,18 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                     <!-- Módulo Actividad -->
                     <div class="col-md-6 col-lg-3">
-                        <div class="card dashboard-card h-100" onclick="window.location.href='actividades.php'">
+                        <div class="card dashboard-card h-100" onclick="window.location.href='actividad.php'">
                             <div class="card-body text-center">
                                 <i class="bi bi-activity card-icon text-warning"></i>
                                 <h5 class="card-title">Actividades</h5>
-                                <p class="card-text">Ver actividades</p>
+                                <p class="card-text">Crear actividades</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Listados -->
                 <div class="col-12 mt-5 text-center">
-                    <h3>Informes</h3>
+                    <h3 class="mb-4">Informes</h3>
                     <div class="d-flex justify-content-center mt-3 gap-3">
                         <button class="btn btn-primary listados-btn" onclick="window.location.href='formaciones.php'">
                             Listado de Formaciones
