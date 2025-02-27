@@ -1,8 +1,12 @@
+@import "variables.css";
+/* Estilos base del cuerpo */
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: var(--background-main);
 }
 
+/* Contenedor del formulario */
 .form-container {
     max-width: 600px;
     margin: 0 auto;
@@ -21,8 +25,9 @@ body {
     color: var(--text-secondary);
 }
 
+/* Botón principal */
 .btn-primary {
-    background-color: var(--primary-main);
+    background-color: var(--primary-dark);
     border-color: var(--primary-main);
     color: var(--background-paper);
     width: 100%;
@@ -31,12 +36,13 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--primary-light);
     border-color: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(26, 35, 126, 0.2);
+    box-shadow: 0 4px 8px rgba(99, 109, 219, 0.2);
 }
 
+/* Botón secundario */
 .btn-secondary {
     background-color: var(--primary-light);
     border-color: var(--primary-light);
@@ -47,7 +53,7 @@ body {
 }
 
 .btn-secondary:hover {
-    background-color: var(--primary-main);
+    background-color: var(--primary-dark);
     border-color: var(--primary-main);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(26, 35, 126, 0.2);
@@ -57,6 +63,7 @@ body {
     margin-bottom: 20px;
 }
 
+/* Estilos de alertas */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
