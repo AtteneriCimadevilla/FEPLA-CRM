@@ -68,6 +68,11 @@ header {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+.title{
+    color: #000000;
+    font-weight: 700; 
+}
+
 /* Modificación del tamaño de iconos dentro de los módulos */
 .card-icon {
     font-size: 3.2rem;
@@ -99,9 +104,6 @@ header {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
-
-
-
 
 /* Media Queries */
 @media (max-width: 768px) {

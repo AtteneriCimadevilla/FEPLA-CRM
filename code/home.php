@@ -50,7 +50,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                             <div class="card dashboard-card h-100" onclick="window.location.href='profesores.php'">
                                 <div class="card-body text-center">
                                     <i class="bi bi-person-video3 card-icon text-primary"></i>
-                                    <h5 class="card-title">Profesores</h5>
+                                    <h5 class="title">Profesores</h5>
                                     <p class="card-text">Gestionar profesores</p>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="card dashboard-card h-100" onclick="window.location.href='empresas.php'">
                             <div class="card-body text-center">
                                 <i class="bi bi-building card-icon text-success"></i>
-                                <h5 class="card-title">Empresas</h5>
+                                <h5 class="title">Empresas</h5>
                                 <p class="card-text">Gestionar empresas</p>
                             </div>
                         </div>
@@ -73,7 +73,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="card dashboard-card h-100" onclick="window.location.href='alumnos.php'">
                             <div class="card-body text-center">
                                 <i class="bi bi-mortarboard card-icon text-info"></i>
-                                <h5 class="card-title">Alumnos</h5>
+                                <h5 class="title">Alumnos</h5>
                                 <p class="card-text">Gestionar alumnos</p>
                             </div>
                         </div>
@@ -84,7 +84,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="card dashboard-card h-100" onclick="window.location.href='formaciones.php'">
                             <div class="card-body text-center">
                                 <i class="bi bi-journal-text card-icon text-danger"></i>
-                                <h5 class="card-title">Formaciones</h5>
+                                <h5 class="title">Formaciones</h5>
                                 <p class="card-text">Gestionar formaciones</p>
                             </div>
                         </div>
@@ -95,7 +95,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="card dashboard-card h-100" onclick="window.location.href='actividad.php'">
                             <div class="card-body text-center">
                                 <i class="bi bi-activity card-icon text-warning"></i>
-                                <h5 class="card-title">Actividades</h5>
+                                <h5 class="title">Actividades</h5>
                                 <p class="card-text">Crear actividades</p>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <button class="btn btn-primary listados-btn" onclick="window.location.href='formaciones.php'">
                             Listado de Formaciones
                         </button>
-                        <button class="btn btn-secondary listados-btn" onclick="window.location.href='actividades.php'">
+                        <button class="btn btn-primary listados-btn" onclick="window.location.href='actividades.php'">
                             Listado de Actividades
                         </button>
                     </div>
