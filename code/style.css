@@ -1,0 +1,87 @@
+/* Importar variables de color */
+@import url('variables.css');
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-main);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: var(--primary-main);
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    height: 80px;
+}
+
+.container {
+    background-color: var(--background-paper);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+h2 {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+form .form-control {
+    border: 1px solid var(--primary-light);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: border-color 0.3s ease-in-out;
+}
+
+form .form-control:focus {
+    border-color: var(--primary-main);
+    outline: none;
+    box-shadow: 0 0 8px rgba(57, 73, 171, 0.2);
+}
+
+button[type="submit"] {
+    background-color: var(--primary-main);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--primary-dark);
+}
+
+button[type="submit"]:focus {
+    box-shadow: 0 0 8px rgba(57, 73, 171, 0.4);
+    outline: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .logo {
+        height: 60px;
+    }
+}
