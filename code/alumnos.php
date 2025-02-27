@@ -24,6 +24,7 @@ $query = "SELECT
     a.direccion AS direccion, 
     a.vehiculo AS vehiculo, 
     CONCAT(c.nombre, ' - ', g.alias_grupo) AS grupo,
+    e.id AS id_empresa,
     e.nombre_comercial AS empresa,
     f.curso AS curso
 FROM 
@@ -161,6 +162,9 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
                                         <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?php echo urlencode($alumno['dni_nie']); ?>&edit=1')" class="btn btn-warning btn-sm">
                                             Editar Formación
                                         </button>
+                                        <button class="btn btn-danger btn-sm" onclick="confirmarBorrado('<?php echo htmlspecialchars($alumno['dni_nie']); ?>', '<?php echo htmlspecialchars($alumno['id_empresa']); ?>', '<?php echo htmlspecialchars($alumno['curso']); ?>')">
+                                                Eliminar Formación
+                                        </button>
                                     <?php else: ?>
                                         <button onclick="abrirVentanaEmergente('crear_formacion.php?tipo=alumno&dni=<?php echo urlencode($alumno['dni_nie']); ?>')" class="btn btn-primary btn-sm">
                                             Crear Formación
@@ -215,6 +219,33 @@ if (isset($_POST['delete']) && isset($_POST['dni_nie'])) {
     <script>
         function abrirVentanaEmergente(url) {
             window.open(url, 'VentanaEmergente', 'width=800,height=800,resizable=yes,scrollbars=yes');
+        }
+
+        function confirmarBorrado(dni, idEmpresa, curso) {
+            if (confirm('¿Está seguro de que desea eliminar esta formación?')) {
+                const formData = new FormData();
+                formData.append('dni_nie', dni);
+                formData.append('id_empresa', idEmpresa);
+                formData.append('curso', curso);
+
+                fetch('borrar_formacion.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al procesar la solicitud');
+                });
+            }
         }
     </script>
 </body>
