@@ -1,5 +1,5 @@
 <?php
-require_once "conexion.php";
+require_once "../code/conexion.php";
 
 $sql = "SELECT dni_nie, contrasenya FROM profesores";
 $result = $mysqli->query($sql);
