@@ -1,5 +1,12 @@
 <?php
 require 'conexion.php';
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.html");
+    exit;
+}
 
 $tipo = $_GET['tipo'] ?? '';
 $dni_nie = $_GET['dni'] ?? '';
