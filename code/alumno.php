@@ -12,7 +12,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 if (isset($_GET['dni_nie']) && !empty($_GET['dni_nie'])) {
     $dni_nie = $_GET['dni_nie']; // Obtener el DNI/NIE desde la URL
 } else {
-    die("No se ha proporcionado un DNI/NIE válido.");
+    header("location: alumnos.php");
+    exit;
 }
 
 // Consulta para obtener los detalles del alumno

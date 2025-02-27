@@ -64,7 +64,7 @@ if (isset($_GET['id'])) {
         exit();
     }
 } else {
-    echo "ID de empresa no proporcionado.";
+    header("location: empresas.php");
     exit();
 }
 
