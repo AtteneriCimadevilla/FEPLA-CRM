@@ -44,6 +44,25 @@ if (isset($_GET['id'])) {
         echo "Error en la consulta de actividades.";
         exit();
     }
+
+    // Fetch assigned students
+    $sql_alumnos = "SELECT a.dni_nie, CONCAT(a.nombre, ' ', a.apellido1, ' ', a.apellido2) AS nombre_completo, f.curso
+                    FROM alumnos a
+                    JOIN formaciones f ON a.dni_nie = f.dni_nie_alumno
+                    WHERE f.id_empresa = ?
+                    ORDER BY f.curso DESC, a.apellido1, a.nombre";
+    $stmt_alumnos = $mysqli->prepare($sql_alumnos);
+
+    if ($stmt_alumnos) {
+        $stmt_alumnos->bind_param("i", $id);
+        $stmt_alumnos->execute();
+        $resultado_alumnos = $stmt_alumnos->get_result();
+        $alumnos = $resultado_alumnos->fetch_all(MYSQLI_ASSOC);
+        $stmt_alumnos->close();
+    } else {
+        echo "Error en la consulta de alumnos.";
+        exit();
+    }
 } else {
     echo "ID de empresa no proporcionado.";
     exit();
@@ -61,6 +80,14 @@ $mysqli->close();
     <title>Perfil de Empresa</title>
     <link rel="stylesheet" href="styleEmpresa.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -72,7 +99,7 @@ $mysqli->close();
         </header>
 
         <div class="row">
-            <!-- Columna izquierda: Información General -->
+            <!-- Columna izquierda: Información General y de Contacto -->
             <div class="col-md-6">
                 <section class="perfil card mb-4">
                     <div class="card-body">
@@ -81,9 +108,6 @@ $mysqli->close();
                         <p><strong>Nombre Comercial:</strong> <?php echo htmlspecialchars($empresa['nombre_comercial']); ?></p>
                         <p><strong>Nombre de la Empresa:</strong> <?php echo htmlspecialchars($empresa['nombre_empresa']); ?></p>
                         <p><strong>Teléfono de Empresa:</strong> <?php echo htmlspecialchars($empresa['telefono_empresa']); ?></p>
-                        <p><strong>Nombre de Contacto:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?></p>
-                        <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
-                        <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
                         <p><strong>Dirección:</strong> <?php echo htmlspecialchars($empresa['direccion']); ?></p>
                         <p><strong>CP:</strong> <?php echo htmlspecialchars($empresa['cp']); ?></p>
                         <p><strong>Web:</strong> <?php echo htmlspecialchars($empresa['web']); ?></p>
@@ -102,9 +126,18 @@ $mysqli->close();
                         <p><strong>DNI Profesor:</strong> <?php echo htmlspecialchars($empresa['dni_profesor']); ?></p>
                     </div>
                 </section>
+
+                <section class="contacto card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">Información de Contacto</h2>
+                        <p><strong>Nombre de Contacto:</strong> <?php echo htmlspecialchars($empresa['nombre_contacto']); ?></p>
+                        <p><strong>Teléfono de Contacto:</strong> <?php echo htmlspecialchars($empresa['telefono_contacto']); ?></p>
+                        <p><strong>Email de Contacto:</strong> <?php echo htmlspecialchars($empresa['email_contacto']); ?></p>
+                    </div>
+                </section>
             </div>
 
-            <!-- Columna derecha: Registro de Actividades -->
+            <!-- Columna derecha: Registro de Actividades y Alumnos Asignados -->
             <div class="col-md-6">
                 <section class="registro card mb-4">
                     <div class="card-body">
@@ -136,6 +169,36 @@ $mysqli->close();
                         <?php endif; ?>
                     </div>
                 </section>
+
+                <section class="alumnos card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Alumnos Asignados</h2>
+                        <?php if (!empty($alumnos)): ?>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>DNI/NIE</th>
+                                        <th>Nombre</th>
+                                        <th>Curso</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($alumnos as $alumno): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($alumno['dni_nie']); ?></td>
+                                            <td><?php echo htmlspecialchars($alumno['nombre_completo']); ?></td>
+                                            <td><?php echo htmlspecialchars($alumno['curso']); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="alert alert-info" role="alert">
+                                No hay alumnos asignados actualmente.
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -156,4 +219,3 @@ $mysqli->close();
 </body>
 
 </html>
-
